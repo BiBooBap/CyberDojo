@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles if needed */
+
+/* Example custom styles for Header component */
+.header {
+  @apply bg-[#54295c] text-white p-4 flex justify-between items-center;
+}
+.logo-container {
+  @apply flex items-center space-x-3;
+}
+.logo {
+  @apply w-10 h-10;
+}
+.title {
+  @apply text-xl font-semibold;
+}
+.nav {
+  @apply flex space-x-6;
+}
+.nav-link {
+  @apply hover:text-gray-300;
+}
+.user-info {
+  @apply flex items-center space-x-4;
+}
+.coins {
+  @apply flex items-center space-x-2;
+}
+.coins-icon {
+  @apply w-5 h-5;
+}
+.profile-icon {
+  @apply w-8 h-8 rounded-full;
+}
