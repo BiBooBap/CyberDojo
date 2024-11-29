@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-function App() {
+function Header() {
   return (
     <header className="bg-[#54295c] text-white p-4 flex justify-between items-center">
       <div className="flex items-center space-x-3">
@@ -42,4 +42,4 @@ function App() {
   );
 }
 
-export default App;
+export default Header;
