@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer className="bg-[#54295c] text-white p-6 mt-10">
-      <div className="container mx-auto grid grid-cols-4 gap-8">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
           <h3 className="font-semibold mb-4">Il sito</h3>
           <ul className="space-y-2">
@@ -37,19 +37,10 @@ const Footer = () => {
               <i className="fab fa-twitter"></i>
             </a>
           </div>
-          <div className="flex space-x-4 mt-4">
-            <img src="img/facebook.png" alt="Facebook Logo" className="w-10 h-10" />
-            <img src="img/insta.png" alt="Instagram Logo" className="w-10 h-10" />
-            <img src="img/logox.png" alt="Twitter Logo" className="w-10 h-10" />
-          </div>
         </div>
-      </div>
-      <div className="mt-10 text-center text-sm">
-        &copy; CyberDojo. Tutti i diritti riservati 2024
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;
-
