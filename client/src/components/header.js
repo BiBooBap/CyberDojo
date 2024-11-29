@@ -1,34 +1,25 @@
-import React from "react";
-import "./App.css";
-
 function Header() {
   return (
     <header className="bg-[#54295c] text-white p-4 flex justify-between items-center">
       <div className="flex items-center space-x-3">
         <img
-          src="/path-to-logo.png"
+          src="/img/CD.png"
           alt="CyberDojo Logo"
-          className="w-10 h-10"
+          className="w-20 h-20"
         />
         <h1 className="text-xl font-semibold">CyberDojo</h1>
       </div>
       <nav className="flex space-x-6">
-        <a href="#" className="hover:text-gray-300">
-          Corsi
-        </a>
-        <a href="#" className="hover:text-gray-300">
-          Shop
-        </a>
-        <a href="#" className="hover:text-gray-300">
-          Supporto
-        </a>
+        <button className="hover:bg-[#4b2153] px-4 py-2 rounded">Corsi</button>
+        <button className="hover:bg-[#4b2153] px-4 py-2 rounded">Shop</button>
+        <button className="hover:bg-[#4b2153] px-4 py-2 rounded">Supporto</button>
       </nav>
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-2">
           <img
-            src="/path-to-coins-icon.png"
+            src="/img/coin.png"
             alt="Coins Icon"
-            className="w-5 h-5"
+            className="w-20 h-20"
           />
           <span>1</span>
         </div>

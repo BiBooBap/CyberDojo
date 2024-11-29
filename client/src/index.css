@@ -35,3 +35,24 @@
 .profile-icon {
   @apply w-8 h-8 rounded-full;
 }
+
+/* Example custom styles for Footer component */
+.footer {
+    @apply bg-[#54295c] text-white p-6 mt-10;
+  }
+  .footer-container {
+    @apply container mx-auto grid grid-cols-4 gap-8;
+  }
+  .footer-title {
+    @apply font-semibold mb-4;
+  }
+  .footer-link {
+    @apply hover:text-gray-300;
+  }
+  .social-links {
+    @apply flex space-x-4;
+  }
+  .footer-copyright {
+    @apply mt-10 text-center text-sm;
+  }
+  
