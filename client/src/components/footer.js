@@ -1,4 +1,5 @@
 import React from 'react';
+import "../index.css";
 
 const Footer = () => {
   return (
@@ -28,13 +29,13 @@ const Footer = () => {
           <h3 className="font-semibold mb-4">Social</h3>
           <div className="flex space-x-4">
             <a href="#" className="hover:text-gray-300">
-              <i className="fab fa-facebook-f"></i>
+              <img src="/img/facebook.png" alt="Facebook" className="w-6 h-6" />
             </a>
             <a href="#" className="hover:text-gray-300">
-              <i className="fab fa-instagram"></i>
+              <img src="/img/insta.png" alt="Instagram" className="w-6 h-6" />
             </a>
             <a href="#" className="hover:text-gray-300">
-              <i className="fab fa-twitter"></i>
+              <img src="/img/logox.png" alt="Twitter" className="w-6 h-6" />
             </a>
           </div>
         </div>
