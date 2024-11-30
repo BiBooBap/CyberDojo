@@ -4,7 +4,7 @@ const uri = 'mongodb://localhost:27017'; // Modifica con il tuo URI
 const dbName = 'CyberDojo';
 
 async function connect() {
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = new MongoClient(uri);
     try {
         await client.connect();
         console.log('Connesso a MongoDB');
