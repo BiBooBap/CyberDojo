@@ -41,7 +41,7 @@ async function initializeDB() {
     {
       email: "giuliarossi@gmail.com",
       username: "giulia123",
-      password: "password3",
+      password: await bcrypt.hash('password3', 10),
       ruolo: "utente",
       punti: 100,
       avatar: "CyberDojo/database/img/base.png",
@@ -51,7 +51,7 @@ async function initializeDB() {
     {
       email: "paolomorandi@gmail.com",
       username: "paoloM",
-      password: "password8",
+      password: await bcrypt.hash('password8', 10),
       ruolo: "admin",
       punti: 1000,
       avatar: "CyberDojo/database/img/admin.png",
@@ -61,7 +61,7 @@ async function initializeDB() {
     {
       email: "andrealandi@gmail.com",
       username: "andre89",
-      password: "password4",
+      password: await bcrypt.hash('password4', 10),
       ruolo: "utente",
       punti: 200,
       avatar: "CyberDojo/database/img/advanced.png",
@@ -71,7 +71,7 @@ async function initializeDB() {
     {
       email: "mariabianchi@gmail.com",
       username: "mariaB",
-      password: "password5",
+      password: await bcrypt.hash('password5', 10),
       ruolo: "utente",
       punti: 20,
       avatar: "CyberDojo/database/img/newbie.png",
@@ -81,7 +81,7 @@ async function initializeDB() {
     {
       email: "luigiricci@gmail.com",
       username: "luigiR99",
-      password: "password6",
+      password: await bcrypt.hash('password6', 10),
       ruolo: "utente",
       punti: 350,
       avatar: "CyberDojo/database/img/pro.png",
@@ -91,7 +91,7 @@ async function initializeDB() {
     {
       email: "elisaferrari@gmail.com",
       username: "elisaf90",
-      password: "password7",
+      password: await bcrypt.hash('password7', 10),
       ruolo: "utente",
       punti: 500,
       avatar: "CyberDojo/database/img/expert.png",
@@ -135,7 +135,7 @@ async function initializeDB() {
                 },
               },
             },
-          },
+          },immaginecorso: { bsonType: "string", description: "Immagine corso" },
         },
       },
     },
@@ -151,6 +151,7 @@ async function initializeDB() {
         { contenuto: "Programmazione asincrona in JavaScript" },
         { contenuto: "Gestione degli errori e debugging" },
       ],
+      immaginecorso: "CyberDojo/database/img/pro.png",
     },
     {
       _id: 2,
@@ -161,6 +162,7 @@ async function initializeDB() {
         { contenuto: "Creazione di API RESTful con Node.js" },
         { contenuto: "Utilizzo di Express.js per la gestione delle route" },
       ],
+      immaginecorso: "CyberDojo/database/img/pro.png",
     },
     {
       _id: 3,
@@ -171,6 +173,7 @@ async function initializeDB() {
         { contenuto: "Introduzione a HTML" },
         { contenuto: "Struttura di una pagina HTML" },
       ],
+      immaginecorso: "CyberDojo/database/img/pro.png",
     },
     {
       _id: 4,
@@ -181,6 +184,7 @@ async function initializeDB() {
         { contenuto: "Selettori e proprietà CSS" },
         { contenuto: "Layout e design responsivo" },
       ],
+      immaginecorso: "CyberDojo/database/img/pro.png",
     },
   ]);
   // Collezione: Test

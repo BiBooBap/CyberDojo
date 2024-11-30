@@ -33,7 +33,7 @@ router.post("/login/username", async (req, res) => {
     const token = jwt.sign(
       { username: user.username, ruolo: user.ruolo },
       secretKey,
-      { expiresIn: "1h" }
+      { expiresIn: "8h" }
     );
 
     res.json({ token });
@@ -70,7 +70,7 @@ router.post("/login/email", async (req, res) => {
     const token = jwt.sign(
       { username: user.username, ruolo: user.ruolo },
       secretKey,
-      { expiresIn: "1h" }
+      { expiresIn: "6h" }
     );
 
     res.json({ token });
@@ -81,9 +81,9 @@ router.post("/login/email", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { email, username, password, ruolo } = req.body;
+  const { email, username, password } = req.body;
 
-  if (!email || !username || !password || !ruolo) {
+  if (!email || !username || !password) {
     return res.status(400).json({ message: "Tutti i campi sono obbligatori" });
   }
 
@@ -109,7 +109,7 @@ router.post("/register", async (req, res) => {
       email,
       username,
       password: hashedPassword,
-      ruolo,
+      ruolo: "utente",
       punti: 0,
       avatar: "CyberDojo/database/img/base.png",
       titolo_utente: "CyberDojo/database/img/base.png",
