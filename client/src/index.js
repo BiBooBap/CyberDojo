@@ -4,6 +4,7 @@ import "./index.css";
 import Header from "./components/header.jsx";
 import Footer from "./components/footer.jsx";
 import Registrazione from "./registrazione.jsx";
+import Login from "./login.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,6 +13,7 @@ root.render(
       <Header />
       <main className="flex-grow">
         <Registrazione />
+        <Login />
       </main>
       <Footer />
     </div>
