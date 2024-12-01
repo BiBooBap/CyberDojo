@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "../index.css";
 
 const Footer = () => {
@@ -8,21 +8,41 @@ const Footer = () => {
         <div>
           <h3 className="font-semibold mb-4">Il sito</h3>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:text-gray-300">Home</a></li>
-            <li><a href="#" className="hover:text-gray-300">Corsi</a></li>
+            <li>
+              <a href="#" className="hover:text-gray-300">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-gray-300">
+                Corsi
+              </a>
+            </li>
           </ul>
         </div>
         <div>
           <h3 className="font-semibold mb-4">Legale</h3>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:text-gray-300">Privacy</a></li>
-            <li><a href="#" className="hover:text-gray-300">Termini e condizioni</a></li>
+            <li>
+              <a href="#" className="hover:text-gray-300">
+                Privacy
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-gray-300">
+                Termini e condizioni
+              </a>
+            </li>
           </ul>
         </div>
         <div>
           <h3 className="font-semibold mb-4">FAQ</h3>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:text-gray-300">Supporto</a></li>
+            <li>
+              <a href="#" className="hover:text-gray-300">
+                Supporto
+              </a>
+            </li>
           </ul>
         </div>
         <div>
@@ -42,6 +62,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

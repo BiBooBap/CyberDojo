@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,46 +6,9 @@
 /* Custom styles if needed */
 
 /* Example custom styles for Header component */
-.header {
-  @apply bg-[#54295c] text-white p-4 flex justify-between items-center;
-}
-.logo-container {
-  @apply flex items-center space-x-3;
-}
-.logo {
-  @apply w-20 h-20;
-}
-.title {
-  @apply text-xl font-semibold hidden md:block;
-}
-.menu-container {
-  @apply flex-1 flex justify-center;
-}
-.nav {
-  @apply flex-col md:flex-row md:flex space-x-6;
-}
-.nav-item {
-  @apply flex justify-center;
-}
-.nav-link {
-  @apply hover:bg-[#4b2153] rounded text-center;
-}
-.user-info {
-  @apply flex items-center space-x-4;
-}
-.coins {
-  @apply flex items-center space-x-2;
-}
-.coins-icon {
-  @apply w-5 h-5;
-}
-.profile-icon {
-  @apply w-8 h-8 rounded-full;
-}
 .hamburger-menu {
   @apply absolute right-4 top-4 md:hidden;
 }
-
 /* Example custom styles for Footer component */
 .footer {
   @apply bg-[#54295c] text-white p-6 mt-10;
@@ -66,17 +30,12 @@
 }
 
 /* Responsive styles */
-@media (min-width: 768px) {
-  .nav {
-    @apply justify-center w-full;
-  }
-}
-/* Responsive styles */
 @media (max-width: 768px) {
   .header {
     @apply flex-col items-center;
   }
-  .logo-container, .user-info {
+  .logo-container,
+  .user-info {
     @apply flex items-center space-x-3 w-full justify-between;
   }
   .nav {
