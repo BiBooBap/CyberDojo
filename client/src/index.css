@@ -1,3 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles if needed */
+
+/* Example custom styles for Header component */
+.hamburger-menu {
+  @apply absolute right-4 top-4 md:hidden;
+}
+/* Example custom styles for Footer component */
+.footer {
+  @apply bg-[#54295c] text-white p-6 mt-10;
+}
+.footer-container {
+  @apply container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8;
+}
+.footer-title {
+  @apply font-semibold mb-4;
+}
+.footer-link {
+  @apply hover:text-gray-300;
+}
+.social-links {
+  @apply flex space-x-4;
+}
+.footer-copyright {
+  @apply mt-10 text-center text-sm;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header {
+    @apply flex-col items-center;
+  }
+  .logo-container,
+  .user-info {
+    @apply flex items-center space-x-3 w-full justify-between;
+  }
+  .nav {
+    @apply flex-col space-y-2 mt-2;
+    @apply items-center; /* Posiziona i pulsanti del menu hamburger a destra */
+  }
+  .nav-link {
+    @apply px-4 py-2 rounded;
+  }
+  .footer-container {
+    @apply grid-cols-1;
+  }
+}
