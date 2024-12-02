@@ -48,7 +48,7 @@ async function initializeDB() {
       },
     },
   });
-  // Insert real data into the 'Utenti' collection
+  // Insert real data into the 'Users' collection
   const users = [
     {
       email: "giuliarossi@gmail.com",
@@ -136,7 +136,7 @@ async function initializeDB() {
 
   await db.collection("user").insertMany(users);
 
-  // Collection: Corsi
+  // Collection: courses
   await db.createCollection("courses", {
     validator: {
       $jsonSchema: {
@@ -217,7 +217,7 @@ async function initializeDB() {
       course_image: "CyberDojo/database/img/pro.png",
     },
   ]);
-  // Collection: Tests
+  // Collection: tests
   await db.createCollection("tests", {
     validator: {
       $jsonSchema: {
@@ -308,7 +308,7 @@ async function initializeDB() {
       ],
     },
   ]);
-  // Collection: Shop
+  // Collection: shop
   await db.createCollection("shop", {
     validator: {
       $jsonSchema: {
@@ -408,7 +408,7 @@ async function initializeDB() {
     },
   ]);
 
-  // Collection: Rewards
+  // Collection: rewards
   await db.createCollection("rewards", {
     validator: {
       $jsonSchema: {
@@ -457,7 +457,7 @@ async function initializeDB() {
       date: new Date(),
     },
   ]);
-  // Collection: Inventory
+  // Collection: inventory
   await db.createCollection("inventory", {
     validator: {
       $jsonSchema: {
