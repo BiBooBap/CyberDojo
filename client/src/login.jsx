@@ -25,7 +25,7 @@ const Login = () => {
       >
         Login
       </button>
-      <div className="login-footer mt-4 text-center text-white">
+      <div className="login-footer mt-4 text-center text-white just">
         <a href="/forgot-password" className="text-white hover:underline">
           Forgot Password?
         </a>

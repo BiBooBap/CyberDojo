@@ -22,7 +22,9 @@ const Header = () => {
       </div>
       <div className="menu-container flex-1 flex justify-center md:justify-center">
         <nav
-          className={`nav flex-col md:flex-row md:flex  ${isMenuOpen ? "flex" : "hidden"} md:flex justify-center items-center`}
+          className={`nav flex-col md:flex-row md:flex  ${
+            isMenuOpen ? "flex" : "hidden"
+          } md:flex justify-center items-center`}
         >
           <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
             Corsi
