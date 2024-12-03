@@ -1,5 +1,6 @@
 const express = require("express");
-const authRoutes = require("./auth");
+const authRoutes = require("./routes/auth");
+const registrationRoutes = require("./routes/registration");
 const userProgressRoutes = require("./routes/userProgressRoutes");
 const assistanceRoutes = require("./routes/assistanceRoutes");
 
@@ -9,8 +10,11 @@ const port = 3000;
 // Middleware per il parsing delle richieste in JSON
 app.use(express.json());
 
-// Rotte per l'autenticazione
+// Route for the "Autenticazione" subsystem
 app.use("/auth", authRoutes);
+
+// Route for the "Registrazione" subsystem
+app.use("/registration", registrationRoutes);
 
 // Rotte per i progressi degli utenti
 app.use("/progress", userProgressRoutes);
