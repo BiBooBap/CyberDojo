@@ -26,13 +26,13 @@ const Header = () => {
             isMenuOpen ? "flex" : "hidden"
           } md:flex justify-center items-center`}
         >
-          <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
-            Corsi
+          <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
+            <a href="/homepage">Corsi</a>
           </button>
-          <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
-            Shop
+          <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
+            <a href="/negoziopunti">Negozio punti</a>
           </button>
-          <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
+          <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
             Supporto
           </button>
           <div className="user-info md:hidden items-center space-x-2 mt-4">
@@ -42,7 +42,7 @@ const Header = () => {
               className="coins-icon w-5 h-5 rounded-full"
             />
             <span>1</span>
-            <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
+            <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
               Area utente
             </button>
           </div>

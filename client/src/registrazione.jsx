@@ -2,7 +2,7 @@ import React from "react";
 
 const Registrazione = () => {
   return (
-    <div className="justify-self-center mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat">
+    <div className="card-body mt-6 py-4 px-6">
       <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
         Registrazione
       </h1>
@@ -24,7 +24,7 @@ const Registrazione = () => {
         Questo è un placeholder
       </label>
       <br></br>
-      <button className="bg-[#54295c] hover:bg-[#4b2153] text-white rounded-3xl py-2 px-8 mt-3 ml-3 font-bold text-xl">
+      <button className="button-CD py-2 px-8 mt-3 ml-3 text-xl">
         Registrati
       </button>
       <button>
