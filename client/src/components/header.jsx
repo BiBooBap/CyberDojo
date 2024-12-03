@@ -43,7 +43,7 @@ const Header = () => {
             />
             <span>1</span>
             <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
-              Area utente
+            <a href="/areautente">Area utente</a>
             </button>
           </div>
         </nav>
@@ -58,11 +58,9 @@ const Header = () => {
             />
             <span>1</span>
           </div>
-          <img
-            src="/path-to-profile-icon.png"
-            alt="Profile Icon"
-            className="profile-icon w-8 h-8 rounded-full"
-          />
+          <a href="/areautente">
+            <img src="/path-to-profile-icon.png" alt="Profile Icon" className="profile-icon w-8 h-8 rounded-full" />
+          </a>
         </div>
         <button
           className="hamburger-menu text-white md:hidden"

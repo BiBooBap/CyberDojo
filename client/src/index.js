@@ -7,6 +7,7 @@ import Registrazione from "./registrazione.jsx";
 import Login from "./login.jsx";
 import HomePage from "./homePage.jsx";
 import NegozioPunti from "./negozioPunti.jsx";
+import AreaUtente from "./areaUtente.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,6 +21,7 @@ root.render(
             <Route path="/login" element={<Login />} />
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/negoziopunti" element={<NegozioPunti />} />
+            <Route path="/areaUtente" element={<AreaUtente />} />
           </Routes>
         </main>
         <Footer />
