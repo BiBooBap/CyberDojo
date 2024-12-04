@@ -2,7 +2,7 @@ import React from "react";
 
 const Login = () => {
   return (
-    <div className="justify-self-center mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat">
+    <div className="card-body mt-6 py-4 px-6">
       <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
         Login
       </h1>
@@ -19,13 +19,10 @@ const Login = () => {
         placeholder="Password"
       />
       <br />
-      <button
-        type="submit"
-        className="bg-[#54295c] hover:bg-[#4b2153] text-white rounded-3xl py-2 px-8 mt-3 ml-3 font-bold text-xl login-button"
-      >
+      <button type="submit" className="button-CD py-2 px-8 mt-3 ml-3 text-xl">
         Login
       </button>
-      <div className="login-footer mt-4 text-center text-white">
+      <div className="login-footer mt-4 text-center text-white just">
         <a href="/forgot-password" className="text-white hover:underline">
           Forgot Password?
         </a>

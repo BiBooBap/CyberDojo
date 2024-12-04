@@ -217,137 +217,116 @@ async function initializeDB() {
       course_image: "CyberDojo/database/img/pro.png",
     },
   ]);
-  // Collection: tests
-  await db.createCollection("tests", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["course_id", "user_username", "score", "questions"],
-        properties: {
-          course_id: { bsonType: "int", description: "Associated course ID" },
-          user_username: {
-            bsonType: "string",
-            description: "Username of the user who took the test",
-          },
-          score: { bsonType: "int", description: "Score obtained" },
-          questions: {
-            bsonType: "array",
-            items: {
-              bsonType: "object",
-              required: ["question", "answers", "correct"],
-              properties: {
-                question: {
-                  bsonType: "string",
-                  description: "Question text",
-                },
-                answers: {
-                  bsonType: "array",
-                  items: { bsonType: "string" },
-                  description: "List of possible answers",
-                },
-                correct: {
-                  bsonType: "int",
-                  description: "Index of the correct answer in the list of answers"
-                },
+// Collection: tests
+await db.createCollection("tests", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["course_id", "questions", "correct"],
+      properties: {
+        course_id: { bsonType: "int", description: "Associated course ID" },
+        questions: {
+          bsonType: "array",
+          items: {
+            bsonType: "object",
+            required: ["question", "answers", "correct"],
+            properties: {
+              question: {
+                bsonType: "string",
+                description: "Question text",
+              },
+              answers: {
+                bsonType: "array",
+                items: { bsonType: "string" },
+                description: "List of possible answers",
+              },
+              correct: {
+                bsonType: "int",
+                description: "Index of the correct answer in the list of answers",
               },
             },
-            description: "List of multiple-choice questions",
           },
+          description: "List of multiple-choice questions",
         },
       },
     },
-  });
-  // Insert real data into the 'tests' collection
-  await db.collection("tests").insertMany([
-    {
-      course_id: 1,
-      user_username: "andre89",
-      score: 90,
-      questions: [
-        {
-          question: "Qual è la differenza tra let e var in JavaScript?",
-          answers: [
-            "let è block-scoped, var è function-scoped",
-            "Non c'è differenza",
-            "let è più lento di var",
-          ],
-          correct: 0,
-        },
-      ],
-    },
-    {
-      course_id: 2,
-      user_username: "mariaB",
-      score: 85,
-      questions: [
-        {
-          question: "Qual è la differenza tra == e === in JavaScript?",
-          answers: [
-            "== confronta solo il valore, === confronta valore e tipo",
-            "Non c'è differenza",
-            "=== è più lento di ==",
-          ],
-          correct: 0,
-        },
-      ],
-    },
-    {
-      course_id: 3,
-      user_username: "giulia123",
-      score: 75,
-      questions: [
-        {
-          question: "Qual è lo scopo di una promise in JavaScript?",
-          answers: [
-            "Gestire operazioni asincrone",
-            "Gestire variabili globali",
-            "Gestire eventi DOM",
-          ],
-          correct: 0,
-        },
-      ],
-    },
-  ]);
-  // Collection: shop
-  await db.createCollection("shop", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["name", "price"],
-        properties: {
-          name: { bsonType: "string", description: "Item name" },
-          price: {
-            bsonType: "int",
-            description: "Item price in points",
-          }, // If the price is 0, the item is a reward
-          image_path: {
-            bsonType: "string",
-            description: "Path to the item's image",
-          },
-        },
+  },
+});
+// Insert real data into the 'tests' collection
+await db.collection("tests").insertMany([
+  {
+    course_id: 1,
+    questions: [
+      {
+        question: "Qual è la differenza tra let e var in JavaScript?",
+        answers: [
+          "let è block-scoped, var è function-scoped",
+          "Non c'è differenza",
+          "let è più lento di var",
+        ],
+        correct: 0,
       },
-    },
-  });
-  // Insert real data into the 'shop' collection
-  await db.collection("shop").insertMany([
-    {
-      name: "Bordo Premium",
-      price: 500,
-      image_path: "CyberDojo/database/img/base.png",
-    },
-    {
-      name: "Avatar Standard",
-      price: 200,
-      image_path: "CyberDojo/database/img/standardimage.png",
-    },
-    {
-      name: "Titolo Standard",
-      price: 450,
-      image_path: "CyberDojo/database/img/standardimage.png",
-    },
-  ]);
+      {
+        question: "Cos'è una closure in JavaScript?",
+        answers: [
+          "Una funzione con scope locale",
+          "Una funzione che ricorda lo scope in cui è stata definita",
+          "Un metodo statico",
+        ],
+        correct: 1,
+      },
+    ],
+  },
+  {
+    course_id: 2,
+    questions: [
+      {
+        question: "Qual è la differenza tra == e === in JavaScript?",
+        answers: [
+          "== confronta solo il valore, === confronta valore e tipo",
+          "Non c'è differenza",
+          "=== è più lento di ==",
+        ],
+        correct: 0,
+      },
+      {
+        question: "Come si avvia un server Express?",
+        answers: [
+          "Con il comando `npm start`",
+          "Chiamando `app.listen()`",
+          "Con `require('express')`",
+        ],
+        correct: 1,
+      },
+    ],
+  },
+  {
+    course_id: 3,
+    questions: [
+      {
+        question: "Qual è lo scopo di una promise in JavaScript?",
+        answers: [
+          "Gestire operazioni asincrone",
+          "Gestire variabili globali",
+          "Gestire eventi DOM",
+        ],
+        correct: 0,
+      },
+      {
+        question: "Cosa rappresenta l'attributo `alt` in un tag `<img>`?",
+        answers: [
+          "Il percorso dell'immagine",
+          "Testo alternativo per descrivere l'immagine",
+          "Il tipo MIME dell'immagine",
+        ],
+        correct: 1,
+      },
+    ],
+  },
+]);
 
-  // Collection: tickets (support)
+
+  // Collection: Tickets(support)
   await db.createCollection("tickets", {
     validator: {
       $jsonSchema: {
@@ -407,56 +386,57 @@ async function initializeDB() {
       creation_date: new Date(),
     },
   ]);
-
-  // Collection: rewards
-  await db.createCollection("rewards", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["user_username", "course_id", "description", "points","date"],
-        properties: {
-          user_username: {
-            bsonType: "string",
-            description: "Username of the user who received the reward",
-          },
-          course_id: { bsonType: "int", description: "Completed course ID" },
-          description: {
-            bsonType: "string",
-            description: "Reward description",
-          },
-          points: { bsonType: "int", description: "Points obtained" }, //The badge varies based on the points obtained
-          date: {
-            bsonType: "date",
-            description: "Reward date",
-          },
+// Collection: rewards
+await db.createCollection("rewards", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["user_username", "course_id", "description", "points", "date"], // QUI DESCRIPTION DOVREBBE ESSERE IL PREMIO ASSEGNATO! - Inoltre senso memorizzare anche "course_name" oltre "course_id" (che serve per corrispondenza Corso - Test) in modo da poter effettuare una cronologia testuale dei corsi completati (area utente).
+      properties: {
+        user_username: {
+          bsonType: "string",
+          description: "Username of the user who received the reward",
+        },
+        course_id: { bsonType: "int", description: "Completed course ID" },
+        description: {
+          bsonType: "string",
+          description: "Reward description",
+        },
+        points: { bsonType: "int", description: "Points obtained" }, // The badge varies based on the points obtained
+        date: {
+          bsonType: "date",
+          description: "Reward date",
         },
       },
     },
-  });
-  // Insert real data into the 'rewards' collection
-  await db.collection("rewards").insertMany([
-    {
-      user_username: "andre89",
-      course_id: 1,
-      description: "Completato con successo",
-      points: 150,
-      date: new Date(),
-    },
-    {
-      user_username: "mariaB",
-      course_id: 2,
-      description: "Completato con successo",
-      points: 100,
-      date: new Date(),
-    },
-    {
-      user_username: "giulia123",
-      course_id: 3,
-      description: "Completato con successo",
-      points: 200,
-      date: new Date(),
-    },
-  ]);
+  },
+});
+
+// Insert real data into the 'rewards' collection
+await db.collection("rewards").insertMany([
+  {
+    user_username: "andre89",
+    course_id: 1,
+    description: "Completato con successo", // QUI DOVREBBE ESSERE IL PREMIO ASSEGNATO!
+    points: 150,
+    date: new Date(),
+  },
+  {
+    user_username: "mariaB",
+    course_id: 2,
+    description: "Completato con successo",
+    points: 100,
+    date: new Date(),
+  },
+  {
+    user_username: "giulia123",
+    course_id: 3,
+    description: "Completato con successo",
+    points: 200,
+    date: new Date(),
+  },
+]);
+
   // Collection: inventory
   await db.createCollection("inventory", {
     validator: {
