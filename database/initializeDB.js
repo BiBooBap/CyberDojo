@@ -10,8 +10,8 @@ async function clearDB() {
 async function initializeDB() {
   const db = await connect();
 
-  // Collection: User
-  await db.createCollection("user", {
+  // Collection: users
+  await db.createCollection("users", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
@@ -48,7 +48,7 @@ async function initializeDB() {
       },
     },
   });
-  // Insert real data into the 'Users' collection
+  // Insert real data into the 'users' collection
   const users = [
     {
       email: "giuliarossi@gmail.com",
@@ -134,7 +134,7 @@ async function initializeDB() {
     user.password = await bcrypt.hash(user.password, 10);
   }
 
-  await db.collection("user").insertMany(users);
+  await db.collection("users").insertMany(users);
 
   // Collection: courses
   await db.createCollection("courses", {
@@ -347,7 +347,7 @@ async function initializeDB() {
     },
   ]);
 
-  // Collection: Tickets(support)
+  // Collection: tickets (support)
   await db.createCollection("tickets", {
     validator: {
       $jsonSchema: {
@@ -424,7 +424,7 @@ async function initializeDB() {
             bsonType: "string",
             description: "Reward description",
           },
-          points: { bsonType: "int", description: "Points obtained" }, //La coccarda varia in base ai punti ottenuti
+          points: { bsonType: "int", description: "Points obtained" }, //The badge varies based on the points obtained
           date: {
             bsonType: "date",
             description: "Reward date",
