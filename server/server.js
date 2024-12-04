@@ -3,6 +3,7 @@ const authRoutes = require("./routes/auth");
 const registrationRoutes = require("./routes/registration");
 const userProgressRoutes = require("./routes/userProgressRoutes");
 const assistanceRoutes = require("./routes/assistanceRoutes");
+const courseRoutes = require("./routes/courseRoutes");
 
 const app = express();
 const port = 3000;
@@ -21,6 +22,9 @@ app.use("/progress", userProgressRoutes);
 
 // Rotte per l'assistenza
 app.use("/assistance", assistanceRoutes);
+
+// Rotte per i corsi
+app.use("/courses", courseRoutes);
 
 // Avvio del server
 app.listen(port, () => {
