@@ -4,6 +4,7 @@ const registrationRoutes = require("./routes/registration");
 const userProgressRoutes = require("./routes/userProgressRoutes");
 const assistanceRoutes = require("./routes/assistanceRoutes");
 const courseRoutes = require("./routes/courseRoutes");
+const testRoutes = require("./routes/testRoutes");
 
 const app = express();
 const port = 3000;
@@ -25,6 +26,9 @@ app.use("/assistance", assistanceRoutes);
 
 // Rotte per i corsi
 app.use("/courses", courseRoutes);
+
+// Rotte per i test
+app.use("/tests", testRoutes);
 
 // Avvio del server
 app.listen(port, () => {
