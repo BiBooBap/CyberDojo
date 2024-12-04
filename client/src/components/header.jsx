@@ -33,7 +33,7 @@ const Header = () => {
             <a href="/negoziopunti">Negozio punti</a>
           </button>
           <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
-            Supporto
+            <a href="/supportrequestpage">Supporto</a>
           </button>
           <div className="user-info md:hidden items-center space-x-2 mt-4">
             <img

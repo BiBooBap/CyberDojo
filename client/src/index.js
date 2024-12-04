@@ -9,6 +9,9 @@ import HomePage from "./homePage.jsx";
 import NegozioPunti from "./negozioPunti.jsx";
 import AreaUtente from "./areaUtente.jsx";
 import QuizApp from "./quiz.jsx";
+import SupportRequest from "./supportRequestPage.jsx";
+import AdminTicketDashboard from "./admin/adminTicketDashboard";
+import AdminTicketDetail from "./admin/adminTicketDetail.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -24,6 +27,9 @@ root.render(
             <Route path="/negoziopunti" element={<NegozioPunti />} />
             <Route path="/areaUtente" element={<AreaUtente />} />
             <Route path="/quiz" element={<QuizApp />} />
+            <Route path="/supportrequestpage" element={<SupportRequest />} />
+            <Route path="/admin/adminTicketDashboard" element={<AdminTicketDashboard />} />
+            <Route path="/admin/adminTicketDetail" element={<AdminTicketDetail />} />
           </Routes>
         </main>
         <Footer />
