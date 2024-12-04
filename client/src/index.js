@@ -8,6 +8,7 @@ import Login from "./login.jsx";
 import HomePage from "./homePage.jsx";
 import NegozioPunti from "./negozioPunti.jsx";
 import AreaUtente from "./areaUtente.jsx";
+import QuizApp from "./quiz.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,6 +23,7 @@ root.render(
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/negoziopunti" element={<NegozioPunti />} />
             <Route path="/areaUtente" element={<AreaUtente />} />
+            <Route path="/quiz" element={<QuizApp />} />
           </Routes>
         </main>
         <Footer />
