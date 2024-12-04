@@ -22,16 +22,18 @@ const Header = () => {
       </div>
       <div className="menu-container flex-1 flex justify-center md:justify-center">
         <nav
-          className={`nav flex-col md:flex-row md:flex  ${isMenuOpen ? "flex" : "hidden"} md:flex justify-center items-center`}
+          className={`nav flex-col md:flex-row md:flex  ${
+            isMenuOpen ? "flex" : "hidden"
+          } md:flex justify-center items-center`}
         >
-          <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
-            Corsi
+          <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
+            <a href="/homepage">Corsi</a>
           </button>
-          <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
-            Shop
+          <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
+            <a href="/negoziopunti">Negozio punti</a>
           </button>
-          <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
-            Supporto
+          <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
+            <a href="/supportrequestpage">Supporto</a>
           </button>
           <div className="user-info md:hidden items-center space-x-2 mt-4">
             <img
@@ -40,8 +42,8 @@ const Header = () => {
               className="coins-icon w-5 h-5 rounded-full"
             />
             <span>1</span>
-            <button className="nav-link hover:bg-[#4b2153] rounded text-center mx-6">
-              Area utente
+            <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
+            <a href="/areautente">Area utente</a>
             </button>
           </div>
         </nav>
@@ -56,11 +58,9 @@ const Header = () => {
             />
             <span>1</span>
           </div>
-          <img
-            src="/path-to-profile-icon.png"
-            alt="Profile Icon"
-            className="profile-icon w-8 h-8 rounded-full"
-          />
+          <a href="/areautente">
+            <img src="/path-to-profile-icon.png" alt="Profile Icon" className="profile-icon w-8 h-8 rounded-full" />
+          </a>
         </div>
         <button
           className="hamburger-menu text-white md:hidden"
