@@ -5,6 +5,7 @@ const userProgressRoutes = require("./routes/userProgressRoutes");
 const assistanceRoutes = require("./routes/assistanceRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const testRoutes = require("./routes/testRoutes");
+const delRoutes = require("./routes/delRoute");
 
 const app = express();
 const port = 3000;
@@ -29,6 +30,9 @@ app.use("/courses", courseRoutes);
 
 // Rotte per i test
 app.use("/tests", testRoutes);
+
+// Rotte per la cancellazione dell'utente
+app.use("/del", delRoutes);
 
 // Avvio del server
 app.listen(port, () => {
