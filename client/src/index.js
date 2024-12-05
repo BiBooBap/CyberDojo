@@ -21,6 +21,7 @@ root.render(
         <Header />
         <main className="flex-grow">
           <Routes>
+            <Route path="/" element={<HomePage />} />
             <Route path="/registrazione" element={<Registrazione />} />
             <Route path="/login" element={<Login />} />
             <Route path="/homepage" element={<HomePage />} />
