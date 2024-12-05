@@ -9,6 +9,16 @@ class CourseController {
       res.status(500).json({ message: "Errore interno del server", error });
     }
   }
+
+  static async getLessonsByCourseName(req, res) {
+    const { courseName } = req.params;
+    try {
+      const lessons = await CourseService.getLessonsByCourseName(courseName);
+      res.json(lessons);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = CourseController;
