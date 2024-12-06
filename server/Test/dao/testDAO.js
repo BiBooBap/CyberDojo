@@ -21,7 +21,7 @@ class TestDAO {
     return result.insertedId;
   }
 
-  // Andrebbe implementata una funzione che recupera anche tutti i corsi svolti da un utente in modo da poterla utilizzare nell'Area Personale (da modificare il db)
+  // Andrebbe implementata una funzione che recupera anche tutti i corsi svolti da un utente in modo da poterla utilizzare nell'Area Personale (da modificare il db) (forse già sta in userProgressDAO?)
 }
 
 module.exports = new TestDAO();

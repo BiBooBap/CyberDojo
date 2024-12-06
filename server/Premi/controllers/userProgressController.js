@@ -1,4 +1,4 @@
-const UserProgressFacade = require("../facades/userProgressFacade");
+const UserProgressFacade = require("../../facades/userProgressFacade");
 
 class UserProgressController {
   static async getProgress(req, res) {
@@ -60,4 +60,3 @@ class UserProgressController {
 }
 
 module.exports = UserProgressController;
-

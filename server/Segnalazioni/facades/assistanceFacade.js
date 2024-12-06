@@ -1,8 +1,11 @@
-const AssistanceRequestManager = require("../services/assistanceRequestManager");
+const AssistanceRequestManager = require("../assistanceRequestManager");
 
 class AssistanceFacade {
   async sendRequest(userUsername, description) {
-    return await AssistanceRequestManager.createTicket(userUsername, description);
+    return await AssistanceRequestManager.createTicket(
+      userUsername,
+      description
+    );
   }
 
   async getRequest(ticketId) {
