@@ -5,462 +5,463 @@ const { ObjectId } = require("mongodb");
 async function clearDB() {
   const db = await connect();
   await db.dropDatabase();
-  console.log("Database eliminato");
+  console.log("Database cleared");
 }
 async function initializeDB() {
   const db = await connect();
 
-  // Collezione: Utenti
-  await db.createCollection("utenti", {
+  // Collection: users
+  await db.createCollection("users", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["email", "username", "password", "ruolo"],
+        required: ["email", "username", "password", "role"],
         properties: {
-          email: { bsonType: "string", description: "Email dell'utente" },
-          username: { bsonType: "string", description: "Nome utente" },
-          password: { bsonType: "string", description: "Password cifrata" },
-          ruolo: {
-            enum: ["utente", "admin"],
-            description: "Ruolo dell'utente",
+          email: { bsonType: "string", description: "User's email" },
+          username: { bsonType: "string", description: "Username" },
+          password: { bsonType: "string", description: "Encrypted password" },
+          role: {
+            enum: ["user", "admin"],
+            description: "User's role",
           },
-          punti: {
+          points: {
             bsonType: "int",
             minimum: 0,
-            description: "Punti dell'utente",
+            description: "User's points",
           },
-          avatar: { bsonType: "string", description: "Immagine avatar" }, // URL dell'immagine avatar
-          titolo_utente: { bsonType: "string", description: "Immagine titolo" },
-          bordo: { bsonType: "string", description: "Immagine bordo" },
+          avatar: { bsonType: "string", description: "Avatar image" },
+          user_title: { bsonType: "string", description: "User title image" },
+          border: { bsonType: "string", description: "Border image" },
+          enrolled_courses: {
+            bsonType: "array",
+            items: {
+              bsonType: "object",
+              required: ["course_id", "lesson_reached"],
+              properties: {
+                course_id: { bsonType: "int", description: "Course ID" },
+                lesson_reached: { bsonType: "string", description: "Name of the lesson reached" },
+              },
+            },
+          description: "List of courses the user is enrolled in and the lesson reached",
+          },
         },
       },
     },
   });
-
+  // Insert real data into the 'users' collection
   const users = [
     {
       email: "giuliarossi@gmail.com",
       username: "giulia123",
       password: await bcrypt.hash('password3', 10),
-      ruolo: "utente",
-      punti: 100,
+      role: "user",
+      points: 100,
       avatar: "CyberDojo/database/img/base.png",
-      titolo_utente: "CyberDojo/database/img/base.png",
-      bordo: "CyberDojo/database/img/base.png",
+      user_title: "CyberDojo/database/img/base.png",
+      border: "CyberDojo/database/img/base.png",
+      enrolled_courses: [
+        { course_id: 1, lesson_reached: "Gestione degli errori e debugging" },
+        { course_id: 2, lesson_reached: "Creazione di API RESTful con Node.js" },
+      ],
     },
     {
       email: "paolomorandi@gmail.com",
       username: "paoloM",
       password: await bcrypt.hash('password8', 10),
-      ruolo: "admin",
-      punti: 1000,
+      role: "admin",
+      points: 1000,
       avatar: "CyberDojo/database/img/admin.png",
-      titolo_utente: "CyberDojo/database/img/base.png",
-      bordo: "CyberDojo/database/img/base.png",
+      user_title: "CyberDojo/database/img/base.png",
+      border: "CyberDojo/database/img/base.png",
+      enrolled_courses: [
+      ],
     },
     {
       email: "andrealandi@gmail.com",
       username: "andre89",
       password: await bcrypt.hash('password4', 10),
-      ruolo: "utente",
-      punti: 200,
+      role: "user",
+      points: 200,
       avatar: "CyberDojo/database/img/advanced.png",
-      titolo_utente: "CyberDojo/database/img/base.png",
-      bordo: "CyberDojo/database/img/base.png",
+      user_title: "CyberDojo/database/img/base.png",
+      border: "CyberDojo/database/img/base.png",
+      enrolled_courses: [
+        { course_id: 4, lesson_reached: "Selettori e proprietà CSS" },
+      ],
     },
     {
       email: "mariabianchi@gmail.com",
       username: "mariaB",
       password: await bcrypt.hash('password5', 10),
-      ruolo: "utente",
-      punti: 20,
+      role: "user",
+      points: 20,
       avatar: "CyberDojo/database/img/newbie.png",
-      titolo_utente: "CyberDojo/database/img/base.png",
-      bordo: "CyberDojo/database/img/base.png",
+      user_title: "CyberDojo/database/img/base.png",
+      border: "CyberDojo/database/img/base.png",
+      enrolled_courses: [
+        { course_id: 1, lesson_reached: "Programmazione asincrona in JavaScript" },
+      ],
     },
     {
       email: "luigiricci@gmail.com",
       username: "luigiR99",
       password: await bcrypt.hash('password6', 10),
-      ruolo: "utente",
-      punti: 350,
+      role: "user",
+      points: 350,
       avatar: "CyberDojo/database/img/pro.png",
-      titolo_utente: "CyberDojo/database/img/base.png",
-      bordo: "CyberDojo/database/img/base.png",
+      user_title: "CyberDojo/database/img/base.png",
+      border: "CyberDojo/database/img/base.png",
+      enrolled_courses: [
+        { course_id: 2, lesson_reached: "Utilizzo di Express.js per la gestione delle route" },
+      ],
     },
     {
       email: "elisaferrari@gmail.com",
       username: "elisaf90",
       password: await bcrypt.hash('password7', 10),
-      ruolo: "utente",
-      punti: 500,
+      role: "user",
+      points: 500,
       avatar: "CyberDojo/database/img/expert.png",
-      titolo_utente: "CyberDojo/database/img/base.png",
-      bordo: "CyberDojo/database/img/base.png",
+      user_title: "CyberDojo/database/img/base.png",
+      border: "CyberDojo/database/img/base.png",
+      enrolled_courses: [
+        { course_id: 3, lesson_reached: "Struttura di una pagina HTML" },
+      ],
     },
   ];
-
+  // Hash passwords before inserting them into the database
   for (let user of users) {
     user.password = await bcrypt.hash(user.password, 10);
   }
 
-  await db.collection("utenti").insertMany(users);
+  await db.collection("users").insertMany(users);
 
-  // Collezione: Corsi
-  await db.createCollection("corsi", {
+  // Collection: courses
+  await db.createCollection("courses", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["_id", "nome", "descrizione", "difficoltà", "lezioni"],
+        required: ["_id", "name", "description", "difficulty", "lessons"],
         properties: {
-          _id: { bsonType: "int", description: "ID del corso" },
-          nome: { bsonType: "string", description: "Nome del corso" },
-          descrizione: {
+          _id: { bsonType: "int", description: "Course ID" },
+          name: { bsonType: "string", description: "Course name" },
+          description: {
             bsonType: "string",
-            description: "Descrizione del corso",
+            description: "Course description",
           },
-          difficoltà: {
+          difficulty: {
             bsonType: "string",
-            description: "Difficoltà del corso (Facile, Medio, Difficile)",
+            description: "Course difficulty (Facile, Medio, Difficile)",
           },
-          lezioni: {
+          lessons: {
             bsonType: "array",
             items: {
               bsonType: "object",
-              required: ["contenuto"],
+              required: ["name", "content"],
               properties: {
-                contenuto: {
-                  bsonType: "string",
-                  description: "Contenuto della lezione",
-                },
+                name: { bsonType: "string", description: "Lesson name"},
+                content: { bsonType: "string", description: "Lesson content" },
               },
             },
-          },immaginecorso: { bsonType: "string", description: "Immagine corso" },
+            description: "List of course lessons",
+          },
+          course_image: { bsonType: "string", description: "Course image" },
         },
       },
     },
   });
-  // Inserisci dati reali nella collezione 'corsi'
-  await db.collection("corsi").insertMany([
+  //Insert real data into the 'courses' collection
+  await db.collection("courses").insertMany([
     {
       _id: 1,
-      nome: "Corso Avanzato di JavaScript",
-      descrizione: "Approfondisci le tue conoscenze di JavaScript",
-      difficoltà: "Difficile",
-      lezioni: [
-        { contenuto: "Programmazione asincrona in JavaScript" },
-        { contenuto: "Gestione degli errori e debugging" },
+      name: "Corso Avanzato di JavaScript",
+      description: "Approfondisci le tue conoscenze di JavaScript",
+      difficulty: "Difficile",
+      lessons: [
+        { name: "Programmazione asincrona in JavaScript", content: "In questa lezione imparerai a gestire le operazioni asincrone in JavaScript utilizzando callback, promise e async/await." },
+        { name: "Gestione degli errori e debugging", content: "Questa lezione copre le tecniche di gestione degli errori e il debugging in JavaScript." },
       ],
-      immaginecorso: "CyberDojo/database/img/pro.png",
+      course_image: "CyberDojo/database/img/pro.png",
     },
     {
       _id: 2,
-      nome: "Corso Completo di Node.js",
-      descrizione: "Diventa un esperto di Node.js",
-      difficoltà: "Medio",
-      lezioni: [
-        { contenuto: "Creazione di API RESTful con Node.js" },
-        { contenuto: "Utilizzo di Express.js per la gestione delle route" },
+      name: "Corso Completo di Node.js",
+      description: "Diventa un esperto di Node.js",
+      difficulty: "Medio",
+      lessons: [
+        { name: "Creazione di API RESTful con Node.js", content: "In questa lezione imparerai a creare API RESTful utilizzando Node.js e Express." },
+        { name: "Utilizzo di Express.js per la gestione delle route", content: "Questa lezione copre l'utilizzo di Express.js per la gestione delle route nelle applicazioni Node.js." },
       ],
-      immaginecorso: "CyberDojo/database/img/pro.png",
+      course_image: "CyberDojo/database/img/pro.png",
     },
     {
       _id: 3,
-      nome: "Corso Base di HTML",
-      descrizione: "Impara le basi di HTML",
-      difficoltà: "Facile",
-      lezioni: [
-        { contenuto: "Introduzione a HTML" },
-        { contenuto: "Struttura di una pagina HTML" },
+      name: "Corso Base di HTML",
+      description: "Impara le basi di HTML",
+      difficulty: "Facile",
+      lessons: [
+        { name: "Introduzione a HTML", content: "Questa lezione introduce i concetti fondamentali di HTML e la struttura di base di una pagina web." },
+        { name: "Struttura di una pagina HTML", content: "In questa lezione imparerai a creare la struttura di una pagina HTML utilizzando tag e attributi." },
       ],
-      immaginecorso: "CyberDojo/database/img/pro.png",
+      course_image: "CyberDojo/database/img/pro.png",
     },
     {
       _id: 4,
-      nome: "Corso Intermedio di CSS",
-      descrizione: "Approfondisci le tue conoscenze di CSS",
-      difficoltà: "Medio",
-      lezioni: [
-        { contenuto: "Selettori e proprietà CSS" },
-        { contenuto: "Layout e design responsivo" },
+      name: "Corso Intermedio di CSS",
+      description: "Approfondisci le tue conoscenze di CSS",
+      difficulty: "Medio",
+      lessons: [
+        { name: "Selettori e proprietà CSS", content: "Questa lezione copre i selettori CSS e le proprietà per lo styling degli elementi HTML." },
+        { name: "Layout e design responsivo", content: "In questa lezione imparerai a creare layout responsivi utilizzando CSS." },
       ],
-      immaginecorso: "CyberDojo/database/img/pro.png",
+      course_image: "CyberDojo/database/img/pro.png",
     },
   ]);
-  // Collezione: Test
-  await db.createCollection("test", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["corso_id", "utente_username", "voto", "domande"],
-        properties: {
-          corso_id: { bsonType: "int", description: "ID del corso associato" },
-          utente_username: {
-            bsonType: "string",
-            description: "Username dell'utente che ha fatto il test",
-          },
-          voto: { bsonType: "int", description: "Punteggio ottenuto" },
-          domande: {
-            bsonType: "array",
-            items: {
-              bsonType: "object",
-              required: ["domanda", "risposte", "corretta"],
-              properties: {
-                domanda: {
-                  bsonType: "string",
-                  description: "Testo della domanda",
-                },
-                risposte: {
-                  bsonType: "array",
-                  items: { bsonType: "string" },
-                  description: "Lista delle possibili risposte",
-                },
-                corretta: {
-                  bsonType: "int",
-                  description:
-                    "Indice della risposta corretta nella lista delle risposte",
-                },
+// Collection: tests
+await db.createCollection("tests", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["course_id", "questions", "correct"],
+      properties: {
+        course_id: { bsonType: "int", description: "Associated course ID" },
+        questions: {
+          bsonType: "array",
+          items: {
+            bsonType: "object",
+            required: ["question", "answers", "correct"],
+            properties: {
+              question: {
+                bsonType: "string",
+                description: "Question text",
+              },
+              answers: {
+                bsonType: "array",
+                items: { bsonType: "string" },
+                description: "List of possible answers",
+              },
+              correct: {
+                bsonType: "int",
+                description: "Index of the correct answer in the list of answers",
               },
             },
-            description: "Lista di domande con risposte multiple",
           },
+          description: "List of multiple-choice questions",
         },
       },
     },
-  });
-  // Inserisci dati reali nella collezione 'test'
-  await db.collection("test").insertMany([
-    {
-      corso_id: 1,
-      utente_username: "andre89",
-      voto: 90,
-      domande: [
-        {
-          domanda: "Qual è la differenza tra let e var in JavaScript?",
-          risposte: [
-            "let è block-scoped, var è function-scoped",
-            "Non c'è differenza",
-            "let è più lento di var",
-          ],
-          corretta: 0,
-        },
-      ],
-    },
-    {
-      corso_id: 2,
-      utente_username: "mariaB",
-      voto: 85,
-      domande: [
-        {
-          domanda: "Qual è la differenza tra == e === in JavaScript?",
-          risposte: [
-            "== confronta solo il valore, === confronta valore e tipo",
-            "Non c'è differenza",
-            "=== è più lento di ==",
-          ],
-          corretta: 0,
-        },
-      ],
-    },
-    {
-      corso_id: 3,
-      utente_username: "giulia123",
-      voto: 75,
-      domande: [
-        {
-          domanda: "Qual è lo scopo di una promise in JavaScript?",
-          risposte: [
-            "Gestire operazioni asincrone",
-            "Gestire variabili globali",
-            "Gestire eventi DOM",
-          ],
-          corretta: 0,
-        },
-      ],
-    },
-  ]);
-  // Collezione: Shop
-  await db.createCollection("shop", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["nome", "prezzo"],
-        properties: {
-          nome: { bsonType: "string", description: "Nome dell'oggetto" },
-          prezzo: {
-            bsonType: "int",
-            description: "Prezzo dell'oggetto in punti",
-          }, // Se il prezzo è 0, l'oggetto è un premio/reward
-          path_immagine: {
-            bsonType: "string",
-            description: "Percorso dell'immagine dell'oggetto (opzionale)",
-          }, //In questo path si possono mettere anche i bordi
-        },
+  },
+});
+// Insert real data into the 'tests' collection
+await db.collection("tests").insertMany([
+  {
+    course_id: 1,
+    questions: [
+      {
+        question: "Qual è la differenza tra let e var in JavaScript?",
+        answers: [
+          "let è block-scoped, var è function-scoped",
+          "Non c'è differenza",
+          "let è più lento di var",
+        ],
+        correct: 0,
       },
-    },
-  });
-  // Inserisci dati reali nella collezione 'shop'
-  await db.collection("shop").insertMany([
-    {
-      nome: "Bordo Premium",
-      prezzo: 500,
-      path_immagine: "CyberDojo/database/img/base.png",
-    },
-    {
-      nome: "Avatar Standard",
-      prezzo: 200,
-      path_immagine: "CyberDojo/database/img/standardimage.png",
-    },
-    {
-      nome: "Titolo Standard",
-      prezzo: 450,
-      path_immagine: "CyberDojo/database/img/standardimage.png",
-    },
-  ]);
+      {
+        question: "Cos'è una closure in JavaScript?",
+        answers: [
+          "Una funzione con scope locale",
+          "Una funzione che ricorda lo scope in cui è stata definita",
+          "Un metodo statico",
+        ],
+        correct: 1,
+      },
+    ],
+  },
+  {
+    course_id: 2,
+    questions: [
+      {
+        question: "Qual è la differenza tra == e === in JavaScript?",
+        answers: [
+          "== confronta solo il valore, === confronta valore e tipo",
+          "Non c'è differenza",
+          "=== è più lento di ==",
+        ],
+        correct: 0,
+      },
+      {
+        question: "Come si avvia un server Express?",
+        answers: [
+          "Con il comando `npm start`",
+          "Chiamando `app.listen()`",
+          "Con `require('express')`",
+        ],
+        correct: 1,
+      },
+    ],
+  },
+  {
+    course_id: 3,
+    questions: [
+      {
+        question: "Qual è lo scopo di una promise in JavaScript?",
+        answers: [
+          "Gestire operazioni asincrone",
+          "Gestire variabili globali",
+          "Gestire eventi DOM",
+        ],
+        correct: 0,
+      },
+      {
+        question: "Cosa rappresenta l'attributo `alt` in un tag `<img>`?",
+        answers: [
+          "Il percorso dell'immagine",
+          "Testo alternativo per descrivere l'immagine",
+          "Il tipo MIME dell'immagine",
+        ],
+        correct: 1,
+      },
+    ],
+  },
+]);
 
-  // Collezione: Ticket (Richieste di assistenza)
-  await db.createCollection("ticket", {
+
+  // Collection: Tickets(support)
+  await db.createCollection("tickets", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["utente_username", "descrizione", "data_creazione"],
+        required: ["user_username", "description", "creation_date"],
         properties: {
-          utente_username: {
+          user_username: {
             bsonType: "string",
-            description: "Username dell'utente che ha aperto il ticket",
+            description: "Username of the user who opened the ticket",
           },
-          descrizione: {
+          description: {
             bsonType: "string",
-            description: "Descrizione del problema",
+            description: "Problem description",
           },
           admin_username: {
             bsonType: "string",
-            description: "ID dell'admin che ha gestito il ticket (opzionale)",
+            description: "ID of the admin who handled the ticket (optional)",
           },
-          data_creazione: {
+          creation_date: {
             bsonType: "date",
-            description: "Data di creazione del ticket",
+            description: "Ticket creation date",
           },
         },
       },
     },
   });
-  // Inserisci dati reali nella collezione 'ticket'
-  await db.collection("ticket").insertMany([
+  // Insert real data into the 'tickets' collection
+  await db.collection("tickets").insertMany([
     {
-      utente_username: "andre89",
-      descrizione: "Problema con l'accesso al corso avanzato",
-      data_creazione: new Date(),
+      user_username: "andre89",
+      description: "Problema con l'accesso al corso avanzato",
+      creation_date: new Date(),
     },
     {
-      utente_username: "mariaB",
-      descrizione: "Impossibile caricare l'avatar personalizzato",
-      data_creazione: new Date(),
+      user_username: "mariaB",
+      description: "Impossibile caricare l'avatar personalizzato",
+      creation_date: new Date(),
     },
     {
-      utente_username: "luigiR99",
-      descrizione:
-        "Errore durante il pagamento per l'iscrizione al corso premium",
-      data_creazione: new Date(),
+      user_username: "luigiR99",
+      description: "Errore durante il pagamento per l'iscrizione al corso premium",
+      creation_date: new Date(),
     },
     {
-      utente_username: "elisaf90",
-      descrizione: "Problema con il salvataggio dei progressi nel corso base",
-      data_creazione: new Date(),
+      user_username: "elisaf90",
+      description: "Problema con il salvataggio dei progressi nel corso base",
+      creation_date: new Date(),
     },
     {
-      utente_username: "paoloM",
-      descrizione: "Richiesta di supporto per configurazione delle notifiche",
-      data_creazione: new Date(),
+      user_username: "paoloM",
+      description: "Richiesta di supporto per configurazione delle notifiche",
+      creation_date: new Date(),
     },
     {
-      utente_username: "giulia123",
-      descrizione: "Il sistema segnala punteggi errati nella classifica",
-      data_creazione: new Date(),
+      user_username: "giulia123",
+      description: "Il sistema segnala punteggi errati nella classifica",
+      creation_date: new Date(),
     },
   ]);
+// Collection: rewards
+await db.createCollection("rewards", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["user_username", "course_id", "description", "points", "date"], // QUI DESCRIPTION DOVREBBE ESSERE IL PREMIO ASSEGNATO! - Inoltre senso memorizzare anche "course_name" oltre "course_id" (che serve per corrispondenza Corso - Test) in modo da poter effettuare una cronologia testuale dei corsi completati (area utente).
+      properties: {
+        user_username: {
+          bsonType: "string",
+          description: "Username of the user who received the reward",
+        },
+        course_id: { bsonType: "int", description: "Completed course ID" },
+        description: {
+          bsonType: "string",
+          description: "Reward description",
+        },
+        points: { bsonType: "int", description: "Points obtained" }, // The badge varies based on the points obtained
+        date: {
+          bsonType: "date",
+          description: "Reward date",
+        },
+      },
+    },
+  },
+});
 
-  // Collezione: Gestione Premi
-  await db.createCollection("premi", {
+// Insert real data into the 'rewards' collection
+await db.collection("rewards").insertMany([
+  {
+    user_username: "andre89",
+    course_id: 1,
+    description: "Completato con successo", // QUI DOVREBBE ESSERE IL PREMIO ASSEGNATO!
+    points: 150,
+    date: new Date(),
+  },
+  {
+    user_username: "mariaB",
+    course_id: 2,
+    description: "Completato con successo",
+    points: 100,
+    date: new Date(),
+  },
+  {
+    user_username: "giulia123",
+    course_id: 3,
+    description: "Completato con successo",
+    points: 200,
+    date: new Date(),
+  },
+]);
+
+  // Collection: inventory
+  await db.createCollection("inventory", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: [
-          "utente_username",
-          "corso_id",
-          "descrizione",
-          "punti",
-          "data",
-        ],
+        required: ["user_username", "items"],
         properties: {
-          utente_username: {
+          user_username: {
             bsonType: "string",
-            description: "Username dell'utente che ha ricevuto il premio",
+            description: "Username of the inventory owner",
           },
-          corso_id: { bsonType: "int", description: "ID del corso completato" },
-          descrizione: {
-            bsonType: "string",
-            description: "Descrizione del premio",
-          },
-          punti: { bsonType: "int", description: "Punti ottenuti" }, //La coccarda varia in base ai punti ottenuti
-          data: {
-            bsonType: "date",
-            description: "Data del conseguimento del premio",
-          },
-        },
-      },
-    },
-  });
-  // Inserisci dati reali nella collezione 'premi'
-  await db.collection("premi").insertMany([
-    {
-      utente_username: "andre89",
-      corso_id: 1,
-      descrizione: "Completato con successo",
-      punti: 150,
-      data: new Date(),
-    },
-    {
-      utente_username: "mariaB",
-      corso_id: 2,
-      descrizione: "Completato con successo",
-      punti: 100,
-      data: new Date(),
-    },
-    {
-      utente_username: "giulia123",
-      corso_id: 3,
-      descrizione: "Completato con successo",
-      punti: 200,
-      data: new Date(),
-    },
-  ]);
-  // Collezione: Inventario Utente
-  await db.createCollection("inventario", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["utente_username", "oggetti"],
-        properties: {
-          utente_username: {
-            bsonType: "string",
-            description: "Username dell'utente proprietario dell'inventario",
-          },
-          oggetti: {
+          items: {
             bsonType: "array",
             items: {
               bsonType: "object",
-              required: ["nome", "descrizione"],
+              required: ["name", "description"],
               properties: {
-                nome: { bsonType: "string", description: "Nome dell'oggetto" },
-                descrizione: {
+                name: { bsonType: "string", description: "Item name" },
+                description: {
                   bsonType: "string",
-                  description: "Descrizione dell'oggetto",
+                  description: "Item description",
                 },
-                path_immagine: {
+                image_path: {
                   bsonType: "string",
-                  description:
-                    "Percorso dell'immagine dell'oggetto (opzionale)",
+                  description: "Path to the item's image",
                 },
               },
             },
@@ -469,30 +470,30 @@ async function initializeDB() {
       },
     },
   });
-  // Inserisci dati reali nella collezione 'inventario'
-  await db.collection("inventario").insertMany([
+  // Insert real data into the 'inventory' collection
+  await db.collection("inventory").insertMany([
     {
-      utente_username: "andre89",
-      oggetti: [
+      user_username: "andre89",
+      items: [
         {
-          nome: "Oggetto Speciale",
-          descrizione: "Descrizione dell'oggetto speciale",
-          path_immagine: "CyberDojo/database/img/standardimage.png",
+          name: "Oggetto Speciale",
+          description: "Descrizione dell'oggetto speciale",
+          image_path: "CyberDojo/database/img/standardimage.png",
         },
       ],
     },
     {
-      utente_username: "mariaB",
-      oggetti: [
+      user_username: "mariaB",
+      items: [
         {
-          nome: "Oggetto Speciale",
-          descrizione: "Descrizione dell'oggetto speciale",
-          path_immagine: "CyberDojo/database/img/standardimage.png",
+          name: "Oggetto Speciale",
+          description: "Descrizione dell'oggetto speciale",
+          image_path: "CyberDojo/database/img/standardimage.png",
         },
       ],
     },
   ]);
-  console.log("Database initializzato");
+  console.log("Database initialized");
   process.exit();
 }
 async function main() {
