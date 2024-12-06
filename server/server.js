@@ -5,11 +5,13 @@ const userProgressRoutes = require("./routes/userProgressRoutes");
 const assistanceRoutes = require("./routes/assistanceRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const testRoutes = require("./routes/testRoutes");
+const delRoutes = require("./routes/delRoute");
+const streakRoutes = require("./routes/streakRoutes");
 
 const app = express();
 const port = 3000;
 
-// Middleware per il parsing delle richieste in JSON
+// Middleware for parsing JSON requests
 app.use(express.json());
 
 // Route for the "Autenticazione" subsystem
@@ -18,19 +20,25 @@ app.use("/auth", authRoutes);
 // Route for the "Registrazione" subsystem
 app.use("/registration", registrationRoutes);
 
-// Rotte per i progressi degli utenti
+// Routes for user progress
 app.use("/progress", userProgressRoutes);
 
-// Rotte per l'assistenza
+// Routes for assistance
 app.use("/assistance", assistanceRoutes);
 
-// Rotte per i corsi
+// Routes for courses
 app.use("/courses", courseRoutes);
 
-// Rotte per i test
+// Routes for tests
 app.use("/tests", testRoutes);
 
-// Avvio del server
+// Routes for user deletion
+app.use("/del", delRoutes);
+
+// Routes for user login streaks
+app.use("/streaks", streakRoutes);
+
+// Server startup
 app.listen(port, () => {
   console.log(`Server in ascolto su http://localhost:${port}`);
 });

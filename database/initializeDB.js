@@ -566,24 +566,29 @@ async function initializeDB() {
     },
   });
 
-  // Insert real data into the 'streaks' collection
-  await db.collection("streaks").insertMany([
-    {
-      user_username: "andre89",
-      streak: 5,
-      lastLoginDate: new Date().toISOString().split("T")[0],
-    },
-    {
-      user_username: "mariaB",
-      streak: 10,
-      lastLoginDate: new Date().toISOString().split("T")[0],
-    },
-    {
-      user_username: "luigiR99",
-      streak: 3,
-      lastLoginDate: new Date().toISOString().split("T")[0],
-    },
-  ]);
+  try {
+    // Insert real data into the 'streaks' collection
+    await db.collection("streaks").insertMany([
+      {
+        user_username: "andre89",
+        streak: 5,
+        lastLoginDate: new Date().toISOString().split("T")[0],
+      },
+      {
+        user_username: "mariaB",
+        streak: 10,
+        lastLoginDate: new Date().toISOString().split("T")[0],
+      },
+      {
+        user_username: "luigiR99",
+        streak: 3,
+        lastLoginDate: new Date().toISOString().split("T")[0],
+      },
+    ]);
+    console.log("Streaks inserted successfully");
+  } catch (error) {
+    console.error("Error inserting streaks:", error);
+  }
 
   console.log("Database initialized");
   process.exit();
