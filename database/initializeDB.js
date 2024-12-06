@@ -528,29 +528,34 @@ async function initializeDB() {
       },
     },
   });
-  // Insert real data into the 'inventory' collection
-  await db.collection("inventory").insertMany([
-    {
-      user_username: "andre89",
-      items: [
-        {
-          name: "Oggetto Speciale",
-          description: "Descrizione dell'oggetto speciale",
-          image_path: "CyberDojo/database/img/standardimage.png",
-        },
-      ],
-    },
-    {
-      user_username: "mariaB",
-      items: [
-        {
-          name: "Oggetto Speciale",
-          description: "Descrizione dell'oggetto speciale",
-          image_path: "CyberDojo/database/img/standardimage.png",
-        },
-      ],
-    },
-  ]);
+  try {
+    // Insert real data into the 'inventory' collection
+    await db.collection("inventory").insertMany([
+      {
+        user_username: "andre89",
+        items: [
+          {
+            name: "Oggetto Speciale",
+            description: "Descrizione dell'oggetto speciale",
+            image_path: "CyberDojo/database/img/standardimage.png",
+          },
+        ],
+      },
+      {
+        user_username: "mariaB",
+        items: [
+          {
+            name: "Oggetto Speciale",
+            description: "Descrizione dell'oggetto speciale",
+            image_path: "CyberDojo/database/img/standardimage.png",
+          },
+        ],
+      },
+    ]);
+    console.log("Inventory inserted successfully");
+  } catch (error) {
+    console.error("Error inserting inventory:", error);
+  }
   // Collection: streaks
   await db.createCollection("streaks", {
     validator: {
