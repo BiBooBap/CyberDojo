@@ -1,11 +1,13 @@
 const bcrypt = require("bcrypt");
 const RegistrationDao = require("../dao/registrationDao");
-const ExternalAuthService = require("../../Autenticazione/services/externalAuthService");
+const ExternalAuthService = require("../../Autenticazione/externalAuthService");
 
 class RegistrationService {
   static async registerUser(email, username, password) {
     const emailExists = await ExternalAuthService.checkEmailExists(email);
-    const usernameExists = await ExternalAuthService.checkUsernameExists(username);
+    const usernameExists = await ExternalAuthService.checkUsernameExists(
+      username
+    );
 
     if (usernameExists) {
       throw new Error("Nome utente non disponibile");

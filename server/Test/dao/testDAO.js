@@ -1,4 +1,4 @@
-const { connect } = require("./db");
+const { connect } = require("../../../database/db");
 
 class TestDAO {
   // Crea un nuovo test statico per un corso
@@ -21,7 +21,22 @@ class TestDAO {
     return result.insertedId;
   }
 
-  // Andrebbe implementata una funzione che recupera anche tutti i corsi svolti da un utente in modo da poterla utilizzare nell'Area Personale (da modificare il db)
+  // Recupera il premio esistente per un utente e un corso specifico
+  async getRewardByUserAndCourse(username, courseId) {
+    const db = await connect();
+    return await db.collection("rewards").findOne({
+      user_username: username,
+      course_id: courseId,
+    });
+  }
+
+  // Aggiorna il premio esistente
+  async updateReward(rewardId, updateFields) {
+    const db = await connect();
+    return await db
+      .collection("rewards")
+      .updateOne({ _id: rewardId }, { $set: updateFields });
+  }
 }
 
 module.exports = new TestDAO();

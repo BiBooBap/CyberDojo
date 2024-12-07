@@ -60,4 +60,3 @@ class UserProgressController {
 }
 
 module.exports = UserProgressController;
-

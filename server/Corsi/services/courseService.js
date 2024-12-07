@@ -1,8 +1,10 @@
 const CourseDAO = require("../dao/courseDAO");
+const CoursesFacade = require("../coursesFacade");
 
 class CourseService {
-  static async getAllCourses() {
-    return await CourseDAO.getAllCourses();
+  // Get courses
+  static async getAllCourses(username) {
+    return await CoursesFacade.getAllCourses(username);
   }
 
   static async getLessonsByCourseName(courseName) {

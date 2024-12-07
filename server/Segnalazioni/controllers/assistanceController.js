@@ -4,8 +4,13 @@ class AssistanceController {
   static async createRequest(req, res) {
     try {
       const { userUsername, description } = req.body;
-      const ticketId = await AssistanceFacade.sendRequest(userUsername, description);
-      res.status(201).json({ message: "Richiesta inviata con successo", ticketId });
+      const ticketId = await AssistanceFacade.sendRequest(
+        userUsername,
+        description
+      );
+      res
+        .status(201)
+        .json({ message: "Richiesta inviata con successo", ticketId });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

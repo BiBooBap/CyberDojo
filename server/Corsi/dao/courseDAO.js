@@ -1,4 +1,4 @@
-const { connect } = require("../db");
+const { connect } = require("../../../database/db");
 
 class CourseDAO {
   static async getAllCourses() {
@@ -13,6 +13,12 @@ class CourseDAO {
       throw new Error("Corso non trovato");
     }
     return course.lessons;
+  }
+
+  // Retrieves information about a specific course
+  static async getCourseInfo(courseId) {
+    const db = await connect();
+    return db.collection("courses").findOne({ _id: parseInt(courseId, 10) });
   }
 }
 

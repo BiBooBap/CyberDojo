@@ -1,5 +1,5 @@
 const express = require("express");
-const AssistanceController = require("../controllers/assistanceController");
+const AssistanceController = require("../Segnalazioni/controllers/assistanceController");
 
 const router = express.Router();
 

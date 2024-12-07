@@ -9,6 +9,16 @@ const AreaUtente = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const navigate = useNavigate();
+
+  // Redirect to login page if user is not logged in
+  // Remove this block if you want to allow unauthenticated users to access this page
+  useEffect(() => {
+    if (!isUserLoggedIn()) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   const renderForm = () => {
     if (selectedSection === "Gestione Account") {
       return (
@@ -24,7 +34,10 @@ const AreaUtente = () => {
           </button>
         </div>
       );
-    } else if (selectedSection.includes("Gestione") || selectedSection.includes("Modifica")) {
+    } else if (
+      selectedSection.includes("Gestione") ||
+      selectedSection.includes("Modifica")
+    ) {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
@@ -71,7 +84,10 @@ const AreaUtente = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      <div className="bg-[#54295c] text-white w-full md:w-1/4  md:relative md:mb-0" style={{ marginBottom: '-2.5rem' }}>
+      <div
+        className="bg-[#54295c] text-white w-full md:w-1/4  md:relative md:mb-0"
+        style={{ marginBottom: "-2.5rem" }}
+      >
         <h2 className="font-bold text-xl p-4 hidden md:block">Area Utente</h2>
         <ul className="space-y-2 md:block hidden">
           {[
@@ -86,7 +102,9 @@ const AreaUtente = () => {
             <li key={section}>
               <button
                 className={`w-full text-left px-4 py-2 rounded ${
-                  selectedSection === section ? "bg-[#4b2153] text-[#e0a11b]" : ""
+                  selectedSection === section
+                    ? "bg-[#4b2153] text-[#e0a11b]"
+                    : ""
                 }`}
                 onClick={() => setSelectedSection(section)}
               >
@@ -97,10 +115,7 @@ const AreaUtente = () => {
         </ul>
         {/* Burger menu for mobile */}
         <div className="md:hidden">
-          <button
-            className="hamburger-menu text-white"
-            onClick={toggleMenu}
-          >
+          <button className="hamburger-menu text-white" onClick={toggleMenu}>
             {/* Icona Hamburger */}
             <svg
               className="w-8 h-8"
@@ -120,13 +135,28 @@ const AreaUtente = () => {
           {isMenuOpen && (
             <ul className="space-y-2 mt-4">
               <li>
-                <a href="/homepage" className="w-full text-left px-4 py-2 rounded block hover:bg-[#4b2153]">Corsi</a>
+                <a
+                  href="/homepage"
+                  className="w-full text-left px-4 py-2 rounded block hover:bg-[#4b2153]"
+                >
+                  Corsi
+                </a>
               </li>
               <li>
-                <a href="/negoziopunti" className="w-full text-left px-4 py-2 rounded block hover:bg-[#4b2153]">Negozio punti</a>
+                <a
+                  href="/negoziopunti"
+                  className="w-full text-left px-4 py-2 rounded block hover:bg-[#4b2153]"
+                >
+                  Negozio punti
+                </a>
               </li>
               <li>
-                <a href="/supporto" className="w-full text-left px-4 py-2 rounded block hover:bg-[#4b2153]">Supporto</a>
+                <a
+                  href="/supporto"
+                  className="w-full text-left px-4 py-2 rounded block hover:bg-[#4b2153]"
+                >
+                  Supporto
+                </a>
               </li>
               {[
                 "Gestione Account",
@@ -140,7 +170,9 @@ const AreaUtente = () => {
                 <li key={section}>
                   <button
                     className={`w-full text-left px-4 py-2 rounded ${
-                      selectedSection === section ? "bg-[#4b2153] text-[#e0a11b]" : ""
+                      selectedSection === section
+                        ? "bg-[#4b2153] text-[#e0a11b]"
+                        : ""
                     }`}
                     onClick={() => setSelectedSection(section)}
                   >
