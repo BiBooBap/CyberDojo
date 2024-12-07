@@ -441,7 +441,7 @@ async function initializeDB() {
       creation_date: new Date(),
     },
   ]);
-  // Collection: rewards - Quando completo un corso
+  // Creazione della collezione 'rewards' con validatore
   await db.createCollection("rewards", {
     validator: {
       $jsonSchema: {
@@ -455,35 +455,36 @@ async function initializeDB() {
           course_id: { bsonType: "int", description: "Completed course ID" },
           medal: {
             bsonType: "string",
+            enum: ["Bronze", "Silver", "Gold"],
             description: "Type of medal obtained (Bronze, Silver, Gold)",
           },
-          points: { bsonType: "int", description: "Points obtained" }, // The badge varies based on the points obtained
+          points: { bsonType: "int", description: "Points obtained" },
           date: { bsonType: "date", description: "Reward date" },
         },
       },
     },
   });
 
-  // Insert real data into the 'rewards' collection
+  // Inserimento dati reali nella collezione 'rewards'
   await db.collection("rewards").insertMany([
     {
       user_username: "andre89",
       course_id: 1,
-      description: "Completato con successo", // QUI DOVREBBE ESSERE IL PREMIO ASSEGNATO!
+      medal: "Gold", // Assegna il medaglia in base ai punti
       points: 150,
       date: new Date(),
     },
     {
       user_username: "mariaB",
       course_id: 2,
-      description: "Completato con successo",
+      medal: "Silver",
       points: 100,
       date: new Date(),
     },
     {
       user_username: "giulia123",
       course_id: 3,
-      description: "Completato con successo",
+      medal: "Gold",
       points: 200,
       date: new Date(),
     },

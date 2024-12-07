@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import apiService from "./services/apiServices";
+import apiService from "../services/apiServices";
 
 function SupportRequest() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -39,13 +39,13 @@ function SupportRequest() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center">
       <main className="flex-grow flex flex-col items-center justify-center">
-        <div className="bg-yellow-500 rounded-lg p-8 shadow-lg w-80">
+        <div className="bg-[#e0a11b] rounded-lg p-8 shadow-lg w-80">
           <h2 className="text-white text-2xl font-bold mb-6 text-center">Richiedi supporto</h2>
           <div className="mb-4">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full p-2 rounded text-gray-700"
+              className="w-full p-2 rounded-2xl text-gray-700"
             >
               <option value="">Seleziona un categoria</option>
               <option value="Problema tecnico">Problema tecnico</option>
@@ -56,14 +56,14 @@ function SupportRequest() {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 rounded text-gray-700"
+              className="w-full p-2 rounded-2xl text-gray-700"
               placeholder="Descrivi il tuo problema"
               rows="4"
             />
           </div>
           <button
             onClick={handleSubmit}
-            className="w-full bg-[#54295c] text-white py-2 rounded"
+            className="w-full bg-[#54295c] text-white py-2 rounded-2xl"
           >
             Invia richiesta
           </button>

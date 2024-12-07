@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./index.css";
-import { isUserLoggedIn } from "./utils/auth";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import "../index.css";
 
 const AreaUtente = () => {
   const [selectedSection, setSelectedSection] = useState("Gestione Account");
