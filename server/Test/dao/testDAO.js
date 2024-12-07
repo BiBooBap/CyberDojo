@@ -1,4 +1,4 @@
-const { connect } = require("./db");
+const { connect } = require("../../database/db");
 
 class TestDAO {
   // Crea un nuovo test statico per un corso
@@ -21,7 +21,14 @@ class TestDAO {
     return result.insertedId;
   }
 
-  // Andrebbe implementata una funzione che recupera anche tutti i corsi svolti da un utente in modo da poterla utilizzare nell'Area Personale (da modificare il db)
+  // Andrebbe implementata una funzione che recupera anche tutti i corsi svolti da un utente in modo da poterla utilizzare nell'Area Personale (da modificare il db) (forse già sta in userProgressDAO?)
+
+  // true = test taken for that course, false = test not taken
+  static async getTestExistsForUserAndCourse(username, courseId) {
+    const db = await connect();
+    const test = await db.collection("tests").findOne({ username, course_id: courseId });
+    return !!test;
+  }
 }
 
 module.exports = new TestDAO();

@@ -1,5 +1,20 @@
 import React from "react";
 
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  if (response.ok) {
+    const data = await response.json();
+    const token = data.token;
+
+    localStorage.setItem("token", token);
+
+    window.location.href = "/areautente";
+  } else {
+    alert("Login failed");
+  }
+};
+
 const Login = () => {
   return (
     <div className="card-body mt-6 py-4 px-6">

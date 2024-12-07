@@ -12,6 +12,7 @@ import QuizApp from "./quiz.jsx";
 import SupportRequest from "./supportRequestPage.jsx";
 import AdminTicketDashboard from "./admin/adminTicketDashboard";
 import AdminTicketDetail from "./admin/adminTicketDetail.jsx";
+import PrivateRoute from "./utils/PrivateRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,14 +23,20 @@ root.render(
         <main className="flex-grow">
           <Routes>
             <Route path="/registrazione" element={<Registrazione />} />
+            <Route path="/areautente" element={<AreaUtente />} />
             <Route path="/login" element={<Login />} />
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/negoziopunti" element={<NegozioPunti />} />
-            <Route path="/areaUtente" element={<AreaUtente />} />
             <Route path="/quiz" element={<QuizApp />} />
             <Route path="/supportrequestpage" element={<SupportRequest />} />
-            <Route path="/admin/adminTicketDashboard" element={<AdminTicketDashboard />} />
-            <Route path="/admin/adminTicketDetail" element={<AdminTicketDetail />} />
+            <Route
+              path="/admin/adminTicketDashboard"
+              element={<AdminTicketDashboard />}
+            />
+            <Route
+              path="/admin/adminTicketDetail"
+              element={<AdminTicketDetail />}
+            />
           </Routes>
         </main>
         <Footer />
