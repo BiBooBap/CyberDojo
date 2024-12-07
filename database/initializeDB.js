@@ -441,27 +441,21 @@ async function initializeDB() {
       creation_date: new Date(),
     },
   ]);
-  // Collection: rewards
+  // Collection: rewards - Quando completo un corso
   await db.createCollection("rewards", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: [
-          "user_username",
-          "course_id",
-          "description",
-          "points",
-          "date",
-        ], // QUI DESCRIPTION DOVREBBE ESSERE IL PREMIO ASSEGNATO! - Inoltre senso memorizzare anche "course_name" oltre "course_id" (che serve per corrispondenza Corso - Test) in modo da poter effettuare una cronologia testuale dei corsi completati (area utente).
+        required: ["user_username", "course_id", "medal", "points", "date"],
         properties: {
           user_username: {
             bsonType: "string",
             description: "Username of the user who received the reward",
           },
           course_id: { bsonType: "int", description: "Completed course ID" },
-          description: {
+          medal: {
             bsonType: "string",
-            description: "Reward description",
+            description: "Type of medal obtained (Bronze, Silver, Gold)",
           },
           points: { bsonType: "int", description: "Points obtained" }, // The badge varies based on the points obtained
           date: { bsonType: "date", description: "Reward date" },

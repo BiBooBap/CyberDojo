@@ -1,4 +1,4 @@
-const { connect } = require("../db");
+const { connect } = require("../../../database/db");
 const { ObjectId } = require("mongodb");
 
 class AssistanceRequestDAO {
@@ -19,7 +19,10 @@ class AssistanceRequestDAO {
 
   static async getUserTickets(userUsername) {
     const db = await connect();
-    return db.collection("tickets").find({ user_username: userUsername }).toArray();
+    return db
+      .collection("tickets")
+      .find({ user_username: userUsername })
+      .toArray();
   }
 }
 

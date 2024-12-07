@@ -5,7 +5,6 @@ const userProgressRoutes = require("./routes/userProgressRoutes");
 const assistanceRoutes = require("./routes/assistanceRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const testRoutes = require("./routes/testRoutes");
-const delRoutes = require("./routes/delRoute");
 const streakRoutes = require("./routes/streakRoutes");
 
 const app = express();
@@ -31,9 +30,6 @@ app.use("/courses", courseRoutes);
 
 // Routes for tests
 app.use("/tests", testRoutes);
-
-// Routes for user deletion
-app.use("/del", delRoutes);
 
 // Routes for user login streaks
 app.use("/streaks", streakRoutes);

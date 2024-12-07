@@ -1,4 +1,4 @@
-const { connect } = require("../db");
+const { connect } = require("../../../database/db");
 const { ObjectId } = require("mongodb");
 
 class UserProgressDAO {

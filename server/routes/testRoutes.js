@@ -1,5 +1,5 @@
 const express = require("express");
-const TestFacade = require("../facade/TestFacade");
+const TestFacade = require("../Test/facades/testFacade");
 
 const router = express.Router();
 
