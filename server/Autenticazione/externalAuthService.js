@@ -1,4 +1,4 @@
-const UserDao = require("../dao/userDao");
+const UserDao = require("./dao/userDao");
 
 class ExternalAuthService {
   static async checkUsernameExists(username) {

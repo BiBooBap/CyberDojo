@@ -1,3 +1,5 @@
+const TestDAO = require("../dao/testDAO");
+
 const testFacade = {
   // Crea un nuovo test per un corso specifico
   async createTest(courseId, questions) {

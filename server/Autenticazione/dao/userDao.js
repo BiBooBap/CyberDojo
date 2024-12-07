@@ -1,4 +1,4 @@
-const { connect } = require("../../database/db");
+const { connect } = require("../../../database/db");
 const { ObjectId } = require("mongodb");
 
 class UserDao {
@@ -14,12 +14,10 @@ class UserDao {
 
   static async updateUser(username, updateFields) {
     const db = await connect();
-    return db.collection("user").updateOne(
-      { username },
-      { $set: updateFields }
-    );
+    return db
+      .collection("user")
+      .updateOne({ username }, { $set: updateFields });
   }
-
 }
 
 module.exports = UserDao;

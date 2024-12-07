@@ -1,4 +1,4 @@
-const { connect } = require("../../database/db");
+const { connect } = require("../../../database/db");
 
 class TestDAO {
   // Crea un nuovo test statico per un corso

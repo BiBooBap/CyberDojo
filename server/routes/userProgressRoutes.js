@@ -1,5 +1,5 @@
 const express = require("express");
-const UserProgressController = require("../controllers/userProgressController");
+const UserProgressController = require("../Premi/controllers/userProgressController");
 
 const router = express.Router();
 

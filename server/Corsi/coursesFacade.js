@@ -2,7 +2,7 @@ const CourseDAO = require("./dao/courseDAO");
 const CourseEnrollmentDAO = require("./dao/courseEnrollmentDAO");
 const TestService = require("../Test/externalTestService");
 
-class CourseService {
+class CoursesFacade {
   static async getAllCourses(username) {
     const courses = await CourseDAO.getAllCourses();
     let enrolledCourses = [];
