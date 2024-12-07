@@ -21,13 +21,21 @@ class TestDAO {
     return result.insertedId;
   }
 
-  // Andrebbe implementata una funzione che recupera anche tutti i corsi svolti da un utente in modo da poterla utilizzare nell'Area Personale (da modificare il db) (forse già sta in userProgressDAO?)
-
-  // true = test taken for that course, false = test not taken
-  static async getTestExistsForUserAndCourse(username, courseId) {
+  // Recupera il premio esistente per un utente e un corso specifico
+  async getRewardByUserAndCourse(username, courseId) {
     const db = await connect();
-    const test = await db.collection("tests").findOne({ username, course_id: courseId });
-    return !!test;
+    return await db.collection("rewards").findOne({
+      user_username: username,
+      course_id: courseId,
+    });
+  }
+
+  // Aggiorna il premio esistente
+  async updateReward(rewardId, updateFields) {
+    const db = await connect();
+    return await db
+      .collection("rewards")
+      .updateOne({ _id: rewardId }, { $set: updateFields });
   }
 }
 
