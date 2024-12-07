@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import "../index.css";
+import { Link } from "react-router-dom";
+import { isUserLoggedIn } from "../utils/auth";
+
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/login";
+};
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,7 +50,7 @@ const Header = () => {
             />
             <span>1</span>
             <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-10 font-bold text-lg">
-            <a href="/areautente">Area utente</a>
+              <a href="/areautente">Area utente</a>
             </button>
           </div>
         </nav>
@@ -58,9 +65,24 @@ const Header = () => {
             />
             <span>1</span>
           </div>
-          <a href="/areautente">
-            <img src="/path-to-profile-icon.png" alt="Profile Icon" className="profile-icon w-8 h-8 rounded-full" />
-          </a>
+          {isUserLoggedIn() ? (
+            <Link to="/areautente">
+              <img
+                src="/path-to-profile-icon.png"
+                alt="Icona Profilo"
+                className="profile-icon w-8 h-8 rounded-full"
+              />
+            </Link>
+          ) : (
+            <Link to="/login">
+              <button className="login-button">Login</button>
+            </Link>
+          )}
+          {isUserLoggedIn() && (
+            <button onClick={handleLogout} className="logout-button">
+              Logout
+            </button>
+          )}
         </div>
         <button
           className="hamburger-menu text-white md:hidden"
