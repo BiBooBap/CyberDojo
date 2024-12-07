@@ -5,6 +5,11 @@ on: [push, pull_request]
 jobs:
   testing-suite:
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,10 +34,10 @@ jobs:
           cd ./database
           npm ci
 
-      - name: Start database
+      - name: Initialize database
         run: |
           cd ./database
-          npm start &
+          node initializeDB.js
           sleep 5
 
       - name: Start server
