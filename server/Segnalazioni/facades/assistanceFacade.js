@@ -1,4 +1,4 @@
-const AssistanceRequestManager = require("../assistanceRequestManager");
+const AssistanceRequestManager = require("../services/assistanceRequestManager");
 
 class AssistanceFacade {
   async sendRequest(userUsername, description) {

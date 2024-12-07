@@ -1,4 +1,4 @@
-const TestDAO = require("./testDAO");
+const TestDAO = require("../dao/testDAO");
 
 class TestFacade {
   // Crea un nuovo test per un corso specifico
@@ -12,7 +12,7 @@ class TestFacade {
 
   // Recupera i test per un corso
   async getTestsForCourse(courseId) {
-    return await TestDAO.getTestsByCourse(courseId);  // Filtra per courseId
+    return await TestDAO.getTestsByCourse(courseId); // Filtra per courseId
   }
 
   // Calcola il punteggio, assegna i punti e inserisce la ricompensa nella collezione rewards
@@ -66,4 +66,3 @@ class TestFacade {
 }
 
 module.exports = new TestFacade();
-

@@ -1,4 +1,4 @@
-const StreakService = require("../Premi/services/streakService");
+const StreakService = require("../services/streakService");
 
 class StreakController {
   static async getStreak(req, res) {

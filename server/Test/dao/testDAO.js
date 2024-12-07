@@ -1,4 +1,4 @@
-const { connect } = require("../../database/db");
+const { connect } = require("../../../database/db");
 
 class TestDAO {
   // Crea un nuovo test statico per un corso
@@ -26,7 +26,9 @@ class TestDAO {
   // true = test taken for that course, false = test not taken
   static async getTestExistsForUserAndCourse(username, courseId) {
     const db = await connect();
-    const test = await db.collection("tests").findOne({ username, course_id: courseId });
+    const test = await db
+      .collection("tests")
+      .findOne({ username, course_id: courseId });
     return !!test;
   }
 }

@@ -1,4 +1,4 @@
-const { connect } = require("../../database/db");
+const { connect } = require("../../../database/db");
 
 class RegistrationDao {
   static async createUser(user) {

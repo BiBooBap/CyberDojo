@@ -1,4 +1,4 @@
-const StreakDAO = require("../Premi/dao/streakDAO");
+const StreakDAO = require("../dao/streakDAO");
 
 class StreakService {
   static async getStreak(username) {
@@ -7,7 +7,7 @@ class StreakService {
 
   static async updateStreak(username) {
     const streak = await StreakDAO.getStreakByUsername(username);
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
 
     if (streak && streak.lastLoginDate === today) {
       return streak; // No update needed
