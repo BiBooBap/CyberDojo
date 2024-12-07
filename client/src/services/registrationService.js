@@ -1,0 +1,19 @@
+const registrationService = {
+    register: async (userData) => {
+      try {
+        const response = await fetch("/registration/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+        return await response.json();
+      } catch (error) {
+        console.error("Errore durante la registrazione:", error);
+        throw error;
+      }
+    },
+  };
+  
+  export default registrationService;

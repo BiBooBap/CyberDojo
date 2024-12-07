@@ -1,44 +1,43 @@
 import React from "react";
-import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/header.jsx";
+import Footer from "./components/footer.jsx";
+import SignUpPage from "./signUpPage.jsx";
+import Accesso from "./accessPage.jsx";
+import Login from "./loginPage.jsx";
+import HomePage from "./visitor/homePage.jsx";
+import NegozioPunti from "./user/shop.jsx";
+import AreaUtente from "./user/userPage.jsx";
+import QuizApp from "./user/quiz.jsx";
+import CoursePage from "./visitor/coursePage.jsx";
+import SupportRequest from "./user/supportRequestPage.jsx";
+import AdminTicketDashboard from "./admin/adminTicketDashboard.jsx";
+import AdminTicketDetail from "./admin/adminTicketDetail.jsx";
 
 function App() {
   return (
-    <header className="bg-[#54295c] text-white p-4 flex justify-between items-center">
-      <div className="flex items-center space-x-3">
-        <img
-          src="/path-to-logo.png"
-          alt="CyberDojo Logo"
-          className="w-10 h-10"
-        />
-        <h1 className="text-xl font-semibold">CyberDojo</h1>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} /> {/* Landing page */}
+            <Route path="/SignUpPage" element={<SignUpPage />} />
+            <Route path="/accessPage" element={<Accesso />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/homepage" element={<HomePage />} />
+            <Route path="/negoziopunti" element={<NegozioPunti />} />
+            <Route path="/areaUtente" element={<AreaUtente />} />
+            <Route path="/quiz" element={<QuizApp />} />
+            <Route path="/coursePage" element={<CoursePage />} />
+            <Route path="/supportrequestpage" element={<SupportRequest />} />
+            <Route path="/admin/adminTicketDashboard" element={<AdminTicketDashboard />} />
+            <Route path="/admin/adminTicketDetail" element={<AdminTicketDetail />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-      <nav className="flex space-x-6">
-        <a href="#" className="hover:text-gray-300">
-          Corsi
-        </a>
-        <a href="#" className="hover:text-gray-300">
-          Shop
-        </a>
-        <a href="#" className="hover:text-gray-300">
-          Supporto
-        </a>
-      </nav>
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-2">
-          <img
-            src="/path-to-coins-icon.png"
-            alt="Coins Icon"
-            className="w-5 h-5"
-          />
-          <span>1</span>
-        </div>
-        <img
-          src="/path-to-profile-icon.png"
-          alt="Profile Icon"
-          className="w-8 h-8 rounded-full"
-        />
-      </div>
-    </header>
+    </Router>
   );
 }
 
