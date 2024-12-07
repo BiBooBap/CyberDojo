@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import registrationService from "./services/registrationService";
+import RegistrationFacade from "./services/registrationFacade";
 
 const SignUpPage = () => {
   // Gestione dello stato
@@ -20,8 +20,8 @@ const SignUpPage = () => {
     }
 
     try {
-      // Utilizza il servizio di registrazione
-      const response = await registrationService.register({
+      // Utilizza la Facade di registrazione
+      const response = await RegistrationFacade.registerUser({
         username,
         email,
         password,
@@ -53,7 +53,7 @@ const SignUpPage = () => {
       <p className="mb-1 text-white font-bold text-sm">Email</p>
       <input
         type="email"
-        className="rounded-2xl w-72 h-8 mb-2 pl-2"
+        className="rounded-2xl w-72 h-8 mb-4 pl-2"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -64,7 +64,6 @@ const SignUpPage = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <br />
       <input
         type="checkbox"
         name="privacy"

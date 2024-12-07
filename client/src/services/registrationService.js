@@ -1,7 +1,7 @@
 const registrationService = {
     register: async (userData) => {
       try {
-        const response = await fetch("/registration/register", {
+        const response = await fetch("http://localhost:3001/registration/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -15,5 +15,4 @@ const registrationService = {
       }
     },
   };
-  
   export default registrationService;
