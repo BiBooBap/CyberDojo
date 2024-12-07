@@ -9,6 +9,7 @@ import HomePage from "./homePage.jsx";
 import NegozioPunti from "./negozioPunti.jsx";
 import AreaUtente from "./areaUtente.jsx";
 import QuizApp from "./quiz.jsx";
+import CoursePage from "./coursePage.jsx";
 import SupportRequest from "./supportRequestPage.jsx";
 import AdminTicketDashboard from "./admin/adminTicketDashboard";
 import AdminTicketDetail from "./admin/adminTicketDetail.jsx";
@@ -22,12 +23,14 @@ root.render(
         <Header />
         <main className="flex-grow">
           <Routes>
+            <Route path="/" element={<HomePage />} /> //landing page
             <Route path="/registrazione" element={<Registrazione />} />
             <Route path="/areautente" element={<AreaUtente />} />
             <Route path="/login" element={<Login />} />
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/negoziopunti" element={<NegozioPunti />} />
             <Route path="/quiz" element={<QuizApp />} />
+            <Route path="/coursePage" element={<CoursePage />} />
             <Route path="/supportrequestpage" element={<SupportRequest />} />
             <Route
               path="/admin/adminTicketDashboard"
