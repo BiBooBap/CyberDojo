@@ -2,25 +2,55 @@ import React, { useState } from "react";
 import RegistrationFacade from "./services/registrationFacade";
 
 const SignUpPage = () => {
-  // State management
+  // Gestione dello stato
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPlaceholder, setAcceptPlaceholder] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  // Handle form submission
+  // Validation function
+  function validateForm() {
+    const newErrors = {};
+
+    // RegEx for email
+    const emailRegex = /^[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,10}$/;
+    if (!emailRegex.test(email)) {
+      newErrors.email = "Email non valida.";
+    }
+
+    // Username validation
+    if (username.length > 20) {
+      newErrors.username = "L'username deve essere lungo al massimo 20 caratteri.";
+    }
+
+    // RegEx for password
+    const passwordRegex = /^(?=.*[A-ZÀ-Ù])(?=.*[a-zà-ù])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/;
+    if (password.length < 8) {
+      newErrors.password = "La password deve avere almeno 8 caratteri.";
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password = "La password non rispetta i requisiti di sicurezza.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
+  // Update handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Input validation
-    if (!acceptTerms || !acceptPlaceholder) {
+    if (!acceptTerms) {
       alert("Devi accettare i termini di utilizzo e le politiche di privacy.");
       return;
     }
 
+    if (!validateForm()) {
+      return;
+    }
+
     try {
-      // Use the registration Facade
       const response = await RegistrationFacade.registerUser({
         username,
         email,
@@ -44,55 +74,81 @@ const SignUpPage = () => {
       <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
         Registrazione
       </h1>
+  
+      {/* Username */}
       <p className="mb-1 text-white font-bold text-sm">Username</p>
-      <input
-        className="rounded-2xl w-72 h-8 mb-2 pl-2"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+      <div className="mb-2">
+        <input
+          className={`rounded-2xl w-72 h-8 pl-2 ${
+            errors.username ? "border-red-500 border-2" : ""
+          }`}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        {errors.username && (
+          <span className="text-black text-sm mt-1 block">{errors.username}</span>
+        )}
+      </div>
+  
+      {/* Email */}
       <p className="mb-1 text-white font-bold text-sm">Email</p>
-      <input
-        type="email"
-        className="rounded-2xl w-72 h-8 mb-4 pl-2"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <div className="mb-4">
+        <input
+          type="email"
+          className={`rounded-2xl w-72 h-8 pl-2 ${
+            errors.email ? "border-red-500 border-2" : ""
+          }`}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        {errors.email && (
+          <span className="text-black text-sm mt-1 block">{errors.email}</span>
+        )}
+      </div>
+  
+      {/* Password */}
       <p className="mb-1 text-white font-bold text-sm">Password</p>
-      <input
-        type="password"
-        className="rounded-2xl w-72 h-8 mb-4 pl-2"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <input
-        type="checkbox"
-        name="privacy"
-        checked={acceptTerms}
-        onChange={(e) => setAcceptTerms(e.target.checked)}
-      />
-      <label htmlFor="privacy" className="overflow-ellipsis">
-        Accetto le informazioni d’uso,<br /> la politica di privacy <br /> e
-        dei cookie di CyberDojo
-      </label>
-      <br />
-      <input
-        type="checkbox"
-        name="placeholder"
-        checked={acceptPlaceholder}
-        onChange={(e) => setAcceptPlaceholder(e.target.checked)}
-      />
-      <label htmlFor="placeholder" className="overflow-ellipsis">
-        Questo è un placeholder
-      </label>
-      <br />
-      <button type="submit" className="button-CD py-2 px-8 mt-3 ml-3 text-xl">
-        Registrati
-      </button>
-      <button>
-        <img alt="Richiesta supporto" className="ml-4 w-20 h-20" />
-      </button>
+      <div className="mb-4">
+        <input
+          type="password"
+          className={`rounded-2xl w-72 h-8 pl-2 ${
+            errors.password ? "border-red-500 border-2" : ""
+          }`}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {errors.password && (
+          <span className="text-black text-sm mt-1 block">{errors.password}</span>
+        )}
+      </div>
+  
+      {/* Checkbox */}
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          name="privacy"
+          checked={acceptTerms}
+          onChange={(e) => setAcceptTerms(e.target.checked)}
+        />
+        <label htmlFor="privacy" className="overflow-ellipsis ml-2">
+          Accetto le informazioni d’uso,
+          <br /> la politica di privacy <br /> e dei cookie di CyberDojo
+        </label>
+      </div>
+  
+      {/* Submit Button */}
+      <div className="flex flex-col items-center">
+        <br />
+        <button type="submit" className="button-CD py-2 px-8 mt-3 ml-3 text-xl">
+          Registrati
+        </button>
+        <button>
+          <img alt="Richiesta supporto" className="ml-4 w-20 h-20" />
+        </button>
+      </div>
     </form>
   );
+  
 };
 
 export default SignUpPage;
