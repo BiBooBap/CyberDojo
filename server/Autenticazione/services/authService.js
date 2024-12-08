@@ -6,9 +6,11 @@ const secretKey = "your_secret_key"; // Change to a secure secret key
 
 class AuthService {
   static async loginByUsername(username, password) {
+    console.log("Username = " + username);
+    console.log("Password = " + password);
     const user = await UserDao.findUserByUsername(username);
     if (!user) {
-      throw new Error("Credenziali non valide");
+      throw new Error("Utente non valide");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

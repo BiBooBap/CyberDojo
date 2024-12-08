@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import RegistrationFacade from "./services/registrationFacade";
 
 const SignUpPage = () => {
-  // Gestione dello stato
+  // State management
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPlaceholder, setAcceptPlaceholder] = useState(false);
 
-  // Gestisci il submit del form
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validazione input
+    // Input validation
     if (!acceptTerms || !acceptPlaceholder) {
       alert("Devi accettare i termini di utilizzo e le politiche di privacy.");
       return;
     }
 
     try {
-      // Utilizza la Facade di registrazione
+      // Use the registration Facade
       const response = await RegistrationFacade.registerUser({
         username,
         email,
@@ -29,7 +29,7 @@ const SignUpPage = () => {
 
       if (response.message === "Registrazione avvenuta con successo") {
         alert("Registrazione avvenuta con successo!");
-        // Reindirizza l'utente o esegui altre azioni
+        // Redirect the user or perform other actions
       } else {
         alert(`Errore durante la registrazione: ${response.message}`);
       }

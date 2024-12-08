@@ -11,17 +11,17 @@ const streakRoutes = require("./routes/streakRoutes");
 const app = express();
 const port = 3001;
 
-// Middleware per il parsing delle richieste JSON
+// Middleware for parsing JSON requests
 app.use(express.json());
 
-// Configura CORS
+// Configure CORS
 app.use(cors({
-  origin: "http://localhost:3000", // Specifica l'origine consentita
-  methods: ["GET", "POST", "PUT", "DELETE"], // Metodi HTTP consentiti
-  credentials: true, // Se necessario
+  origin: "http://localhost:3000", // Specify the allowed origin
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+  credentials: true, // If necessary
 }));
 
-// Rotte per i vari sottosistemi
+// Routes for various subsystems
 app.use("/auth", authRoutes);
 app.use("/registration", registrationRoutes);
 app.use("/progress", userProgressRoutes);
@@ -30,13 +30,7 @@ app.use("/courses", courseRoutes);
 app.use("/tests", testRoutes);
 app.use("/streaks", streakRoutes);
 
-// Rotta catch-all (se presente)
-// Assicurati che le rotte API siano definite prima di questa rotta
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/public/index.html"));
-// });
-
-// Avvio del server
+// Server startup
 app.listen(port, () => {
   console.log(`Server in ascolto su http://localhost:${port}`);
 });

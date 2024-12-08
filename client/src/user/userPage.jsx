@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../index.css";
 
 const AreaUtente = () => {
@@ -11,11 +12,16 @@ const AreaUtente = () => {
 
   const navigate = useNavigate();
 
+  // Function to check if the user is authenticated
+  const isUserLoggedIn = () => {
+    const token = localStorage.getItem("token");
+    return !!token;
+  };
+
   // Redirect to login page if user is not logged in
-  // Remove this block if you want to allow unauthenticated users to access this page
   useEffect(() => {
     if (!isUserLoggedIn()) {
-      navigate("/login");
+      navigate("/accessPage");
     }
   }, [navigate]);
 

@@ -51,7 +51,7 @@ async function initializeDB() {
     {
       email: "giuliarossi@gmail.com",
       username: "giulia123",
-      password: await bcrypt.hash("password3", 10),
+      password: "password3",
       role: "user",
       points: 100,
       avatar: "CyberDojo/database/img/base.png",
@@ -68,7 +68,7 @@ async function initializeDB() {
     {
       email: "paolomorandi@gmail.com",
       username: "paoloM",
-      password: await bcrypt.hash("password8", 10),
+      password: "password8",
       role: "admin",
       points: 1000,
       avatar: "CyberDojo/database/img/admin.png",
@@ -79,7 +79,7 @@ async function initializeDB() {
     {
       email: "andrealandi@gmail.com",
       username: "andre89",
-      password: await bcrypt.hash("password4", 10),
+      password: "password4",
       role: "user",
       points: 200,
       avatar: "CyberDojo/database/img/advanced.png",
@@ -92,7 +92,7 @@ async function initializeDB() {
     {
       email: "mariabianchi@gmail.com",
       username: "mariaB",
-      password: await bcrypt.hash("password5", 10),
+      password: "password5",
       role: "user",
       points: 20,
       avatar: "CyberDojo/database/img/newbie.png",
@@ -108,7 +108,7 @@ async function initializeDB() {
     {
       email: "luigiricci@gmail.com",
       username: "luigiR99",
-      password: await bcrypt.hash("password6", 10),
+      password: "password6",
       role: "user",
       points: 350,
       avatar: "CyberDojo/database/img/pro.png",
@@ -124,7 +124,7 @@ async function initializeDB() {
     {
       email: "elisaferrari@gmail.com",
       username: "elisaf90",
-      password: await bcrypt.hash("password7", 10),
+      password: "password7",
       role: "user",
       points: 500,
       avatar: "CyberDojo/database/img/expert.png",

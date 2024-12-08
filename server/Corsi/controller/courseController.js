@@ -1,6 +1,6 @@
 const express = require("express");
 const CourseService = require("../services/courseService");
-const authenticate = require("../../middleware/authenticate");
+const authenticate = require("../../Middleware/authenticate");
 
 const router = express.Router();
 
