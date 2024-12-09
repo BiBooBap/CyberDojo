@@ -11,8 +11,7 @@ import AreaUtente from "./user/userPage.jsx";
 import QuizApp from "./user/quiz.jsx";
 import CoursePage from "./visitor/coursePage.jsx";
 import SupportRequest from "./user/supportRequestPage.jsx";
-import AdminTicketDashboard from "./admin/adminTicketDashboard.jsx";
-import AdminTicketDetail from "./admin/adminTicketDetail.jsx";
+import AdminRoutes from "./admin/AdminRoutes.jsx";
 
 function App() {
   return (
@@ -31,8 +30,9 @@ function App() {
             <Route path="/quiz" element={<QuizApp />} />
             <Route path="/coursePage" element={<CoursePage />} />
             <Route path="/supportrequestpage" element={<SupportRequest />} />
-            <Route path="/admin/adminTicketDashboard" element={<AdminTicketDashboard />} />
-            <Route path="/admin/adminTicketDetail" element={<AdminTicketDetail />} />
+
+            {/* Route Admin */}
+            <Route path="/admin/*" element={<AdminRoutes />} />
           </Routes>
         </main>
         <Footer />

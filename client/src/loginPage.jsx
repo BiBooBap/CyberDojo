@@ -27,7 +27,7 @@ const Login = () => {
 
         // Reindirizza in base al ruolo
         if (role === "admin") {
-          window.location.href = "/adminDashboard";
+          window.location.href = "/admin/adminTicketDashboard";
         } else {
           window.location.href = "/areaUtente";
         }
