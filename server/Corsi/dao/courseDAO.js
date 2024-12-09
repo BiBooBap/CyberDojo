@@ -3,7 +3,9 @@ const { connect } = require("../../../database/db");
 class CourseDAO {
   static async getAllCourses() {
     const db = await connect();
-    return db.collection("courses").find().toArray();
+    const courses = await db.collection("courses").find().toArray();
+    console.log("Corsi dal database:", courses);
+    return courses;
   }
 
   static async getLessonsByCourseName(courseName) {
@@ -15,7 +17,6 @@ class CourseDAO {
     return course.lessons;
   }
 
-  // Retrieves information about a specific course
   static async getCourseInfo(courseId) {
     const db = await connect();
     return db.collection("courses").findOne({ _id: parseInt(courseId, 10) });
