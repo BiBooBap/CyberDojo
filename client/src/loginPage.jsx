@@ -8,14 +8,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const emailRegex = /^[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,10}$/;
+    const emailRegex =
+      /^[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,10}$/;
     const isEmail = emailRegex.test(usernameOrEmail);
     const loginType = isEmail ? "Email" : "Username";
 
     try {
-      const response = loginType === "Email"
-        ? await LoginFacade.loginByEmail(usernameOrEmail, password)
-        : await LoginFacade.loginByUsername(usernameOrEmail, password);
+      const response =
+        loginType === "Email"
+          ? await LoginFacade.loginByEmail(usernameOrEmail, password)
+          : await LoginFacade.loginByUsername(usernameOrEmail, password);
 
       if (response.token) {
         setNotification("Login avvenuto con successo!");
@@ -29,14 +31,14 @@ const Login = () => {
         if (role === "admin") {
           window.location.href = "/admin/adminTicketDashboard";
         } else {
-          window.location.href = "/areaUtente";
+          window.location.href = "/homepage";
         }
       } else {
         setNotification(`Errore durante il login: ${response.message}`);
       }
     } catch (error) {
       console.error("Errore durante il login:", error);
-      setNotification("Si è verificato un errore durante il login.");
+      setNotification(error.message);
     }
   };
 
@@ -47,13 +49,13 @@ const Login = () => {
           Login
         </h1>
         {notification && (
-          <div className="mb-4 text-center text-red-500">
-            {notification}
-          </div>
+          <div className="mb-4 text-center text-red-500">{notification}</div>
         )}
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
           <div className="mb-4 w-72">
-            <label className="block text-gray-700 font-bold mb-2">Username o Email</label>
+            <label className="block text-gray-700 font-bold mb-2">
+              Username o Email
+            </label>
             <input
               type="text"
               className="rounded w-full h-10 px-3 border"
@@ -63,7 +65,9 @@ const Login = () => {
             />
           </div>
           <div className="mb-6 w-72 justify-center">
-            <label className="block text-gray-700 font-bold mb-2">Password</label>
+            <label className="block text-gray-700 font-bold mb-2">
+              Password
+            </label>
             <input
               type="password"
               className="rounded w-full h-10 px-3 border"
@@ -72,11 +76,17 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="bg-[#54295c] text-white py-2 px-8 rounded">
+          <button
+            type="submit"
+            className="bg-[#54295c] text-white py-2 px-8 rounded"
+          >
             Login
           </button>
           <div className="mt-4">
-            <a href="/forgot-password" className="text-blue-500 hover:underline">
+            <a
+              href="/forgot-password"
+              className="text-blue-500 hover:underline"
+            >
               Forgot Password?
             </a>
           </div>

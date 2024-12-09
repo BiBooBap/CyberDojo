@@ -14,8 +14,11 @@ import SupportRequest from "./user/supportRequestPage.jsx";
 import AdminRoutes from "./admin/AdminRoutes.jsx";
 import VisitorRoute from "./utils/VisitorRoute.js";
 import ProtectedRoute from "./utils/ProtectedRoute.js";
+import { getUserRole } from "./utils/auth";
+import NotAdminRoute from "./utils/NotAdminRoute.js";
 
 function App() {
+  const userRole = getUserRole();
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
@@ -23,10 +26,17 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/homepage" element={<HomePage />} />
+            <Route
+              path="/homepage"
+              element={
+                <NotAdminRoute>
+                  <HomePage />
+                </NotAdminRoute>
+              }
+            />
             {/* ^ Landing page ^ */}
             <Route
-              path="/registrazione"
+              path="/SignUpPage"
               element={
                 <VisitorRoute>
                   <SignUpPage />
@@ -34,7 +44,7 @@ function App() {
               }
             />
             <Route
-              path="/accesso"
+              path="/accessPage"
               element={
                 <VisitorRoute>
                   <Accesso />
@@ -42,7 +52,7 @@ function App() {
               }
             />
             <Route
-              path="/login"
+              path="/loginpage"
               element={
                 <VisitorRoute>
                   <Login />
@@ -51,7 +61,7 @@ function App() {
             />
 
             <Route
-              path="/negozio"
+              path="/negoziopunti"
               element={
                 <ProtectedRoute requiredRole="user">
                   <NegozioPunti />
@@ -59,7 +69,7 @@ function App() {
               }
             />
             <Route
-              path="/areautente"
+              path="/areaUtente"
               element={
                 <ProtectedRoute requiredRole="user">
                   <AreaUtente />
@@ -74,8 +84,22 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/coursepage" element={<CoursePage />} />
-            <Route path="/supportrequestpage" element={<SupportRequest />} />
+            <Route
+              path="/coursePage"
+              element={
+                <NotAdminRoute>
+                  <CoursePage />
+                </NotAdminRoute>
+              }
+            />
+            <Route
+              path="/supportrequestpage"
+              element={
+                <NotAdminRoute>
+                  <SupportRequest />
+                </NotAdminRoute>
+              }
+            />
             <Route
               path="/admin/*"
               element={
@@ -86,7 +110,7 @@ function App() {
             />
           </Routes>
         </main>
-        <Footer />
+        {userRole !== "admin" && <Footer />}
       </div>
     </Router>
   );

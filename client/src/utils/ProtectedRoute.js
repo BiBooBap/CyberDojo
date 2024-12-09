@@ -11,8 +11,14 @@ function ProtectedRoute({ children, requiredRole }) {
   const userRole = getUserRole();
 
   if (requiredRole && userRole !== requiredRole) {
-    // Se l'utente non ha il ruolo richiesto, reindirizza
-    return <Navigate to="/not-authorized" />;
+    if (userRole === "admin") {
+      return <Navigate to="/admin/adminTicketDashboard" />;
+    }
+    if (userRole === "user") {
+      return <Navigate to="/areaUtente" />;
+    } else {
+      return <Navigate to="/not-authorized" />;
+    }
   }
 
   return children;
