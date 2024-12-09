@@ -21,7 +21,7 @@ class AuthService {
     const token = jwt.sign(
       { username: user.username, role: user.role },
       secretKey,
-      { expiresIn: "8h" }
+      { expiresIn: "30m" }
     );
 
     return token;
@@ -41,7 +41,7 @@ class AuthService {
     const token = jwt.sign(
       { username: user.username, role: user.role },
       secretKey,
-      { expiresIn: "8h" }
+      { expiresIn: "30m" }
     );
 
     return token;
@@ -53,7 +53,10 @@ class AuthService {
       throw new Error("Utente non trovato");
     }
 
-    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
     if (!isPasswordValid) {
       throw new Error("Password attuale non valida");
     }
@@ -82,19 +85,24 @@ class AuthService {
       throw new Error("Email già utilizzata da un altro utente");
     }
 
-    const existingUserByUsername = await UserDao.findUserByUsername(newUsername);
-    if (existingUserByUsername && existingUserByUsername.username !== username) {
+    const existingUserByUsername = await UserDao.findUserByUsername(
+      newUsername
+    );
+    if (
+      existingUserByUsername &&
+      existingUserByUsername.username !== username
+    ) {
       throw new Error("Nome utente già utilizzato da un altro utente");
     }
 
     const updateFields = {};
     if (newEmail !== existingUserByEmail.email) updateFields.email = newEmail;
-    if (newUsername !== existingUserByUsername.username) updateFields.username = newUsername;
+    if (newUsername !== existingUserByUsername.username)
+      updateFields.username = newUsername;
     if (newPassword) updateFields.password = await bcrypt.hash(newPassword, 10);
 
     await UserDao.updateUser(username, updateFields);
   }
-
 }
 
 module.exports = AuthService;

@@ -10,8 +10,14 @@ function AdminRoutes() {
       <AdminSidebar />
       <div className="admin-content flex-grow">
         <Routes>
-          <Route path="adminTicketDashboard" element={<AdminTicketDashboard />} />
-          <Route path="adminTicketDetail" element={<AdminTicketDetail />} />
+          <Route
+            path="admin/adminTicketDashboard"
+            element={<AdminTicketDashboard />}
+          />
+          <Route
+            path="admin/adminTicketDetail"
+            element={<AdminTicketDetail />}
+          />
           {/* Altre route admin */}
         </Routes>
       </div>

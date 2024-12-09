@@ -12,6 +12,8 @@ import QuizApp from "./user/quiz.jsx";
 import CoursePage from "./visitor/coursePage.jsx";
 import SupportRequest from "./user/supportRequestPage.jsx";
 import AdminRoutes from "./admin/AdminRoutes.jsx";
+import VisitorRoute from "./utils/VisitorRoute.js";
+import ProtectedRoute from "./utils/ProtectedRoute.js";
 
 function App() {
   return (
@@ -20,19 +22,68 @@ function App() {
         <Header />
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<HomePage />} /> {/* Landing page */}
-            <Route path="/SignUpPage" element={<SignUpPage />} />
-            <Route path="/accessPage" element={<Accesso />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/homepage" element={<HomePage />} />
-            <Route path="/negoziopunti" element={<NegozioPunti />} />
-            <Route path="/areaUtente" element={<AreaUtente />} />
-            <Route path="/quiz" element={<QuizApp />} />
-            <Route path="/coursePage" element={<CoursePage />} />
-            <Route path="/supportrequestpage" element={<SupportRequest />} />
+            {/* ^ Landing page ^ */}
+            <Route
+              path="/registrazione"
+              element={
+                <VisitorRoute>
+                  <SignUpPage />
+                </VisitorRoute>
+              }
+            />
+            <Route
+              path="/accesso"
+              element={
+                <VisitorRoute>
+                  <Accesso />
+                </VisitorRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <VisitorRoute>
+                  <Login />
+                </VisitorRoute>
+              }
+            />
 
-            {/* Route Admin */}
-            <Route path="/admin/*" element={<AdminRoutes />} />
+            <Route
+              path="/negozio"
+              element={
+                <ProtectedRoute requiredRole="user">
+                  <NegozioPunti />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/areautente"
+              element={
+                <ProtectedRoute requiredRole="user">
+                  <AreaUtente />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/quiz"
+              element={
+                <ProtectedRoute requiredRole="user">
+                  <QuizApp />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/coursepage" element={<CoursePage />} />
+            <Route path="/supportrequestpage" element={<SupportRequest />} />
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminRoutes />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />
