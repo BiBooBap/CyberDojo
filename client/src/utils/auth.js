@@ -1,4 +1,3 @@
-// client/src/utils/auth.js
 export function isUserLoggedIn() {
   const token = localStorage.getItem("token");
 
@@ -11,7 +10,6 @@ export function isUserLoggedIn() {
     const expiration = payload.exp;
 
     if (Date.now() >= expiration * 1000) {
-      // Il token è scaduto
       return false;
     }
 
@@ -30,7 +28,36 @@ export function getUserRole() {
 
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.role; // Assumendo che il ruolo sia memorizzato nel campo 'role' del payload
+    return payload.role;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function getUserName() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return "";
+  }
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.username;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function getPayload() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
   } catch (e) {
     return null;
   }

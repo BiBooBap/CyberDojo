@@ -4,11 +4,12 @@ const authenticate = require("../../Middleware/authenticate");
 
 const router = express.Router();
 
-// Get courses
-router.get("/", authenticate, async (req, res) => {
-  console.log("Richiesta ricevuta per /api/courses");
+router.get("/", async (req, res) => {
+  console.log("Richiesta ricevuta per /courses");
   const username = req.user ? req.user.username : null;
-
+  if (!username) {
+    const username = "guest";
+  }
   try {
     const courses = await CourseService.getAllCourses(username);
     console.log("Corsi recuperati:", courses);
@@ -19,7 +20,7 @@ router.get("/", authenticate, async (req, res) => {
   }
 });
 
-router.get("/lessons/:courseName", authenticate, async (req, res) => {
+router.get("/lessons/:courseName", async (req, res) => {
   const { courseName } = req.params;
   try {
     const lessons = await CourseService.getLessonsByCourseName(courseName);

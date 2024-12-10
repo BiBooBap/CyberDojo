@@ -12,7 +12,7 @@ const HomePage = ({ user }) => {
         const data = await courseFacade.getAllCourses(token); //CONTROLLA SE IL TOKEN È PRESENTE (corretto). Non controlla se l'username esiste come definito nel backend
         setCourses(data);
       } catch (error) {
-        console.error("Errore nel recupero dei corsi:", error);
+        console.error("Errore nel recupero dei corsi HOMEPAGE", error);
         setError(error.message);
       }
     };

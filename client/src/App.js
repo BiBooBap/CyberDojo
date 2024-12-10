@@ -14,26 +14,12 @@ import SupportRequest from "./user/supportRequestPage.jsx";
 import AdminRoutes from "./admin/AdminRoutes.jsx";
 import VisitorRoute from "./utils/VisitorRoute.js";
 import ProtectedRoute from "./utils/ProtectedRoute.js";
-import { getUserRole } from "./utils/auth";
+import { getUserRole, getPayload } from "./utils/auth";
 import NotAdminRoute from "./utils/NotAdminRoute.js";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
   const userRole = getUserRole();
-
-  useEffect(() => {
-    // Recupera il token dal localStorage
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        // Decodifica il payload del token
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setCurrentUser(payload);
-      } catch (error) {
-        console.error("Errore nel parsing del token:", error);
-      }
-    }
-  }, []);
+  const currentUser = getPayload();
 
   return (
     <Router>

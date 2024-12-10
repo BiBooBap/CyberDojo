@@ -6,6 +6,9 @@ const corsiService = {
       };
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        token = null;
+        headers["Authorization"] = `Bearer ${token}`;
       }
 
       const response = await fetch("http://localhost:3001/courses", {
@@ -14,7 +17,7 @@ const corsiService = {
       });
       if (!response.ok) {
         throw new Error(
-          `Errore nel recupero dei corsi: ${response.statusText}`
+          `Errore nel recupero dei corsi COURSESERVICE: ${response.statusText}`
         );
       }
       const data = await response.json();

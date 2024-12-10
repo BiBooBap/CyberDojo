@@ -2,10 +2,10 @@ const CourseDAO = require("../dao/courseDAO");
 const CourseEnrollmentDAO = require("../dao/courseEnrollmentDAO");
 
 class CourseService {
-  // Get courses
   static async getAllCourses(username) {
+    console.log("Richiesta ricevuta per /courses");
     const courses = await CourseDAO.getAllCourses();
-    console.log("Corsi dal DAO:", courses); // Aggiungi questo log
+    console.log("Corsi dal DAO:", courses);
     let enrolledCourses = [];
 
     if (username) {

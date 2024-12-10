@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserDao = require("../dao/userDao");
 
-const secretKey = "your_secret_key"; // Change to a secure secret key
+const secretKey = "sigmasigmaonthewall";
 
 class AuthService {
   static async loginByUsername(username, password) {
