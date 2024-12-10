@@ -5,7 +5,7 @@ import { isUserLoggedIn, getUserRole } from "./auth";
 
 function ProtectedRoute({ children, requiredRole }) {
   if (!isUserLoggedIn()) {
-    return <Navigate to="/loginpage" />;
+    return <Navigate to="/accessPage" />;
   }
 
   const userRole = getUserRole();

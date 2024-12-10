@@ -15,18 +15,21 @@ const SignUpPage = () => {
     const newErrors = {};
 
     // RegEx for email
-    const emailRegex = /^[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,10}$/;
+    const emailRegex =
+      /^[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,10}$/;
     if (!emailRegex.test(email)) {
       newErrors.email = "Email non valida.";
     }
 
     // Username validation
     if (username.length > 20) {
-      newErrors.username = "L'username deve essere lungo al massimo 20 caratteri.";
+      newErrors.username =
+        "L'username deve essere lungo al massimo 20 caratteri.";
     }
 
     // RegEx for password
-    const passwordRegex = /^(?=.*[A-ZÀ-Ù])(?=.*[a-zà-ù])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/;
+    const passwordRegex =
+      /^(?=.*[A-ZÀ-Ù])(?=.*[a-zà-ù])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/;
     if (password.length < 8) {
       newErrors.password = "La password deve avere almeno 8 caratteri.";
     } else if (!passwordRegex.test(password)) {
@@ -70,85 +73,93 @@ const SignUpPage = () => {
   };
 
   return (
-    <form className="card-body mt-6 py-4 px-6" onSubmit={handleSubmit}>
-      <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-        Registrazione
-      </h1>
-  
-      {/* Username */}
-      <p className="mb-1 text-white font-bold text-sm">Username</p>
-      <div className="mb-2">
-        <input
-          className={`rounded-2xl w-72 h-8 pl-2 ${
-            errors.username ? "border-red-500 border-2" : ""
-          }`}
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        {errors.username && (
-          <span className="text-black text-sm mt-1 block">{errors.username}</span>
-        )}
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="card-body py-8 px-6 bg-white rounded shadow-md">
+        <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+          Registrazione
+        </h1>
+        <form className="flex flex-col items-center" onSubmit={handleSubmit}>
+          {/* Username */}
+          <p className="mb-1 text-white font-bold text-sm">Username</p>
+          <div className="mb-2">
+            <input
+              className={`rounded-2xl w-72 h-8 pl-2 ${
+                errors.username ? "border-red-500 border-2" : ""
+              }`}
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            {errors.username && (
+              <span className="text-black text-sm mt-1 block">
+                {errors.username}
+              </span>
+            )}
+          </div>
+
+          {/* Email */}
+          <p className="mb-1 text-white font-bold text-sm">Email</p>
+          <div className="mb-4">
+            <input
+              type="email"
+              className={`rounded-2xl w-72 h-8 pl-2 ${
+                errors.email ? "border-red-500 border-2" : ""
+              }`}
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {errors.email && (
+              <span className="text-black text-sm mt-1 block">
+                {errors.email}
+              </span>
+            )}
+          </div>
+
+          {/* Password */}
+          <p className="mb-1 text-white font-bold text-sm">Password</p>
+          <div className="mb-4">
+            <input
+              type="password"
+              className={`rounded-2xl w-72 h-8 pl-2 ${
+                errors.password ? "border-red-500 border-2" : ""
+              }`}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errors.password && (
+              <span className="text-black text-sm mt-1 block">
+                {errors.password}
+              </span>
+            )}
+          </div>
+
+          {/* Checkbox */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              name="privacy"
+              checked={acceptTerms}
+              onChange={(e) => setAcceptTerms(e.target.checked)}
+            />
+            <label htmlFor="privacy" className="overflow-ellipsis ml-2">
+              Accetto le informazioni d’uso,
+              <br /> la politica di privacy <br /> e dei cookie di CyberDojo
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex flex-col items-center">
+            <br />
+            <button type="submit" className="button-CD py-2 px-8 mt-3 text-xl">
+              Registrati
+            </button>
+          </div>
+        </form>
       </div>
-  
-      {/* Email */}
-      <p className="mb-1 text-white font-bold text-sm">Email</p>
-      <div className="mb-4">
-        <input
-          type="email"
-          className={`rounded-2xl w-72 h-8 pl-2 ${
-            errors.email ? "border-red-500 border-2" : ""
-          }`}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {errors.email && (
-          <span className="text-black text-sm mt-1 block">{errors.email}</span>
-        )}
-      </div>
-  
-      {/* Password */}
-      <p className="mb-1 text-white font-bold text-sm">Password</p>
-      <div className="mb-4">
-        <input
-          type="password"
-          className={`rounded-2xl w-72 h-8 pl-2 ${
-            errors.password ? "border-red-500 border-2" : ""
-          }`}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {errors.password && (
-          <span className="text-black text-sm mt-1 block">{errors.password}</span>
-        )}
-      </div>
-  
-      {/* Checkbox */}
-      <div className="flex items-center">
-        <input
-          type="checkbox"
-          name="privacy"
-          checked={acceptTerms}
-          onChange={(e) => setAcceptTerms(e.target.checked)}
-        />
-        <label htmlFor="privacy" className="overflow-ellipsis ml-2">
-          Accetto le informazioni d’uso,
-          <br /> la politica di privacy <br /> e dei cookie di CyberDojo
-        </label>
-      </div>
-  
-      {/* Submit Button */}
-      <div className="flex flex-col items-center">
-        <br />
-        <button type="submit" className="button-CD py-2 px-8 mt-3 ml-3 text-xl">
-          Registrati
-        </button>
-        <button>
-          <img alt="Richiesta supporto" className="ml-4 w-20 h-20" />
-        </button>
-      </div>
-    </form>
+    </div>
   );
-  
 };
 
 export default SignUpPage;

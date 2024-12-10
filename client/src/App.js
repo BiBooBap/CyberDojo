@@ -41,14 +41,14 @@ function App() {
         <Header />
         <main className="flex-grow">
           <Routes>
-          <Route path="/" element={<HomePage user={currentUser} />} />
-          <Route
-            path="/homepage"
-            element={
-          <NotAdminRoute>
-          <HomePage user={currentUser} />
-          </NotAdminRoute>
-  }
+            <Route path="/" element={<HomePage user={currentUser} />} />
+            <Route
+              path="/homepage"
+              element={
+                <NotAdminRoute>
+                  <HomePage user={currentUser} />
+                </NotAdminRoute>
+              }
             />
             {/* ^ Landing page ^ */}
             <Route
@@ -88,7 +88,7 @@ function App() {
               path="/areaUtente"
               element={
                 <ProtectedRoute requiredRole="user">
-                  <AreaUtente user={currentUser}/>
+                  <AreaUtente user={currentUser} />
                 </ProtectedRoute>
               }
             />

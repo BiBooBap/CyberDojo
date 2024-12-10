@@ -53,33 +53,30 @@ const Login = () => {
         )}
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
           <div className="mb-4 w-72">
-            <label className="block text-gray-700 font-bold mb-2">
+            <label className="block text-white font-bold mb-2 text-center text-sm">
               Username o Email
             </label>
             <input
               type="text"
-              className="rounded w-full h-10 px-3 border"
+              className="rounded-2xl w-72 h-8 pl-2 border"
               placeholder="Username o Email"
               value={usernameOrEmail}
               onChange={(e) => setUsernameOrEmail(e.target.value)}
             />
           </div>
           <div className="mb-6 w-72 justify-center">
-            <label className="block text-gray-700 font-bold mb-2">
+            <label className="block text-white font-bold mb-2 text-center text-sm">
               Password
             </label>
             <input
               type="password"
-              className="rounded w-full h-10 px-3 border"
+              className="rounded-2xl w-72 h-8 pl-2 border"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button
-            type="submit"
-            className="bg-[#54295c] text-white py-2 px-8 rounded"
-          >
+          <button type="submit" className="button-CD py-2 px-8 text-xl">
             Login
           </button>
           <div className="mt-4">

@@ -44,10 +44,16 @@ const HomePage = ({ user }) => {
         <p className="text-red-500">{error}</p>
       ) : (
         courses.map((course) => (
-          <div key={course.id} className="card-body p-3">
-            <img src={course.icon} alt="Foto corso" className="logo w-14 h-14" />
+          <div key={course.id} className="card-body p-3 mb-3">
+            <img
+              src={course.icon}
+              alt="Foto corso"
+              className="logo w-14 h-14"
+            />
             <h3 className="font-bold">{course.title}</h3>
-            <p className="text-xs mb-1">Livello difficoltà: {course.difficulty}</p>
+            <p className="text-xs mb-1">
+              Livello difficoltà: {course.difficulty}
+            </p>
             <button
               className="button-CD p-[7px]"
               onClick={() => handleButtonClick(course)}

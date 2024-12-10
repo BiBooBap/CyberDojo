@@ -5,7 +5,7 @@ import { isUserLoggedIn, getUserRole } from "./auth";
 
 function NotAdminRoute({ children, requiredRole }) {
   if (!isUserLoggedIn()) {
-    return <Navigate to="/loginpage" />;
+    return <Navigate to="/homePage" />;
   }
 
   const userRole = getUserRole();
