@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/header.jsx";
 import Footer from "./components/footer.jsx";
@@ -18,21 +18,37 @@ import { getUserRole } from "./utils/auth";
 import NotAdminRoute from "./utils/NotAdminRoute.js";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
   const userRole = getUserRole();
+
+  useEffect(() => {
+    // Recupera il token dal localStorage
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        // Decodifica il payload del token
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setCurrentUser(payload);
+      } catch (error) {
+        console.error("Errore nel parsing del token:", error);
+      }
+    }
+  }, []);
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route
-              path="/homepage"
-              element={
-                <NotAdminRoute>
-                  <HomePage />
-                </NotAdminRoute>
-              }
+          <Route path="/" element={<HomePage user={currentUser} />} />
+          <Route
+            path="/homepage"
+            element={
+          <NotAdminRoute>
+          <HomePage user={currentUser} />
+          </NotAdminRoute>
+  }
             />
             {/* ^ Landing page ^ */}
             <Route
@@ -72,7 +88,7 @@ function App() {
               path="/areaUtente"
               element={
                 <ProtectedRoute requiredRole="user">
-                  <AreaUtente />
+                  <AreaUtente user={currentUser}/>
                 </ProtectedRoute>
               }
             />

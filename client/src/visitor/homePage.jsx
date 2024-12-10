@@ -20,11 +20,18 @@ const HomePage = ({ user }) => {
     fetchCourses();
   }, []);
 
-  const handleButtonClick = (course) => {
+  const handleButtonClick = async (course) => {
     if (!user) {
       alert("È necessario registrarsi per iscriversi ai corsi.");
     } else {
-      // Logica per iscriversi, riprendere o ripetere il corso
+      try {
+        const token = localStorage.getItem("token");
+        await courseFacade.enrollCourse(course.id, token);
+        alert("Iscrizione avvenuta con successo!");
+      } catch (error) {
+        console.error("Errore durante l'iscrizione al corso:", error);
+        alert("Errore durante l'iscrizione al corso.");
+      }
     }
   };
 
@@ -44,7 +51,6 @@ const HomePage = ({ user }) => {
             <button
               className="button-CD p-[7px]"
               onClick={() => handleButtonClick(course)}
-              disabled={!user}
             >
               {user
                 ? course.isEnrolled
