@@ -12,7 +12,8 @@ class ShopController {
 
   static async purchaseItem(req, res) {
     try {
-      const { username, itemId } = req.body;
+      const username = req.user.username;
+      const { itemId } = req.body;
       const result = await ShopFacade.purchase(username, itemId);
       res
         .status(200)
@@ -24,12 +25,26 @@ class ShopController {
 
   static async getInventory(req, res) {
     try {
-      const { username } = req.query;
+      const username = req.user.username;
       const inventory = await ShopFacade.getUserInventory(username);
       if (!inventory) {
         return res.status(404).json({ error: "Inventario non trovato" });
       }
       res.json(inventory);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  static async isItemInInventory(req, res) {
+    try {
+      const username = req.user.username;
+      const { itemId } = req.query;
+      const isInInventory = await ShopFacade.isItemInInventory(
+        username,
+        itemId
+      );
+      res.json({ isInInventory });
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

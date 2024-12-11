@@ -5,12 +5,16 @@ class ShopFacade {
     return await shopService.getItems();
   }
 
-  static async purchase(username, itemId) {
-    return await shopService.purchase(username, itemId);
+  static async purchase(itemId) {
+    return await shopService.purchaseItem(itemId);
   }
 
-  static async getUserInventory(username) {
-    return await shopService.getUserInventory(username);
+  static async getUserInventory() {
+    return await shopService.getUserInventory();
+  }
+
+  static async isItemInInventory(itemId) {
+    return await shopService.isItemInInventory(itemId);
   }
 }
 

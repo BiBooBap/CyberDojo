@@ -1,4 +1,5 @@
 const ShopDAO = require("../dao/shopDAO");
+const { getUserName } = require("../../../client/src/utils/auth");
 
 class ShopManager {
   static async listItems() {
@@ -48,6 +49,14 @@ class ShopManager {
       console.error("Errore nel recupero dell'inventario:", error);
       throw new Error("Errore nel recupero dell'inventario");
     }
+  }
+
+  static async isItemInInventory(username, itemId) {
+    const items = await ShopDAO.getItems();
+    const selectedItem = items.find((i) => i._id.toString() === itemId);
+    if (!selectedItem) throw new Error("Item non trovato");
+
+    return await ShopDAO.isItemInInventory(username, selectedItem.name);
   }
 }
 

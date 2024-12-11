@@ -1,3 +1,5 @@
+import { getUserName } from "../utils/auth";
+
 const shopService = {
   getItems: async () => {
     try {
@@ -20,12 +22,15 @@ const shopService = {
     }
   },
 
-  purchaseItem: async (username, itemId) => {
+  purchaseItem: async (itemId) => {
     try {
+      const token = localStorage.getItem("token");
+      const username = getUserName();
       const response = await fetch("http://localhost:3001/shop/purchase", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ username, itemId }),
       });
@@ -39,23 +44,45 @@ const shopService = {
     }
   },
 
-  getUserInventory: async (username) => {
+  getUserInventory: async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/shop/inventory?username=${username}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3001/shop/inventory`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!response.ok) {
         throw new Error("Errore nel recupero dell'inventario");
       }
       return await response.json();
     } catch (error) {
       console.error("Errore nel recupero dell'inventario:", error);
+      throw error;
+    }
+  },
+
+  isItemInInventory: async (itemId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:3001/shop/isItemInInventory?itemId=${itemId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Errore nel controllo dell'inventario");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Errore nel controllo dell'inventario:", error);
       throw error;
     }
   },

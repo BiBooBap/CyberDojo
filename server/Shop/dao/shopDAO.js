@@ -30,6 +30,17 @@ class ShopDAO {
     const db = await connect();
     return db.collection("inventory").findOne({ user_username: userUsername });
   }
+
+  static async isItemInInventory(userUsername, itemName) {
+    const db = await connect();
+    console.log(
+      `Controllo inventario per l'utente: ${userUsername}, item: ${itemName}`
+    );
+    const inventory = await db
+      .collection("inventory")
+      .findOne({ user_username: userUsername, "items.name": itemName });
+    return inventory !== null;
+  }
 }
 
 module.exports = ShopDAO;
