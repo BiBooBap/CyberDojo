@@ -1,11 +1,19 @@
 const express = require("express");
 const UserProgressController = require("../Premi/controllers/userProgressController");
+const authenticate = require("../Middleware/authenticate");
 
 const router = express.Router();
 
-router.get("/progress/:username", UserProgressController.getProgress);
-router.post("/progress", UserProgressController.addProgress);
-router.patch("/progress/:id", UserProgressController.updateProgress);
-router.delete("/progress/:id", UserProgressController.deleteProgress);
+// Route to get user progress
+router.get("/show", authenticate, UserProgressController.getProgress);
+
+// Route to add user progress
+router.post("/add", authenticate, UserProgressController.addProgress);
+
+// Route to update user progress
+router.patch("/update", authenticate, UserProgressController.updateProgress);
+
+// Route to delete user progress
+router.delete("/delete", authenticate, UserProgressController.deleteProgress);
 
 module.exports = router;

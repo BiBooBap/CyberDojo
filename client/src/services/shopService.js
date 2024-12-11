@@ -1,5 +1,3 @@
-import { getUserName } from "../utils/auth";
-
 const shopService = {
   getItems: async () => {
     try {
@@ -25,7 +23,6 @@ const shopService = {
   purchaseItem: async (itemId) => {
     try {
       const token = localStorage.getItem("token");
-      const username = getUserName();
       const response = await fetch("http://localhost:3001/shop/purchase", {
         method: "POST",
         headers: {

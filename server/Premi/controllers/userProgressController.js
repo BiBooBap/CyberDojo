@@ -2,7 +2,8 @@ const UserProgressFacade = require("../facades/userProgressFacade");
 
 class UserProgressController {
   static async getProgress(req, res) {
-    const { username } = req.params;
+    const username = req.user.username;
+    console.log("Recupero dei progressi per l'utente:", username); // Log del nome utente
     try {
       const progress = await UserProgressFacade.getProgress(username);
       if (!progress.length) {
@@ -10,12 +11,14 @@ class UserProgressController {
       }
       res.json(progress);
     } catch (error) {
+      console.error("Errore nel recupero dei progressi:", error); // Log dell'errore
       res.status(500).json({ message: "Errore interno del server", error });
     }
   }
 
   static async addProgress(req, res) {
-    const { utente_username, corso_id, descrizione, punti } = req.body;
+    const { corso_id, descrizione, punti } = req.body;
+    const utente_username = req.user.username;
     try {
       const progressData = {
         utente_username,
@@ -32,8 +35,7 @@ class UserProgressController {
   }
 
   static async updateProgress(req, res) {
-    const { id } = req.params;
-    const updateFields = req.body;
+    const { id, updateFields } = req.body;
     try {
       const result = await UserProgressFacade.updateProgress(id, updateFields);
       if (result.matchedCount === 0) {
@@ -46,7 +48,7 @@ class UserProgressController {
   }
 
   static async deleteProgress(req, res) {
-    const { id } = req.params;
+    const { id } = req.body;
     try {
       const result = await UserProgressFacade.removeProgress(id);
       if (result.deletedCount === 0) {

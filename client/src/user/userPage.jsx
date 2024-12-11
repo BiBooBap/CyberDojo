@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChangeCredentialsFacade from "../services/changecredentialsFacade";
+import ProgressFacade from "../services/progressFacade";
+import RewardItem from "../utils/RewardItem";
 import "../index.css";
 
 const AreaUtente = () => {
@@ -25,6 +27,10 @@ const AreaUtente = () => {
   // States for prize management
   const [nomePremio, setNomePremio] = useState("");
   const [descrizionePremio, setDescrizionePremio] = useState("");
+
+  // States for rewards
+  const [rewards, setRewards] = useState([]);
+  const [error, setError] = useState(null);
 
   // Function to verify the password
   const handleVerifyPassword = async (e) => {
@@ -63,6 +69,24 @@ const AreaUtente = () => {
       navigate("/accessPage");
     }
   }, [navigate]);
+
+  // Fetch rewards when "Sezione Premi" is selected
+  useEffect(() => {
+    const fetchRewards = async () => {
+      try {
+        const data = await ProgressFacade.getProgress();
+        console.log("Dati recuperati:", data);
+        setRewards(data);
+      } catch (error) {
+        console.error("Errore nel recupero dei premi:", error);
+        setError(error.message);
+      }
+    };
+
+    if (selectedSection === "Sezione Premi") {
+      fetchRewards();
+    }
+  }, [selectedSection]);
 
   // Definition of the toggleMenu function
   const toggleMenu = () => {
@@ -335,6 +359,22 @@ const AreaUtente = () => {
         </div>
       );
     }
+
+    else if (selectedSection === "Sezione Premi") {
+      return (
+        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+            Sezione Premi
+          </h1>
+          {error ? (
+            <p className="text-red-500">{error}</p>
+          ) : (
+            rewards.map((reward) => <RewardItem key={reward._id} reward={reward} />)
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
         <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
