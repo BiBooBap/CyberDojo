@@ -3,7 +3,13 @@ const notifier = require("../services/progressNotifier");
 
 class UserProgressFacade {
   static async getProgress(username) {
-    return await UserProgressDAO.getProgressByUsername(username);
+    const progress = await UserProgressDAO.getProgressByUsername(username);
+    for (let reward of progress) {
+      reward.course_name = await UserProgressDAO.getCourseNameById(
+        reward.course_id
+      );
+    }
+    return progress;
   }
 
   static async addProgress(progressData) {

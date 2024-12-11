@@ -4,10 +4,7 @@ const { ObjectId } = require("mongodb");
 class UserProgressDAO {
   static async getProgressByUsername(username) {
     const db = await connect();
-    return db
-      .collection("rewards")
-      .find({ utente_username: username })
-      .toArray();
+    return db.collection("rewards").find({ user_username: username }).toArray();
   }
 
   static async createProgress(progressData) {
@@ -19,12 +16,18 @@ class UserProgressDAO {
     const db = await connect();
     return db
       .collection("rewards")
-      .updateOne({ _id: new ObjectId(id) }, { $set: updateFields });
+      .updateOne({ _id: id }, { $set: updateFields });
   }
 
   static async deleteProgress(id) {
     const db = await connect();
-    return db.collection("rewards").deleteOne({ _id: new ObjectId(id) });
+    return db.collection("rewards").deleteOne({ _id: id });
+  }
+
+  static async getCourseNameById(courseId) {
+    const db = await connect();
+    const course = await db.collection("courses").findOne({ _id: courseId });
+    return course ? course.name : null;
   }
 }
 

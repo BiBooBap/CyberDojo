@@ -32,17 +32,14 @@ router.get("/user-info", authenticate, async (req, res) => {
     const userInfo = await AuthService.getUserInfo(username);
     res.json(userInfo);
   } catch (error) {
-    console.error(
-      "Errore durante il recupero delle informazioni dell'utente:",
-      error
-    );
+    console.error("Errore durante il recupero delle informazioni dell'utente:", error);
     res.status(500).json({ message: error.message });
   }
 });
 
 // Update user information
-router.put("/update-user-info", authenticate, async (req, res) => {
-  const { newEmail, newUsername, newPassword } = req.body;
+router.post("/update-user-info", authenticate, async (req, res) => {
+  const { newUsername, newEmail, newPassword } = req.body;
   const username = req.user.username;
 
   if (!newEmail || !newUsername) {
@@ -52,18 +49,20 @@ router.put("/update-user-info", authenticate, async (req, res) => {
   }
 
   try {
-    await AuthService.updateUserInfo(
-      username,
-      newEmail,
-      newUsername,
-      newPassword
-    );
-    res.json({ message: "Informazioni aggiornate con successo" });
+    const result = await AuthService.updateUserInfo(username, newEmail, newUsername, newPassword);
+    
+    // Check if the username has been updated to return a new token
+    if (result.newUsername && result.token) {
+      return res.json({
+        message: result.message,
+        token: result.token,
+      });
+    }
+
+    res.json({ message: result.message });
+
   } catch (error) {
-    console.error(
-      "Errore durante l'aggiornamento delle informazioni dell'utente:",
-      error
-    );
+    console.error( "Errore durante l'aggiornamento delle informazioni dell'utente:", error);
     res.status(500).json({ message: error.message });
   }
 });

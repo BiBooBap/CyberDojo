@@ -51,7 +51,7 @@ async function initializeDB() {
     {
       email: "giuliarossi@gmail.com",
       username: "giulia123",
-      password: await bcrypt.hash("password3", 10),
+      password: "password3",
       role: "user",
       points: 100,
       avatar: "CyberDojo/database/img/base.png",
@@ -68,7 +68,7 @@ async function initializeDB() {
     {
       email: "paolomorandi@gmail.com",
       username: "paoloM",
-      password: await bcrypt.hash("password8", 10),
+      password: "password8",
       role: "admin",
       points: 1000,
       avatar: "CyberDojo/database/img/admin.png",
@@ -79,7 +79,7 @@ async function initializeDB() {
     {
       email: "andrealandi@gmail.com",
       username: "andre89",
-      password: await bcrypt.hash("password4", 10),
+      password: "password4",
       role: "user",
       points: 200,
       avatar: "CyberDojo/database/img/advanced.png",
@@ -92,7 +92,7 @@ async function initializeDB() {
     {
       email: "mariabianchi@gmail.com",
       username: "mariaB",
-      password: await bcrypt.hash("password5", 10),
+      password: "password5",
       role: "user",
       points: 20,
       avatar: "CyberDojo/database/img/newbie.png",
@@ -108,7 +108,7 @@ async function initializeDB() {
     {
       email: "luigiricci@gmail.com",
       username: "luigiR99",
-      password: await bcrypt.hash("password6", 10),
+      password: "password6",
       role: "user",
       points: 350,
       avatar: "CyberDojo/database/img/pro.png",
@@ -124,7 +124,7 @@ async function initializeDB() {
     {
       email: "elisaferrari@gmail.com",
       username: "elisaf90",
-      password: await bcrypt.hash("password7", 10),
+      password: "password7",
       role: "user",
       points: 500,
       avatar: "CyberDojo/database/img/expert.png",
@@ -489,8 +489,7 @@ async function initializeDB() {
       date: new Date(),
     },
   ]);
-
-  // Collection: inventory
+  // Collection: Inventory
   await db.createCollection("inventory", {
     validator: {
       $jsonSchema: {
@@ -499,13 +498,13 @@ async function initializeDB() {
         properties: {
           user_username: {
             bsonType: "string",
-            description: "Username of the inventory owner",
+            description: "Owner's username",
           },
           items: {
             bsonType: "array",
             items: {
               bsonType: "object",
-              required: ["name", "description"],
+              required: ["name", "description", "image_path"],
               properties: {
                 name: { bsonType: "string", description: "Item name" },
                 description: {
@@ -514,10 +513,11 @@ async function initializeDB() {
                 },
                 image_path: {
                   bsonType: "string",
-                  description: "Path to the item's image",
+                  description: "Path to item image",
                 },
               },
             },
+            description: "List of items owned by the user",
           },
         },
       },
@@ -527,12 +527,28 @@ async function initializeDB() {
     // Insert real data into the 'inventory' collection
     await db.collection("inventory").insertMany([
       {
+        user_username: "giulia123",
+        items: [
+          {
+            name: "Golden Avatar",
+            description:
+              "A special golden avatar to showcase your achievements.",
+            image_path: "CyberDojo/database/img/golden_avatar.png",
+          },
+          {
+            name: "Champion Title",
+            description: "Display the 'Champion' title on your profile.",
+            image_path: "CyberDojo/database/img/champion_title.png",
+          },
+        ],
+      },
+      {
         user_username: "andre89",
         items: [
           {
-            name: "Oggetto Speciale",
-            description: "Descrizione dell'oggetto speciale",
-            image_path: "CyberDojo/database/img/standardimage.png",
+            name: "Silver Border",
+            description: "Add a stylish silver border to your profile.",
+            image_path: "CyberDojo/database/img/silver_border.png",
           },
         ],
       },
@@ -540,9 +556,30 @@ async function initializeDB() {
         user_username: "mariaB",
         items: [
           {
-            name: "Oggetto Speciale",
-            description: "Descrizione dell'oggetto speciale",
-            image_path: "CyberDojo/database/img/standardimage.png",
+            name: "Golden Avatar",
+            description:
+              "A special golden avatar to showcase your achievements.",
+            image_path: "CyberDojo/database/img/golden_avatar.png",
+          },
+        ],
+      },
+      {
+        user_username: "luigiR99",
+        items: [
+          {
+            name: "Champion Title",
+            description: "Display the 'Champion' title on your profile.",
+            image_path: "CyberDojo/database/img/champion_title.png",
+          },
+        ],
+      },
+      {
+        user_username: "elisaf90",
+        items: [
+          {
+            name: "Champion Title",
+            description: "Display the 'Champion' title on your profile.",
+            image_path: "CyberDojo/database/img/champion_title.png",
           },
         ],
       },
@@ -551,7 +588,93 @@ async function initializeDB() {
   } catch (error) {
     console.error("Error inserting inventory:", error);
   }
-  // Collection: streaks
+
+  // Collection: ShopItems
+  await db.createCollection("shop_items", {
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: [
+          "_id",
+          "name",
+          "description",
+          "price",
+          "category",
+          "image_path",
+        ],
+        properties: {
+          _id: {
+            bsonType: "objectId",
+            description: "Unique ID of the shop item",
+          },
+          name: { bsonType: "string", description: "Name of the item" },
+          description: {
+            bsonType: "string",
+            description: "Description of the item",
+          },
+          price: {
+            bsonType: "int",
+            minimum: 0,
+            description: "Price of the item in points",
+          },
+          category: {
+            bsonType: "string",
+            enum: ["avatar", "border", "title"],
+            description: "Category of the item (e.g., avatar, border, title)",
+          },
+          image_path: {
+            bsonType: "string",
+            description: "Path to the item's image",
+          },
+          featured: {
+            bsonType: "bool",
+            description: "Whether the item is featured in the shop",
+          },
+        },
+      },
+    },
+  });
+
+  // Insert initial data into the 'shop_items' collection
+  try {
+    await db.collection("shop_items").insertMany([
+      {
+        _id: new ObjectId(),
+        name: "Golden Avatar",
+        description: "A special golden avatar to showcase your achievements.",
+        price: 500,
+        category: "avatar",
+        stock: 10,
+        image_path: "CyberDojo/database/img/golden_avatar.png",
+        featured: true,
+      },
+      {
+        _id: new ObjectId(),
+        name: "Silver Border",
+        description: "Add a stylish silver border to your profile.",
+        price: 200,
+        category: "border",
+        stock: 25,
+        image_path: "CyberDojo/database/img/silver_border.png",
+        featured: false,
+      },
+      {
+        _id: new ObjectId(),
+        name: "Champion Title",
+        description: "Display the 'Champion' title on your profile.",
+        price: 300,
+        category: "title",
+        stock: 15,
+        image_path: "CyberDojo/database/img/champion_title.png",
+        featured: true,
+      },
+    ]);
+    console.log("ShopItems inserted successfully");
+  } catch (error) {
+    console.error("Error inserting shop items:", error);
+  }
+
+  // Collection: Streaks
   await db.createCollection("streaks", {
     validator: {
       $jsonSchema: {
