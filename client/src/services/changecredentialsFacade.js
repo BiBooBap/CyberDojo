@@ -9,6 +9,10 @@ class ChangeCredentialsFacade {
     return await ChangeCredentialsService.getUserInfo();
   }
 
+  static async verifyPassword(currentPassword) {
+    return await ChangeCredentialsService.verifyPassword(currentPassword);
+  }
+
 }
 
 export default ChangeCredentialsFacade;
