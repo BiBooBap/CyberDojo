@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Header from "./components/header.jsx";
 import Footer from "./components/footer.jsx";
 import SignUpPage from "./signUpPage.jsx";
@@ -27,7 +31,7 @@ function App() {
         <Header />
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<HomePage user={currentUser} />} />
+            <Route path="/" element={<Navigate to="/homepage" replace />} />
             <Route
               path="/homepage"
               element={

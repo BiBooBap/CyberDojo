@@ -21,15 +21,12 @@ export function isUserLoggedIn() {
 
 export function getUserRole() {
   const token = localStorage.getItem("token");
-
-  if (!token) {
-    return null;
-  }
-
+  if (!token) return null;
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
     return payload.role;
-  } catch (e) {
+  } catch (error) {
+    console.error("Errore nel parsing del token:", error);
     return null;
   }
 }
@@ -51,14 +48,12 @@ export function getUserName() {
 
 export function getPayload() {
   const token = localStorage.getItem("token");
-
-  if (!token) {
-    return null;
-  }
-
+  if (!token) return null;
   try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch (e) {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload;
+  } catch (error) {
+    console.error("Errore nel parsing del token:", error);
     return null;
   }
 }
