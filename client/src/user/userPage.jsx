@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ChangeCredentialsFacade from "../services/changecredentialsFacade";
 import "../index.css";
 
 const AreaUtente = () => {
@@ -25,6 +26,58 @@ const AreaUtente = () => {
     }
   }, [navigate]);
 
+  // For form in "Modifica credenziali"
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const userInfo = await ChangeCredentialsFacade.getUserInfo();
+        setUsername(userInfo.username);
+        setEmail(userInfo.email);
+      } catch (error) {
+        console.error('Errore durante il recupero delle informazioni utente:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!username || !email) {
+      alert('Username ed email sono obbligatori.');
+      return;
+    } else {
+    
+    }
+
+    const formData = {
+      newUsername: username,
+      newEmail: email,
+      newPassword: password || undefined,
+    };
+
+    try{
+      const response = await ChangeCredentialsFacade.updateUserCredentials(formData);
+      
+      if (response.message === "Informazioni aggiornate con successo") {
+        alert('Credenziali aggiornate con successo!');
+      } else {
+        // Gestisci gli errori
+        alert('Errore durante l\'invio dei dati. Riprova più tardi.');
+      }
+    } catch (error) {
+      console.error('Errore nella richiesta:', error);
+      alert(`Errore durante l'aggiornamento delle credenziali: ${error.message}`);
+    }
+  
+  };
+
   const renderForm = () => {
     if (selectedSection === "Gestione Account") {
       return (
@@ -49,31 +102,39 @@ const AreaUtente = () => {
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
             {selectedSection}
           </h1>
-          <p className="mb-1 text-white font-bold text-sm">Campo 1</p>
-          <input
-            type="text"
-            className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-            placeholder="Campo 1"
-          />
-          <p className="mb-1 text-white font-bold text-sm">Campo 2</p>
-          <input
-            type="text"
-            className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-            placeholder="Campo 2"
-          />
-          <p className="mb-1 text-white font-bold text-sm">Campo 3</p>
-          <input
-            type="text"
-            className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-            placeholder="Campo 3"
-          />
-          <br />
-          <button
-            type="submit"
-            className="button-CD py-2 px-8 mt-3 ml-3 text-xl"
-          >
-            Invia
-          </button>
+          <form className="flex flex-col items-center" onSubmit={handleSubmit}>
+            <p className="mb-1 text-white font-bold text-sm">Username</p>
+            <input
+              type="text"
+              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
+              placeholder="Nuovo userame"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <p className="mb-1 text-white font-bold text-sm">Email</p>
+            <input
+              type="text"
+              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
+              placeholder="Nuova email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <p className="mb-1 text-white font-bold text-sm">Nuova password (Opzionale)</p>
+            <input
+              type="password"
+              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
+              placeholder="Nuova password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <br />
+            <button
+              type="submit"
+              className="button-CD py-2 px-8 mt-3 ml-3 text-xl"
+            >
+              Invia
+            </button>
+          </form>
         </div>
       );
     } else {

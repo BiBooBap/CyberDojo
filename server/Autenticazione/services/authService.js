@@ -5,9 +5,17 @@ const UserDao = require("../dao/userDao");
 const secretKey = "sigmasigmaonthewall";
 
 class AuthService {
+
+  static generateToken(user) {
+    return jwt.sign(
+      { username: user.username, role: user.role },
+      secretKey,
+      { expiresIn: "30m" }
+    );
+  }
+
   static async loginByUsername(username, password) {
-    console.log("Username = " + username);
-    console.log("Password = " + password);
+
     const user = await UserDao.findUserByUsername(username);
     if (!user) {
       throw new Error("Utente non valide");
@@ -18,11 +26,7 @@ class AuthService {
       throw new Error("Credenziali non valide");
     }
 
-    const token = jwt.sign(
-      { username: user.username, role: user.role },
-      secretKey,
-      { expiresIn: "30m" }
-    );
+    const token = AuthService.generateToken(user);
 
     return token;
   }
@@ -38,11 +42,7 @@ class AuthService {
       throw new Error("Credenziali non valide");
     }
 
-    const token = jwt.sign(
-      { username: user.username, role: user.role },
-      secretKey,
-      { expiresIn: "30m" }
-    );
+    const token = AuthService.generateToken(user);
 
     return token;
   }
@@ -75,7 +75,8 @@ class AuthService {
     };
   }
 
-  static async updateUserInfo(username, newEmail, newUsername, newPassword) {
+  static async updateUserInfo( username, newEmail, newUsername, newPassword) {
+
     if (!newEmail || !newUsername) {
       throw new Error("Email e username sono obbligatori");
     }
@@ -85,23 +86,48 @@ class AuthService {
       throw new Error("Email già utilizzata da un altro utente");
     }
 
-    const existingUserByUsername = await UserDao.findUserByUsername(
-      newUsername
-    );
-    if (
-      existingUserByUsername &&
-      existingUserByUsername.username !== username
-    ) {
+    const existingUserByUsername = await UserDao.findUserByUsername(newUsername);
+    if (existingUserByUsername && existingUserByUsername.username !== username) {
       throw new Error("Nome utente già utilizzato da un altro utente");
     }
 
-    const updateFields = {};
-    if (newEmail !== existingUserByEmail.email) updateFields.email = newEmail;
-    if (newUsername !== existingUserByUsername.username)
-      updateFields.username = newUsername;
-    if (newPassword) updateFields.password = await bcrypt.hash(newPassword, 10);
+    const currentUser = await UserDao.findUserByUsername(username);
+    if (!currentUser) {
+      throw new Error("Utente non trovato");
+    }
 
-    await UserDao.updateUser(username, updateFields);
+    const updateFields = {};
+    let isUsernameChanged = false;
+
+    if (newEmail !== currentUser.email) {
+      updateFields.email = newEmail;
+    }
+
+    if (newUsername !== currentUser.username) {
+      updateFields.username = newUsername;
+      isUsernameChanged = true;
+    }
+
+    if (newPassword) {
+      updateFields.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    // Check if there are fields to update
+    if (Object.keys(updateFields).length > 0) {
+      await UserDao.updateUser(username, updateFields);
+
+      const updatedUser = await UserDao.findUserByUsername(newUsername);
+
+      return {
+        message: "Informazioni aggiornate con successo",
+        newUsername: isUsernameChanged ? newUsername : null,
+        token: isUsernameChanged ? AuthService.generateToken(updatedUser) : null,
+      };
+
+    } else {
+      console.log("Nessun campo da aggiornare.");
+      return { message: "Informazioni aggiornate con successo", newUsername: null, token: null };
+    }
   }
 }
 
