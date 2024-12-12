@@ -94,7 +94,7 @@ const Header = () => {
                 <button className="nav-link hover:bg-[#4b2153] px-2 py-2 rounded text-center mx-2 font-bold text-lg">
                   <Link to="/areaUtente">
                     <img
-                      src="/img/user-icon.png"
+                      src="/img/shop/iconautente.png"
                       alt="Area Utente"
                       className="w-6 h-6 inline"
                     />
