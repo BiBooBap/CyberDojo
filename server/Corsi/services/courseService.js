@@ -1,11 +1,10 @@
 const CourseDAO = require("../dao/courseDAO");
 const CourseEnrollmentDAO = require("../dao/courseEnrollmentDAO");
+const RewardsService = require("../../Premi/externalRewardsService");
 
 class CourseService {
   static async getAllCourses(username) {
-    console.log("Richiesta ricevuta per /courses");
     const courses = await CourseDAO.getAllCourses();
-    console.log("Corsi dal DAO:", courses);
     let enrolledCourses = [];
 
     if (username) {
@@ -30,6 +29,38 @@ class CourseService {
 
   static async getLessonsByCourseName(courseName) {
     return await CourseDAO.getLessonsByCourseName(courseName);
+  }
+
+  static async getProgressOfCourse(username, course_id) {
+    const corsi_utente = await CourseDAO.getEnrolledCourses(username);
+    const corso_utente = corsi_utente.find((corsi_utente) => corsi_utente.course_id === course_id);
+
+    const course = await CourseDAO.getCourseInfo(course_id);
+    const totalLessons = course.lessons.length;
+
+    const testExists = await RewardsService.getTestExistsForUserAndCourse(
+      username,
+      course.course_id
+    );
+
+    const normalizedLessonReached = corso_utente.lesson_reached.trim().toLowerCase();
+    const lessonIndex = course.lessons.findIndex(
+      (lesson) => lesson.name.trim().toLowerCase() === normalizedLessonReached
+    );
+
+    let progress = (lessonIndex / totalLessons) * 100;
+    if (lessonIndex + 1 === totalLessons && testExists) {
+      progress = 100;
+    } else {
+
+      if(lessonIndex == 0) {
+        progress = 0;
+      } else {
+        progress = Math.ceil(progress);
+      }
+    }
+
+    return progress;
   }
 }
 

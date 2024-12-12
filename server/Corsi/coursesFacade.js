@@ -1,6 +1,6 @@
 const CourseDAO = require("./dao/courseDAO");
 const CourseEnrollmentDAO = require("./dao/courseEnrollmentDAO");
-const TestService = require("../Test/externalTestService");
+const RewardsService = require("../../Premi/externalRewardsService");
 
 class CoursesFacade {
   static async getAllCourses(username) {
@@ -20,7 +20,7 @@ class CoursesFacade {
           isEnrolled = enrolledCourses.some(
             (enrolledCourse) => enrolledCourse.course_id === course._id
           );
-          testExists = await TestService.getTestExistsForUserAndCourse(
+          testExists = await RewardsService.getTestExistsForUserAndCourse(
             username,
             course._id
           );

@@ -29,6 +29,15 @@ class UserProgressDAO {
     const course = await db.collection("courses").findOne({ _id: courseId });
     return course ? course.name : null;
   }
+
+  // Checks if a user has taken at least one test for a course
+  static async getTestExistsForUserAndCourse(username, courseId) {
+    const db = await connect();
+    return await db.collection("rewards").findOne({
+      user_username: username,
+      course_id: courseId,
+    });
+  }
 }
 
 module.exports = UserProgressDAO;

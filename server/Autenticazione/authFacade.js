@@ -1,5 +1,4 @@
 const CourseService = require("../Corsi/externalCourseService");
-const TestService = require("../Test/externalTestService");
 
 class AuthFacade {
   static async getUserCourses(username) {
@@ -12,30 +11,14 @@ class AuthFacade {
     const courses = await Promise.all(
       enrolledCourses.map(async (course) => {
         const courseInfo = await CourseService.getCourseInfo(course.course_id);
-        const totalLessons = courseInfo.lessons.length;
-        const testExists = await TestService.getTestExistsForUserAndCourse(
-          username,
-          course.course_id
-        );
 
-        const normalizedLessonReached = course.lesson_reached.trim().toLowerCase();
-        const lessonIndex = courseInfo.lessons.findIndex(
-          (lesson) => lesson.name.trim().toLowerCase() === normalizedLessonReached
-        );
-
-        let progress = (lessonIndex / totalLessons) * 100;
-        if (lessonIndex === totalLessons) {
-          progress = testExists ? 100 : 90;
-        } else {
-          progress = Math.ceil(progress);
-        }
+        const progress = await CourseService.getProgressOfCourse(username, course.course_id);
 
         return {
           id: course.course_id,
           title: courseInfo.name,
           icon: courseInfo.course_image,
-          progress,
-          test: testExists ? 1 : 0,
+          progress
         };
       })
     );

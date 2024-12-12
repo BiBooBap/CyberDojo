@@ -472,7 +472,6 @@ const AreaUtente = () => {
     }
 
     if (selectedSection === "Corsi seguiti") {
-      console.log('User Courses:', userCourses); // Debugging
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
@@ -480,7 +479,6 @@ const AreaUtente = () => {
           </h1>
           {userCourses.length > 0 ? (
             userCourses.map((course, index) => {
-              console.log('Course ID:', course.course_id, 'Course _id:', course.cuorse_id); // Debugging
               return (
                 <div key={course.id || course._id || `course-${index}`} className="mb-4">
                   <h2 className="text-white font-bold text-xl">Titolo: {course.title}</h2>
