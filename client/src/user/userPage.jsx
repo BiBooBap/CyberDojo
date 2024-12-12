@@ -396,6 +396,32 @@ const AreaUtente = () => {
     }
 
     else if (selectedSection === "Gestione Account") {
+      if (!isPasswordVerified) {
+        return (
+          <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+            <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+              Verifica Password
+            </h1>
+            <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
+              <p className="mb-1 text-white font-bold text-sm">Password Attuale</p>
+              <input
+                type="password"
+                placeholder="Password attuale"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
+                required
+              />
+              {verificationError && (
+                <span className="text-black text-sm mb-2">{verificationError}</span>
+              )}
+              <button type="submit" className="button-CD py-2 px-8 text-xl">
+                Verifica
+              </button>
+            </form>
+          </div>
+          );
+        }else{
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
@@ -411,8 +437,7 @@ const AreaUtente = () => {
         </div>
       );
     }
-
-    else if (selectedSection === "Sezione Premi") {
+  } else if (selectedSection === "Sezione Premi") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
