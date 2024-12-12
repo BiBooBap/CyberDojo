@@ -1,9 +1,14 @@
-const { connect } = require("../dao/delDAO");
+const DelDao = require("../dao/delDAO");
 
-async function deleteUser(username) {
-  const db = await connect();
-  const result = await db.collection("user").deleteOne({ username });
-  return result;
+class DeleteUserService {
+  static async deleteUser(username) {
+    try {
+      await DelDao.deleteUser(username);
+      return { success: true };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-module.exports = { deleteUser };
+module.exports = DeleteUserService;

@@ -201,7 +201,7 @@ async function initializeDB() {
               "Questa lezione copre le tecniche di gestione degli errori e il debugging in JavaScript.",
           },
         ],
-        course_image: "CyberDojo/database/img/pro.png",
+        course_image: "/img/courses/javascript.png",
       },
       {
         _id: 2,
@@ -220,7 +220,7 @@ async function initializeDB() {
               "Questa lezione copre l'utilizzo di Express.js per la gestione delle route nelle applicazioni Node.js.",
           },
         ],
-        course_image: "CyberDojo/database/img/pro.png",
+        course_image: "/img/courses/nodejs.png",
       },
       {
         _id: 3,
@@ -239,7 +239,7 @@ async function initializeDB() {
               "In questa lezione imparerai a creare la struttura di una pagina HTML utilizzando tag e attributi.",
           },
         ],
-        course_image: "CyberDojo/database/img/pro.png",
+        course_image: "/img/courses/basic.png",
       },
       {
         _id: 4,
@@ -258,7 +258,7 @@ async function initializeDB() {
               "In questa lezione imparerai a creare layout responsivi utilizzando CSS.",
           },
         ],
-        course_image: "CyberDojo/database/img/pro.png",
+        course_image: "/img/courses/css.png",
       },
     ]);
     console.log("Courses inserted successfully");

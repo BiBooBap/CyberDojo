@@ -13,6 +13,9 @@ class ChangeCredentialsFacade {
     return await ChangeCredentialsService.verifyPassword(currentPassword);
   }
 
+  static async deleteAccount() {
+    return await ChangeCredentialsService.deleteAccount();
+  }
 }
 
 export default ChangeCredentialsFacade;

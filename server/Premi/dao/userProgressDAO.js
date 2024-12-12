@@ -19,9 +19,9 @@ class UserProgressDAO {
       .updateOne({ _id: id }, { $set: updateFields });
   }
 
-  static async deleteProgress(id) {
+  static async deleteProgress(username) {
     const db = await connect();
-    return db.collection("rewards").deleteOne({ _id: id });
+    return db.collection("rewards").deleteOne({ user_username: username });
   }
 
   static async getCourseNameById(courseId) {

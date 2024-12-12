@@ -16,6 +16,11 @@ class StreakDAO {
         { upsert: true }
       );
   }
+
+  static async deleteStreak(username) { 
+    const db = await connect();
+    return db.collection("streaks").deleteOne({ user_username: username });
+  }
 }
 
 module.exports = StreakDAO;

@@ -1,20 +1,39 @@
-const { MongoClient } = require("mongodb");
-const mongoUri = process.env.MONGO_URI;
-let dbInstance = null;
+const { connect } = require("../../../database/db");
+const ExternalRewardsService = require("../../Premi/externalRewardsService");
+const ExternalShopService = require("../../Shop/externalShopService");
 
-async function connect() {
-  if (dbInstance) return dbInstance;
+class DelDao {
+  static async deleteUser(username) {
+    const db = await connect();
 
-  try {
-    const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-    await client.connect();
-    dbInstance = client.db("CyberDojo");
-    console.log("Connessione al database avvenuta con successo");
-    return dbInstance;
-  } catch (error) {
-    console.error("Errore durante la connessione al database:", error);
-    throw error;
+    try {
+      // Deletion of the user
+      const userDeletion = await db
+        .collection("user")
+        .deleteOne({ username });
+
+      if (userDeletion.deletedCount === 0) {
+        throw new Error("Utente non trovato");
+      }
+
+      // Deletion of the rewards
+      await ExternalRewardsService.deleteProgress(username);
+
+      // Deletion of the tickets
+      await  db.collection("tickets").deleteMany({ user_username: username });
+
+      // Deletion of the inventory
+      await ExternalShopService.deleteInventory(username);
+
+      // Deletion of the streak
+      await ExternalRewardsService.deleteStreak(username);
+
+      return { success: true };
+    } catch (error) {
+      console.error("Errore durante la cancellazione dell'utente:", error);
+      throw error;
+    }
   }
 }
 
-module.exports = { connect };
+module.exports = DelDao;

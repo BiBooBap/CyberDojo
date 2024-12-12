@@ -20,6 +20,7 @@ import VisitorRoute from "./utils/VisitorRoute.js";
 import ProtectedRoute from "./utils/ProtectedRoute.js";
 import { getUserRole, getPayload } from "./utils/auth";
 import NotAdminRoute from "./utils/NotAdminRoute.js";
+import SupportVisitorPage from "./visitor/supportVisitorPage.jsx";
 
 function App() {
   const userRole = getUserRole();
@@ -40,6 +41,14 @@ function App() {
                 </NotAdminRoute>
               }
             />
+             <Route
+              path="/supporto"
+              element={
+            <VisitorRoute>
+            <SupportVisitorPage />
+            </VisitorRoute>
+  }
+/>
             {/* ^ Landing page ^ */}
             <Route
               path="/SignUpPage"
