@@ -408,6 +408,10 @@ async function initializeDB() {
             bsonType: "date",
             description: "Ticket creation date",
           },
+          is_open: {
+            enum: ["Aperto", "Risolto"],
+            description: "Indicates if the ticket is open or resolved"
+          },
         },
       },
     },
@@ -419,12 +423,14 @@ async function initializeDB() {
       user_username: "andre89",
       description: "Problema con l'accesso al corso avanzato",
       creation_date: new Date(),
+      is_open: "Aperto",
     },
     {
       _id: 2,
       user_username: "mariaB",
       description: "Impossibile caricare l'avatar personalizzato",
       creation_date: new Date(),
+      is_open: "Aperto",
     },
     {
       _id: 3,
@@ -432,24 +438,28 @@ async function initializeDB() {
       description:
         "Errore durante il pagamento per l'iscrizione al corso premium",
       creation_date: new Date(),
+      is_open: "Risolto",
     },
     {
       _id: 4,
       user_username: "elisaf90",
       description: "Problema con il salvataggio dei progressi nel corso base",
       creation_date: new Date(),
+      is_open: "Aperto",
     },
     {
       _id: 5,
       user_username: "paoloM",
       description: "Richiesta di supporto per configurazione delle notifiche",
       creation_date: new Date(),
+      is_open: "Risolto",
     },
     {
       _id: 6,
       user_username: "giulia123",
       description: "Il sistema segnala punteggi errati nella classifica",
       creation_date: new Date(),
+      is_open: "Aperto",
     },
   ]);
   // Creazione della collezione 'rewards' con validatore
