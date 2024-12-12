@@ -1,13 +1,16 @@
 const { connect } = require("../../../database/db");
 
 class CourseEnrollmentDAO {
-  static async enrollCourse(username, courseId) {
+  static async enrollCourse(courseId, username) {
     const db = await connect();
-    return db.collection("users").updateOne(
+    return db.collection("user").updateOne(
       { username },
       {
-        $addToSet: {
-          enrolled_courses: { course_id: courseId, lesson_reached: "" },
+        $push: {
+          enrolled_courses: {
+            course_id: courseId.courseId,
+            lesson_reached: "Mario Rossi",
+          },
         },
       }
     );

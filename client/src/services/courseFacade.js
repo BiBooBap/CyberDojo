@@ -4,8 +4,9 @@ const courseFacade = {
   getAllCourses: async (token) => {
     return await corsiService.getCourses(token);
   },
-  enrollCourse: async (courseId, token) => {
+  enrollCourse: async (courseId) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:3001/courses/enroll", {
         method: "POST",
         headers: {

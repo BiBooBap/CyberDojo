@@ -35,8 +35,7 @@ const HomePage = ({ user }) => {
       alert("È necessario registrarsi per iscriversi ai corsi.");
     } else {
       try {
-        const token = localStorage.getItem("token");
-        await courseFacade.enrollCourse(course.id, token);
+        await courseFacade.enrollCourse(course.id);
         alert("Iscrizione avvenuta con successo!");
       } catch (error) {
         console.error("Errore durante l'iscrizione al corso:", error);
