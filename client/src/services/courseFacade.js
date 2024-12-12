@@ -25,6 +25,27 @@ const courseFacade = {
       throw error;
     }
   },
+
+  getEnrolledCourses: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3001/auth/user-courses", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Errore nel recupero dei corsi seguiti");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Errore durante il recupero dei corsi seguiti:", error);
+      throw error;
+    }
+  },
 };
 
 export default courseFacade;

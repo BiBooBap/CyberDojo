@@ -4,6 +4,7 @@ import ChangeCredentialsFacade from "../services/changecredentialsFacade";
 import ProgressFacade from "../services/progressFacade";
 import RewardItem from "../utils/RewardItem";
 import ShopFacade from "../services/shopFacade";
+import courseFacade from "../services/courseFacade";
 import "../index.css";
 
 const AreaUtente = () => {
@@ -32,6 +33,9 @@ const AreaUtente = () => {
   // States for rewards
   const [rewards, setRewards] = useState([]);
   const [error, setError] = useState(null);
+
+  // State for user courses
+  const [userCourses, setUserCourses] = useState([]);
 
   // State for inventory
   const [inventory, setInventory] = useState({ avatar: [], border: [], title: [] });
@@ -111,6 +115,21 @@ const AreaUtente = () => {
 
     if (selectedSection === "Inventario") {
       fetchInventory();
+    }
+  }, [selectedSection]);
+
+  useEffect(() => {
+    const fetchUserCourses = async () => {
+      try {
+        const courses = await courseFacade.getEnrolledCourses();
+        setUserCourses(courses);
+      } catch (error) {
+        console.error("Errore nel recupero dei corsi seguiti:", error);
+      }
+    };
+
+    if (selectedSection === "Corsi seguiti") {
+      fetchUserCourses();
     }
   }, [selectedSection]);
 
@@ -422,6 +441,30 @@ const AreaUtente = () => {
             <p className="text-red-500">{error}</p>
           ) : (
             rewards.map((reward) => <RewardItem key={reward._id} reward={reward} />)
+          )}
+        </div>
+      );
+    }
+
+    if (selectedSection === "Corsi seguiti") {
+      console.log('User Courses:', userCourses); // Debugging
+      return (
+        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+            Corsi Seguiti
+          </h1>
+          {userCourses.length > 0 ? (
+            userCourses.map((course, index) => {
+              console.log('Course ID:', course.course_id, 'Course _id:', course.cuorse_id); // Debugging
+              return (
+                <div key={course.id || course._id || `course-${index}`} className="mb-4">
+                  <h2 className="text-white font-bold text-xl">Titolo: {course.title}</h2>
+                  <p className="text-white">Progresso: {course.progress}%</p>
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-white">Non sei iscritto a nessun corso.</p>
           )}
         </div>
       );
