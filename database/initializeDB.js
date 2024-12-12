@@ -677,7 +677,7 @@ async function initializeDB() {
         price: 500,
         category: "border",
         stock: 10,
-        image_path: "CyberDojo/database/img/shop/anello.png",
+        image_path: "/img/shop/anello.png",
         featured: true,
       },
       {
@@ -687,7 +687,7 @@ async function initializeDB() {
         price: 200,
         category: "avatar",
         stock: 25,
-        image_path: "CyberDojo/database/img/shop/avatardonna.png",
+        image_path: "/img/shop/avatardonna.png",
         featured: false,
       },
       {
@@ -697,7 +697,7 @@ async function initializeDB() {
         price: 300,
         category: "avatar",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/avataruomo.png",
+        image_path: "/img/shop/avataruomo.png",
         featured: true,
       },
       {
@@ -707,7 +707,7 @@ async function initializeDB() {
         price: 300,
         category: "title",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/cappello.png",
+        image_path: "/img/shop/cappello.png",
         featured: true,
       },
       {
@@ -717,7 +717,7 @@ async function initializeDB() {
         price: 300,
         category: "avatar",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/drago.png",
+        image_path: "/img/shop/drago.png",
         featured: true,
       },
       {
@@ -727,7 +727,7 @@ async function initializeDB() {
         price: 300,
         category: "avatar",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/dragone.png",
+        image_path: "/img/shop/dragone.png",
         featured: true,
       },
       {
@@ -737,7 +737,7 @@ async function initializeDB() {
         price: 300,
         category: "avatar",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/nuvola.png",
+        image_path: "/img/shop/nuvola.png",
         featured: true,
       },
       {
@@ -747,7 +747,7 @@ async function initializeDB() {
         price: 300,
         category: "title",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/occhiali.png",
+        image_path: "/img/shop/occhiali.png",
         featured: true,
       },
       {
@@ -757,7 +757,7 @@ async function initializeDB() {
         price: 300,
         category: "title",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/onepiece.png",
+        image_path: "/img/shop/onepiece.png",
         featured: true,
       },
       {
@@ -767,7 +767,7 @@ async function initializeDB() {
         price: 300,
         category: "avatar",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/reverse.png",
+        image_path: "/img/shop/reverse.png",
         featured: true,
       },
       {
@@ -777,7 +777,7 @@ async function initializeDB() {
         price: 300,
         category: "border",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/sigillo.png",
+        image_path: "/img/shop/sigillo.png",
         featured: true,
       },
       {
@@ -787,7 +787,7 @@ async function initializeDB() {
         price: 300,
         category: "avatar",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/therock.png",
+        image_path: "/img/shop/therock.png",
         featured: true,
       },
       {
@@ -797,7 +797,7 @@ async function initializeDB() {
         price: 300,
         category: "avatar",
         stock: 15,
-        image_path: "CyberDojo/database/img/shop/z.png",
+        image_path: "/img/shop/z.png",
         featured: true,
       },
     ]);

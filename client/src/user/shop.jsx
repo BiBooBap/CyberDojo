@@ -1,10 +1,11 @@
+// client/src/Shop.jsx
+
 import React, { useEffect, useState } from "react";
 import { isUserLoggedIn } from "../utils/auth";
 import shopFacade from "../services/shopFacade";
 
 const ShopItem = ({ item }) => {
   const [isPurchased, setIsPurchased] = useState(false);
-
 
   useEffect(() => {
     async function checkIfPurchased() {
@@ -35,12 +36,16 @@ const ShopItem = ({ item }) => {
   };
 
   return (
-    <div key={item._id} className="card-body p-3 mb-3">
-      <img src={item.image_path} alt="Foto oggetto" className="logo w-14 h-14" />
-      <h3 className="font-bold">{item.name}</h3>
-      <p className="text-xs mb-1">{item.description}</p>
+    <div className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
+<img
+  src={item.image_path}
+  alt="Foto oggetto"
+  className="logo w-14 h-14"
+/>
+      <h3 className="font-bold text-lg text-center mb-2">{item.name}</h3>
+      <p className="text-xs mb-1 text-center">{item.description}</p>
       <button
-        className="button-CD p-[7px]"
+        className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
         onClick={handlePurchase}
         disabled={isPurchased}
       >
@@ -69,16 +74,18 @@ const NegozioPunti = () => {
   }, []);
 
   return (
-    <div>
+    <div className="px-8 py-4">
       <h1 className="font-Montserrat justify-self-center font-bold text-xl mb-3 mt-3">
         Negozio Punti
       </h1>
       {error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        items.map((item) => (
-          <ShopItem key={item._id} item={item} />
-        ))
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+          {items.map((item) => (
+            <ShopItem key={item._id} item={item} />
+          ))}
+        </div>
       )}
     </div>
   );
