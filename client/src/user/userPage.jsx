@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ChangeCredentialsFacade from "../services/changecredentialsFacade";
 import ProgressFacade from "../services/progressFacade";
 import RewardItem from "../utils/RewardItem";
+import ShopFacade from "../services/shopFacade";
 import "../index.css";
 
 const AreaUtente = () => {
@@ -31,6 +32,9 @@ const AreaUtente = () => {
   // States for rewards
   const [rewards, setRewards] = useState([]);
   const [error, setError] = useState(null);
+
+  // State for inventory
+  const [inventory, setInventory] = useState({ avatar: [], border: [], title: [] });
 
   // Function to verify the password
   const handleVerifyPassword = async (e) => {
@@ -85,6 +89,28 @@ const AreaUtente = () => {
 
     if (selectedSection === "Sezione Premi") {
       fetchRewards();
+    }
+  }, [selectedSection]);
+
+  // Fetch invetory when "Inventario" is selected
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const userInventory = await ShopFacade.getUserInventory();
+        const organizedInventory = { avatar: [], border: [], title: [] };
+        userInventory.items.forEach(item => {
+          if (item.type === "avatar") organizedInventory.avatar.push(item);
+          else if (item.type === "border") organizedInventory.border.push(item);
+          else if (item.type === "title") organizedInventory.title.push(item);
+        });
+        setInventory(organizedInventory);
+      } catch (error) {
+        console.error("Errore nel recupero dell'inventario:", error);
+      }
+    };
+
+    if (selectedSection === "Inventario") {
+      fetchInventory();
     }
   }, [selectedSection]);
 
@@ -308,38 +334,57 @@ const AreaUtente = () => {
       );
     }
 
-    else if (selectedSection === "Gestione Premi") {
+    else if (selectedSection === "Inventario") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
             {selectedSection}
           </h1>
-          <form className="flex flex-col items-center" onSubmit={handlePremiSubmit}>
-            <p className="mb-1 text-white font-bold text-sm">Nome Campo 1</p>
-            <input
-              type="text"
-              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-              placeholder="Placeholder 1"
-              value={nomePremio}
-              onChange={(e) => setNomePremio(e.target.value)}
-              required
-            />
-            <p className="mb-1 text-white font-bold text-sm">Nome Campo 2 </p>
-            <input
-              type="text"
-              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-              placeholder="Placeholder 2"
-              value={descrizionePremio}
-              onChange={(e) => setDescrizionePremio(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className="button-CD py-2 px-8 mt-3 ml-3 text-xl"
-            >
-              Salva Premio
-            </button>
-          </form>
+          <div className="inventory-section">
+            <h2 className="text-white font-bold text-xl mb-2">Avatars</h2>
+            {inventory.avatar.length > 0 ? (
+              inventory.avatar.map((item, index) => (
+                  <div key={index} className="inventory-item flex flex-col items-center mb-4">
+                  <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
+                  <p className="font-bold mb-1">{item.name}</p>
+                  <p className="text-sm mb-2 text-center">{item.description}</p>
+                  <button className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]">Seleziona</button> {/* !TODO: Implementare la logica per selezionare l'item */}
+                </div>
+              ))
+            ) : (
+              <p className="text-white">Nessun avatar disponibile</p>
+            )}
+          </div>
+          <div className="inventory-section">
+            <h2 className="text-white font-bold text-xl mb-2">Bordi</h2>
+            {inventory.border.length > 0 ? (
+              inventory.border.map((item, index) => (
+                <div key={index} className="inventory-item flex flex-col items-center mb-4">
+                  <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
+                  <p className="font-bold mb-1">{item.name}</p>
+                  <p className="text-sm mb-2 text-center">{item.description}</p>
+                  <button className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]">Seleziona</button> {/* !TODO: Implementare la logica per selezionare l'item */}
+                </div>
+              ))
+            ) : (
+              <p className="text-white">Nessun bordo disponibile</p>
+            )}
+          </div>
+          <div className="inventory-section">
+            <h2 className="text-white font-bold text-xl mb-2">Titoli</h2>
+            {inventory.title.length > 0 ? (
+              inventory.title.map((item, index) => (
+                <div key={index} className="inventory-item flex flex-col items-center mb-4">
+                  <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
+                  <p className="font-bold mb-1">{item.name}</p>
+                  <p className="text-sm mb-2 text-center">{item.description}</p>
+                  <button className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]">Seleziona</button> {/* !TODO: Implementare la logica per selezionare l'item */}
+                </div>
+              ))
+            ) : (
+              <p className="text-white">Nessun titolo disponibile</p>
+            )}
+          </div>
         </div>
       );
     }
@@ -403,11 +448,11 @@ const AreaUtente = () => {
           <li>
             <button
               className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Gestione Premi" ? "bg-[#4b2153] text-[#e0a11b]" : ""
+                selectedSection === "Inventario" ? "bg-[#4b2153] text-[#e0a11b]" : ""
               }`}
-              onClick={() => setSelectedSection("Gestione Premi")}
+              onClick={() => setSelectedSection("Inventario")}
             >
-              Gestione Premi
+              Inventario
             </button>
           </li>
           <li>
@@ -497,13 +542,13 @@ const AreaUtente = () => {
               <li>
                 <button
                   className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Gestione Premi"
+                    selectedSection === "Inventario"
                       ? "bg-[#4b2153] text-[#e0a11b]"
                       : ""
                   }`}
-                  onClick={() => setSelectedSection("Gestione Premi")}
+                  onClick={() => setSelectedSection("Inventario")}
                 >
-                  Gestione Premi
+                  Inventario
                 </button>
               </li>
               <li>
