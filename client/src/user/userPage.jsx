@@ -202,15 +202,21 @@ const AreaUtente = () => {
 
   // Function to handle account deletion
   const handleDeleteAccount = async () => {
-    if (window.confirm("Sei sicuro di voler eliminare il tuo account?")) {
+    if (window.confirm("Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.")) {
       try {
-        await ChangeCredentialsFacade.deleteAccount(); // Assicurati di implementare questa funzione nel facade
+        const response = await ChangeCredentialsFacade.deleteAccount();
+
         alert("Account eliminato con successo.");
-        navigate("/signupPage"); // Reindirizza dopo l'eliminazione
+        // Remove the token and redirect the user
+        localStorage.removeItem("token");
+        navigate("/signupPage");
+
       } catch (error) {
         console.error("Errore durante l'eliminazione dell'account:", error);
         alert("Errore durante l'eliminazione dell'account.");
       }
+    } else {
+      return;
     }
   };
 
@@ -398,6 +404,7 @@ const AreaUtente = () => {
           <button
             type="button"
             className="button-CD py-2 px-8 mt-3 ml-3 text-xl bg-red-600 hover:bg-red-700"
+            onClick={handleDeleteAccount}
           >
             Elimina Account
           </button>

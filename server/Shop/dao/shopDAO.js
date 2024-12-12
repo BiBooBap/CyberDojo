@@ -41,6 +41,11 @@ class ShopDAO {
       .findOne({ user_username: userUsername, "items.name": itemName });
     return inventory !== null;
   }
+
+  static async deleteInventory(userUsername) {
+    const db = await connect();
+    return db.collection("inventory").deleteOne({ user_username: userUsername });
+  }
 }
 
 module.exports = ShopDAO;
