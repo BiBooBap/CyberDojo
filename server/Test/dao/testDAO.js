@@ -37,6 +37,15 @@ class TestDAO {
       .collection("rewards")
       .updateOne({ _id: rewardId }, { $set: updateFields });
   }
+
+  // Checks if a user has taken at least one test for a course
+  async getTestExistsForUserAndCourse(username, courseId) {
+    const db = await connect();
+    return await db.collection("tests").findOne({
+      user_username: username,
+      _id: courseId,
+    });
+  }
 }
 
 module.exports = new TestDAO();

@@ -19,7 +19,16 @@ class CourseDAO {
 
   static async getCourseInfo(courseId) {
     const db = await connect();
-    return db.collection("courses").findOne({ _id: parseInt(courseId, 10) });
+    return db.collection("courses").findOne({ _id: courseId });
+  }
+
+  static async getEnrolledCourses(username) {
+    const db = await connect();
+    const user = await db.collection("user").findOne({ username });
+    if (!user) {
+      throw new Error("Utente non trovato");
+    }
+    return user.enrolled_courses;
   }
 }
 

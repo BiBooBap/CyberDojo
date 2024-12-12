@@ -9,7 +9,7 @@ class CourseService {
 
   // Retrieves a list of all courses that a user is enrolled in
   static async getEnrolledCourses(username) {
-    return await CourseEnrollmentDAO.getEnrolledCourses(username);
+    return await CourseDAO.getEnrolledCourses(username);
   }
 }
 

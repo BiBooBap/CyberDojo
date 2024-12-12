@@ -13,17 +13,18 @@ class AuthFacade {
       enrolledCourses.map(async (course) => {
         const courseInfo = await CourseService.getCourseInfo(course.course_id);
         const totalLessons = courseInfo.lessons.length;
-        const testExists = await TestService.testExistsForUserAndCourse(
+        const testExists = await TestService.getTestExistsForUserAndCourse(
           username,
           course.course_id
         );
 
+        const normalizedLessonReached = course.lesson_reached.trim().toLowerCase();
         const lessonIndex = courseInfo.lessons.findIndex(
-          (lesson) => lesson.name === course.lesson_reached
+          (lesson) => lesson.name.trim().toLowerCase() === normalizedLessonReached
         );
 
         let progress = (lessonIndex / totalLessons) * 100;
-        if (lessonIndex === totalLessons - 1) {
+        if (lessonIndex === totalLessons) {
           progress = testExists ? 100 : 90;
         } else {
           progress = Math.ceil(progress);
