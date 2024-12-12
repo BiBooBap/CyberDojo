@@ -128,7 +128,7 @@ const HomePage = ({ user }) => {
           intermediateCourses.map((course) => (
             <div key={course.id} className="card-body p-3 mb-3">
               <img
-                src={course.icon}
+                src="/img/courses/algoritmi.png"
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />

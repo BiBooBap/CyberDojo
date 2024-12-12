@@ -33,6 +33,7 @@ app.use("/courses", courseRoutes);
 app.use("/tests", testRoutes);
 app.use("/streaks", streakRoutes);
 app.use("/shop", shopRoutes);
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Server startup
 app.listen(port, () => {

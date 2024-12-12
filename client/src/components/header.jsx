@@ -1,3 +1,4 @@
+// header.jsx
 import React, { useState } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
@@ -80,15 +81,28 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             {userRole === "user" && (
-              <div className="hidden md:flex items-center space-x-2">
-                <img
-                  src="/img/coin.png"
-                  alt="Coins Icon"
-                  className="coins-icon w-5 h-5 rounded-full"
-                />
-                <span>1</span> {/* Sostituisci con il saldo effettivo delle monete */}
-              </div>
+              <>
+                <div className="hidden md:flex items-center space-x-2">
+                  <img
+                    src="/img/coin.png"
+                    alt="Coins Icon"
+                    className="coins-icon w-5 h-5 rounded-full"
+                  />
+                  <span>1</span> {/* Sostituisci con il saldo effettivo delle monete */}
+                </div>
+                {/* Aggiungi l'icona "Area Utente" */}
+                <button className="nav-link hover:bg-[#4b2153] px-2 py-2 rounded text-center mx-2 font-bold text-lg">
+                  <Link to="/areaUtente">
+                    <img
+                      src="/img/user-icon.png"
+                      alt="Area Utente"
+                      className="w-6 h-6 inline"
+                    />
+                  </Link>
+                </button>
+              </>
             )}
+            {/* Pulsante Logout */}
             <button
               onClick={handleLogout}
               className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg"
@@ -96,13 +110,12 @@ const Header = () => {
               Logout
             </button>
           </>
-        ) : (
-          <></>
-        )}
+        ) : null}
         <button
           className="menu-toggle md:hidden focus:outline-none"
           onClick={toggleMenu}
         >
+          {/* Icona menu per dispositivi mobili */}
           <svg
             className="w-6 h-6"
             fill="none"
