@@ -46,27 +46,27 @@ const HomePage = ({ user }) => {
 
   return (
     <div className="px-8 py-4">
-      <h1 className="font-Montserrat font-bold flex lg:items-start items-center lg:justify-normal justify-center text-xl mb-3 mt-3">
+      <h1 className="font-Montserrat font-bold text-center text-xl mb-6 mt-6">
         Panoramica corsi
       </h1>
-      <div className="md:flex lg:flex-row justify-center lg:justify-normal space-x-3">
+      <div className="w-full flex flex-wrap justify-center gap-6 mb-10">
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : (
           courses.map((course) => (
-            <div key={course.id} className="card-body p-3 mb-3">
+            <div key={course.id} className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
                 src={course.icon}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold">{course.title}</h3>
-              <p className="text-xs mb-1">
+              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
               {user && (
                 <button
-                  className="button-CD p-[7px] text-sm"
+                  className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
                   onClick={() => handleButtonClick(course)}
                 >
                   {user
@@ -82,27 +82,28 @@ const HomePage = ({ user }) => {
           ))
         )}
       </div>
-      <h1 className="font-Montserrat font-bold flex lg:items-start items-center lg:justify-normal justify-center text-xl mb-3 mt-3">
+      <h1 className="font-Montserrat font-bold text-center text-xl mb-6 mt-6">
         Corsi introduttivi
       </h1>
-      <div className="md:flex lg:flex-row justify-center lg:justify-normal space-x-3">
+      <div className="w-full flex flex-wrap justify-center gap-6 mb-10">
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : (
           introductionCourses.map((course) => (
-            <div key={course.id} className="card-body p-3 mb-3">
+            <div key={course.id} 
+            className= "card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
                 src={course.icon}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold">{course.title}</h3>
-              <p className="text-xs mb-1">
+              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
               {user && (
                 <button
-                  className="button-CD p-[7px] text-sm"
+                  className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
                   onClick={() => handleButtonClick(course)}
                 >
                   {user
@@ -118,27 +119,28 @@ const HomePage = ({ user }) => {
           ))
         )}
       </div>
-      <h1 className="font-Montserrat font-bold flex lg:items-start items-center lg:justify-normal justify-center text-xl mb-3 mt-3">
+      <h1 className="font-Montserrat font-bold text-center text-xl mb-6 mt-6">
         Corsi intermedi
       </h1>
-      <div className="md:flex lg:flex-row justify-center lg:justify-normal space-x-3">
+      <div className="w-full flex flex-wrap justify-center gap-6 mb-10">
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : (
           intermediateCourses.map((course) => (
-            <div key={course.id} className="card-body p-3 mb-3">
+            <div key={course.id} 
+            className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
                 src={course.icon}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold">{course.title}</h3>
-              <p className="text-xs mb-1">
+              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
               {user && (
                 <button
-                  className="button-CD p-[7px] text-sm"
+                  className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
                   onClick={() => handleButtonClick(course)}
                 >
                   {user
@@ -154,27 +156,28 @@ const HomePage = ({ user }) => {
           ))
         )}
       </div>
-      <h1 className="font-Montserrat font-bold flex lg:items-start items-center lg:justify-normal justify-center text-xl mb-3 mt-3">
+      <h1 className="font-Montserrat font-bold text-center text-xl mb-6 mt-6">
         Corsi avanzati
       </h1>
-      <div className="md:flex lg:flex-row justify-center lg:justify-normal space-x-3">
+      <div className="w-full flex flex-wrap justify-center gap-6 mb-10">
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : (
           advancedCourses.map((course) => (
-            <div key={course.id} className="card-body p-3 mb-3">
+            <div key={course.id} 
+            className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
                 src={course.icon}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold">{course.title}</h3>
-              <p className="text-xs mb-1">
+              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
               {user && (
                 <button
-                  className="button-CD p-[7px] text-sm"
+                  className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
                   onClick={() => handleButtonClick(course)}
                 >
                   {user

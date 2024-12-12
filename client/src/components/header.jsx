@@ -68,7 +68,7 @@ const Header = () => {
                 <Link to="/homepage">Homepage</Link>
               </button>
               <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
-                <Link to="/loginpage">Login</Link>
+                <Link to="/accessPage">Accedi o Registrati</Link>
               </button>
               <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                 <Link to="/supporto">Supporto</Link>
