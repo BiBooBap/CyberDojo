@@ -385,8 +385,12 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["user_username", "description", "creation_date"],
+        required: ["_id", "user_username", "description", "creation_date"],
         properties: {
+          _id: {
+            bsonType: "int",
+            description: "Unique ID of the ticket",
+          },
           user_username: {
             bsonType: "string",
             description: "Username of the user who opened the ticket",
@@ -397,7 +401,8 @@ async function initializeDB() {
           },
           admin_username: {
             bsonType: "string",
-            description: "ID of the admin who handled the ticket (optional)",
+            description:
+              "Username of the admin who handled the ticket (optional)",
           },
           creation_date: {
             bsonType: "date",
@@ -410,32 +415,38 @@ async function initializeDB() {
   // Insert real data into the 'tickets' collection
   await db.collection("tickets").insertMany([
     {
+      _id: 1,
       user_username: "andre89",
       description: "Problema con l'accesso al corso avanzato",
       creation_date: new Date(),
     },
     {
+      _id: 2,
       user_username: "mariaB",
       description: "Impossibile caricare l'avatar personalizzato",
       creation_date: new Date(),
     },
     {
+      _id: 3,
       user_username: "luigiR99",
       description:
         "Errore durante il pagamento per l'iscrizione al corso premium",
       creation_date: new Date(),
     },
     {
+      _id: 4,
       user_username: "elisaf90",
       description: "Problema con il salvataggio dei progressi nel corso base",
       creation_date: new Date(),
     },
     {
+      _id: 5,
       user_username: "paoloM",
       description: "Richiesta di supporto per configurazione delle notifiche",
       creation_date: new Date(),
     },
     {
+      _id: 6,
       user_username: "giulia123",
       description: "Il sistema segnala punteggi errati nella classifica",
       creation_date: new Date(),

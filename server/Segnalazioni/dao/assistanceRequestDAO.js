@@ -24,6 +24,11 @@ class AssistanceRequestDAO {
       .find({ user_username: userUsername })
       .toArray();
   }
+
+  static async getAllTickets() {
+    const db = await connect();
+    return db.collection("tickets").find({}).toArray();
+  }
 }
 
 module.exports = AssistanceRequestDAO;

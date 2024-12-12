@@ -22,6 +22,10 @@ class AssistanceRequestManager {
   async listUserTickets(userUsername) {
     return await AssistanceRequestDAO.getUserTickets(userUsername);
   }
+
+  async listAllTickets() {
+    return await AssistanceRequestDAO.getAllTickets();
+  }
 }
 
 module.exports = new AssistanceRequestManager();

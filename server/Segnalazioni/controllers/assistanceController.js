@@ -38,6 +38,15 @@ class AssistanceController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  static async getAllRequests(req, res) {
+    try {
+      const tickets = await AssistanceFacade.getAllRequests();
+      res.json(tickets);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = AssistanceController;
