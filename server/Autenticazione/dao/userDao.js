@@ -18,6 +18,11 @@ class UserDao {
       .collection("user")
       .updateOne({ username }, { $set: updateFields });
   }
+
+  static async findByUsername(username) {
+    const db = await connect();
+    return db.collection("user").findOne({ username });
+  }
 }
 
 module.exports = UserDao;

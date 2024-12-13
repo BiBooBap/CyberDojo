@@ -16,6 +16,14 @@ class ShopFacade {
   async isItemInInventory(username, itemId) {
     return await ShopManager.isItemInInventory(username, itemId);
   }
+
+  async getUserProfile(username) {
+    return await ShopManager.getUserProfile(username);
+  }
+
+  async updateUserProfile(username, type, imagePath) {
+    return await ShopManager.updateUserProfile(username, type, imagePath);
+  }
 }
 
 module.exports = new ShopFacade();

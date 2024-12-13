@@ -29,7 +29,7 @@ const shopService = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ username, itemId }),
+        body: JSON.stringify({ itemId }),
       });
       if (!response.ok) {
         throw new Error("Errore durante l'acquisto dell'oggetto");
@@ -80,6 +80,50 @@ const shopService = {
       return await response.json();
     } catch (error) {
       console.error("Errore nel controllo dell'inventario:", error);
+      throw error;
+    }
+  },
+
+  getUserProfile: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3001/shop/profile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Errore nel recupero del profilo utente");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Errore nel recupero del profilo utente:", error);
+      throw error;
+    }
+  },
+
+  updateUserProfile: async (type, imagePath) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3001/shop/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ type, imagePath }),
+      });
+      if (!response.ok) {
+        throw new Error("Errore durante l'aggiornamento del profilo utente");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error(
+        "Errore durante l'aggiornamento del profilo utente:",
+        error
+      );
       throw error;
     }
   },

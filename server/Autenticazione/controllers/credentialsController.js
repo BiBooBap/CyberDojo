@@ -1,6 +1,7 @@
 const express = require("express");
 const AuthService = require("../services/authService");
 const authenticate = require("../../Middleware/authenticate");
+const UserDAO = require("../dao/userDao");
 
 const router = express.Router();
 
@@ -26,14 +27,27 @@ router.post("/verify-password", authenticate, async (req, res) => {
 
 // Get user information
 router.get("/user-info", authenticate, async (req, res) => {
-  const username = req.user.username;
-
   try {
-    const userInfo = await AuthService.getUserInfo(username);
-    res.json(userInfo);
+    const username = req.user.username;
+    const user = await UserDAO.findByUsername(username);
+
+    if (user) {
+      res.json({
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        border: user.border,
+        user_title: user.user_title,
+      });
+    } else {
+      res.status(404).json({ message: "Utente non trovato" });
+    }
   } catch (error) {
-    console.error("Errore durante il recupero delle informazioni dell'utente:", error);
-    res.status(500).json({ message: error.message });
+    console.error(
+      "Errore durante il recupero delle informazioni dell'utente:",
+      error
+    );
+    res.status(500).json({ message: "Errore interno del server" });
   }
 });
 
@@ -49,8 +63,13 @@ router.post("/update-user-info", authenticate, async (req, res) => {
   }
 
   try {
-    const result = await AuthService.updateUserInfo(username, newEmail, newUsername, newPassword);
-    
+    const result = await AuthService.updateUserInfo(
+      username,
+      newEmail,
+      newUsername,
+      newPassword
+    );
+
     // Check if the username has been updated to return a new token
     if (result.newUsername && result.token) {
       return res.json({
@@ -60,9 +79,11 @@ router.post("/update-user-info", authenticate, async (req, res) => {
     }
 
     res.json({ message: result.message });
-
   } catch (error) {
-    console.error( "Errore durante l'aggiornamento delle informazioni dell'utente:", error);
+    console.error(
+      "Errore durante l'aggiornamento delle informazioni dell'utente:",
+      error
+    );
     res.status(500).json({ message: error.message });
   }
 });

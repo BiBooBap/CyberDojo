@@ -7,6 +7,16 @@ class ShopDAO {
     return db.collection("shop_items").find().toArray();
   }
 
+  static async getItemById(itemId) {
+    const db = await connect();
+    const item = await db
+      .collection("shop_items")
+      .findOne({ _id: parseInt(itemId) });
+    if (!item) {
+      throw new Error("Item not found");
+    }
+    return item;
+  }
   static async deductPoints(userUsername, cost) {
     const db = await connect();
     const result = await db.collection("user").updateOne(
@@ -44,7 +54,29 @@ class ShopDAO {
 
   static async deleteInventory(userUsername) {
     const db = await connect();
-    return db.collection("inventory").deleteOne({ user_username: userUsername });
+    return db
+      .collection("inventory")
+      .deleteOne({ user_username: userUsername });
+  }
+
+  static async getUserProfile(username) {
+    const db = await connect();
+    return db
+      .collection("user")
+      .findOne(
+        { username },
+        { projection: { avatar: 1, border: 1, user_title: 1 } }
+      );
+  }
+
+  static async updateUserProfile(username, type, imagePath) {
+    const db = await connect();
+    const updateField = {};
+    updateField[type] = imagePath;
+    const result = await db
+      .collection("user")
+      .updateOne({ username }, { $set: updateField });
+    return result.modifiedCount > 0;
   }
 }
 

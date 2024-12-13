@@ -20,4 +20,10 @@ router.get(
   ShopController.isItemInInventory
 );
 
+// Rotta per ottenere il profilo dell'utente
+router.get("/profile", authenticate, ShopController.getUserProfile);
+
+// Rotta per aggiornare il profilo dell'utente
+router.post("/profile", authenticate, ShopController.updateUserProfile);
+
 module.exports = router;
