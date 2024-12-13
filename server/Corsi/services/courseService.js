@@ -110,6 +110,42 @@ class CourseService {
 
     return progress;
   }
+  static async getCourseById(courseId, username) {
+    // Retrieve course data
+    const course = await CourseDAO.getCourseById(parseInt(courseId, 10));
+    if (!course) {
+      throw new Error("Corso non trovato");
+    }
+
+    // Get user enrollment information
+    const enrollment = await CourseEnrollmentDAO.getEnrollment(username, parseInt(courseId, 10));
+    if (!enrollment) {
+      throw new Error("Utente non iscritto a questo corso");
+    }
+
+    // Find the index of the last completed lesson
+    const lessonIndex = course.lessons.findIndex(
+      (lesson) => lesson.name === enrollment.lesson_reached
+    );
+    const lastCompletedIndex = lessonIndex >= 0 ? lessonIndex : -1;
+
+    // Map the lessons adding the completion status
+    const lessons = course.lessons.map((lesson, index) => ({
+      id: lesson.id || lesson._id || index + 1,
+      name: lesson.name,
+      description: lesson.content,
+      completed: index <= lastCompletedIndex,
+    }));
+
+    return {
+      id: course._id,
+      title: course.name,
+      icon: course.course_image,
+      description: course.description,
+      lessons,
+    };
+  }
+
 }
 
 module.exports = CourseService;

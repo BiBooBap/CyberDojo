@@ -17,5 +17,6 @@ router.get(
   authenticate,
   CourseController.getEnrolledCourses
 );
+router.get("/:courseId", authenticate, CourseController.getCoursePage);
 
 module.exports = router;

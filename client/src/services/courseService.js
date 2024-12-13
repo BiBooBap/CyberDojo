@@ -129,6 +129,29 @@ const corsiService = {
       throw error;
     }
   },
+
+  getCourseById: async (courseId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/courses/${courseId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Errore nel recupero del corso");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Errore durante il recupero del corso:", error);
+      throw error;
+    }
+  },
 };
 
 export default corsiService;

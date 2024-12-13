@@ -58,6 +58,20 @@ class CourseController {
       res.status(500).json({ message: "Errore interno del server", error });
     }
   }
+
+  static async getCoursePage(req, res) {
+    const { courseId } = req.params;
+    const username = req.user.username;
+    console.log("Richiesta ricevuta per /courses/:courseId");
+    try {
+      const course = await CourseService.getCourseById(courseId, username);
+      res.json(course);
+    } catch (error) {
+      console.error("Errore nel recupero dei dettagli del corso:", error);
+      res.status(500).json({ message: "Errore interno del server", error });
+    }
+  }
 }
+
 
 module.exports = CourseController;
