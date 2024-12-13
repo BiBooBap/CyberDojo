@@ -1,3 +1,5 @@
+import { data } from "react-router-dom";
+
 const ticketService = {
   getSupportTickets: async (token) => {
     try {
@@ -8,7 +10,6 @@ const ticketService = {
         headers["Authorization"] = `Bearer ${token}`;
       } else {
         token = null;
-        headers["Authorization"] = `Bearer ${token}`;
       }
 
       const response = await fetch("http://localhost:3001/assistance/tickets", {
@@ -25,6 +26,32 @@ const ticketService = {
       return data;
     } catch (error) {
       console.error("Errore nel recupero dei ticket di supporto:", error);
+      throw error;
+    }
+  },
+
+  getTicketDetails: async (id, token) => {
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        token = null;
+      }
+      const response = await fetch(`http://localhost:3001/assistance/ticket?id=${id}`, {
+        method: "GET",
+        headers: headers,
+      });
+      if (!response.ok) {
+        console.log(response);
+        throw new Error("Errore nel recupero dei dettagli del ticket");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Errore nel recupero: ", error);
       throw error;
     }
   },

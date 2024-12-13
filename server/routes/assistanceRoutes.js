@@ -10,9 +10,9 @@ router.post("/create", AssistanceController.createRequest);
 router.get("/tickets", AssistanceController.getAllRequests);
 
 // Elenco delle richieste di un utente
-router.get("/", AssistanceController.listUserRequests);
+router.get("/listuser", AssistanceController.listUserRequests);
 
 // Ottieni una richiesta di assistenza specifica per ID
-router.get("/:id", AssistanceController.getRequest);
+router.get("/ticket", AssistanceController.getRequest);
 
 module.exports = router;

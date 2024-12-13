@@ -55,7 +55,7 @@ const Header = () => {
               {userRole === "admin" && (
                 <>
                   <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
-                    <Link to="/admin/dashboard">Dashboard</Link>
+                    <Link to="/admin/adminTicketDashboard">Dashboard</Link>
                   </button>
                   {/* Aggiungi altre voci per l'admin se necessario */}
                 </>
@@ -88,7 +88,8 @@ const Header = () => {
                     alt="Coins Icon"
                     className="coins-icon w-5 h-5 rounded-full"
                   />
-                  <span>1</span> {/* Sostituisci con il saldo effettivo delle monete */}
+                  <span>1</span>{" "}
+                  {/* Sostituisci con il saldo effettivo delle monete */}
                 </div>
                 {/* Aggiungi l'icona "Area Utente" */}
                 <button className="nav-link hover:bg-[#4b2153] px-2 py-2 rounded text-center mx-2 font-bold text-lg">

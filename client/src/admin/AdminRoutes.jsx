@@ -12,7 +12,7 @@ function AdminRoutes() {
             path="adminTicketDashboard"
             element={<AdminTicketDashboard />}
           />
-          <Route path="adminTicketDetail" element={<AdminTicketDetail />} />
+          <Route path="adminTicketDetail/:id" element={<AdminTicketDetail />} />
         </Routes>
       </div>
     </div>

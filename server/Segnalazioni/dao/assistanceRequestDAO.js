@@ -1,5 +1,4 @@
 const { connect } = require("../../../database/db");
-const { ObjectId } = require("mongodb");
 
 class AssistanceRequestDAO {
   static async createTicket(userUsername, description) {
@@ -12,9 +11,9 @@ class AssistanceRequestDAO {
     return result.insertedId;
   }
 
-  static async getTicketById(ticketId) {
+  static async getTicketById(id) {
     const db = await connect();
-    return db.collection("tickets").findOne({ _id: new ObjectId(ticketId) });
+    return db.collection("tickets").findOne({ _id: parseInt(id) });
   }
 
   static async getUserTickets(userUsername) {

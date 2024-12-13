@@ -124,15 +124,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/course/:courseId"
-              element={
-                <ProtectedRoute requiredRole="user">
-                  <CoursePage />
-                </ProtectedRoute>
-              }
-            />
-
           </Routes>
         </main>
         {userRole !== "admin" && <Footer />}

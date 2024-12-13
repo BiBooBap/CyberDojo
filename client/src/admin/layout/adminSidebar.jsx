@@ -17,7 +17,7 @@ function AdminSidebar() {
   };
 
   return (
-    <aside className="w-1/4 bg-[#8773B9] text-white p-8 min-h-screen">
+    <aside className="w-[26rem] bg-[#8773B9] text-white p-8 min-h-screen">
       <h2 className="text-2xl font-bold pb-8 pt-8">Dashboard Admin</h2>
       <ul>
         <li className="mb-4">
@@ -28,43 +28,42 @@ function AdminSidebar() {
           >
             Area Ticket
           </Link>
-          {isTicketExpanded && (
-            <ul className="ml-4 mt-2">
-              <li className="mb-2">
-                <Link
-                  to="/admin/tickets/precedente"
-                  className={`text-white hover:text-gray-300 ${
-                    activeLink === "all" ? "underline text-yellow-400" : ""
-                  }`}
-                  onClick={() => handleLinkClick("all")}
-                >
-                  Tutti i ticket
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link
-                  to="/admin/tickets/precedente"
-                  className={`text-white hover:text-gray-300 ${
-                    activeLink === "closed" ? "underline text-yellow-400" : ""
-                  }`}
-                  onClick={() => handleLinkClick("closed")}
-                >
-                  Ticket risolti
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/admin/tickets/prossimo"
-                  className={`text-white hover:text-gray-300 ${
-                    activeLink === "open" ? "underline text-yellow-400" : ""
-                  }`}
-                  onClick={() => handleLinkClick("open")}
-                >
-                  Ticket aperti
-                </Link>
-              </li>
-            </ul>
-          )}
+
+          <ul className="ml-4 mt-2">
+            <li className="mb-2">
+              <Link
+                to="/admin/tickets/precedente"
+                className={`text-white hover:text-gray-300 ${
+                  activeLink === "all" ? "underline text-yellow-400" : ""
+                }`}
+                onClick={() => handleLinkClick("all")}
+              >
+                Tutti i ticket
+              </Link>
+            </li>
+            <li className="mb-2">
+              <Link
+                to="/admin/tickets/precedente"
+                className={`text-white hover:text-gray-300 ${
+                  activeLink === "closed" ? "underline text-yellow-400" : ""
+                }`}
+                onClick={() => handleLinkClick("closed")}
+              >
+                Ticket risolti
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/admin/tickets/prossimo"
+                className={`text-white hover:text-gray-300 ${
+                  activeLink === "open" ? "underline text-yellow-400" : ""
+                }`}
+                onClick={() => handleLinkClick("open")}
+              >
+                Ticket aperti
+              </Link>
+            </li>
+          </ul>
         </li>
       </ul>
     </aside>

@@ -18,7 +18,7 @@ class AssistanceController {
 
   static async getRequest(req, res) {
     try {
-      const { id } = req.params;
+      const id = req.query.id;
       const ticket = await AssistanceFacade.getRequest(id);
       if (!ticket) {
         return res.status(404).json({ error: "Ticket non trovato" });
