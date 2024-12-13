@@ -78,6 +78,11 @@ const AreaUtente = () => {
     }
   }, [navigate]);
 
+  //Loading user information
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
   // Fetch rewards when "Sezione Premi" is selected
   useEffect(() => {
     const fetchRewards = async () => {
@@ -240,126 +245,7 @@ const AreaUtente = () => {
   };
 
   const renderForm = () => {
-    if (selectedSection === "Modifica credenziali") {
-      if (!isPasswordVerified) {
-        return (
-          <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-            <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-              Verifica Password
-            </h1>
-            <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
-              <p className="mb-1 text-white font-bold text-sm">Password Attuale</p>
-              <input
-                type="password"
-                placeholder="Password attuale"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-                required
-              />
-              {verificationError && (
-                <span className="text-black text-sm mb-2">{verificationError}</span>
-              )}
-              <button type="submit" className="button-CD py-2 px-8 text-xl">
-                Verifica
-              </button>
-            </form>
-          </div>
-        );
-      }
-
-      return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            Modifica Credenziali
-          </h1>
-          <form className="flex flex-col items-center" onSubmit={handleUpdateCredentials}>
-            {/* New Username */}
-            <p className="mb-1 text-white font-bold text-sm">Nuovo Username</p>
-            <input
-              type="text"
-              placeholder="Nuovo Username"
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-              className={`rounded-2xl w-full md:w-72 h-8 pl-2 login-input mb-2 ${
-                errors.username ? "border-red-500" : ""
-              }`}
-              style={{ color: "black" }}
-              required
-            />
-            {errors.username && (
-              <span className="text-black text-sm mb-2">{errors.username}</span>
-            )}
-
-            {/* New Email */}
-            <p className="mb-1 text-white font-bold text-sm">Nuova Email</p>
-            <input
-              type="email"
-              placeholder="Nuova Email"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-              className={`rounded-2xl w-full md:w-72 h-8 pl-2 login-input mb-2 ${
-                errors.email ? "border-red-500" : ""
-              }`}
-              style={{ color: "black" }}
-              required
-            />
-            {errors.email && (
-              <span className="text-black text-sm mb-2">{errors.email}</span>
-            )}
-
-            {/* New Password */}
-            <p className="mb-1 text-white font-bold text-sm">Nuova Password (opzionale)</p>
-            <input
-              type="password"
-              placeholder="Nuova Password (opzionale)"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={`rounded-2xl w-full md:w-72 h-8 pl-2 login-input mb-2 ${
-                errors.password ? "border-red-500" : ""
-              }`}
-              style={{ color: "black" }}
-            />
-            {errors.password && (
-              <span className="text-black text-sm mb-2">{errors.password}</span>
-            )}
-
-            <button type="submit" className="button-CD py-2 px-8 text-xl">
-              Aggiorna
-            </button>
-          </form>
-        </div>
-      );
-    }
-
-    else if (selectedSection === "Modifica avatar") {
-      return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            {selectedSection}
-          </h1>
-          <form className="flex flex-col items-center" onSubmit={handleAvatarSubmit}>
-            <p className="mb-1 text-white font-bold text-sm">Nome Campo 1</p>
-            <input
-              type="text"
-              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-              placeholder="Palceholder 1"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className="button-CD py-2 px-8 mt-3 ml-3 text-xl"
-            >
-              Aggiorna Avatar
-            </button>
-          </form>
-        </div>
-      );
-    }
-
-    else if (selectedSection === "Inventario") {
+   if (selectedSection === "Inventario") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
@@ -414,49 +300,116 @@ const AreaUtente = () => {
       );
     }
 
-    else if (selectedSection === "Gestione Account") {
-      if (!isPasswordVerified) {
+    if (selectedSection === "Gestione Account") {
         return (
-          <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-            <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-              Verifica Password
-            </h1>
-            <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
-              <p className="mb-1 text-white font-bold text-sm">Password Attuale</p>
-              <input
-                type="password"
-                placeholder="Password attuale"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-                required
-              />
-              {verificationError && (
-                <span className="text-black text-sm mb-2">{verificationError}</span>
-              )}
-              <button type="submit" className="button-CD py-2 px-8 text-xl">
-                Verifica
-              </button>
-            </form>
+          <div className="flex flex-col justify-between space-y-8">
+            <div className="card-body py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+              <h2 className="text-[#f7d1cd] font-bold text-xl mb-2">Avatar Profilo</h2>
+              <div className="flex items-center space-x-4">
+                <div className="relative w-32 h-32 mb-3">
+                  <img
+                    src="path/to/image3.png"
+                    alt="Bordo"
+                    className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
+                  />
+                  <img
+                    src="path/to/image3.png"
+                    alt="Avatar"
+                    className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
+                  />
+                  <img src="path/to/image3.png" alt="Titolo" className="w-16 h-16 object-cover rounded-full" />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <div>
+                    <p className="text-white font-bold">Username:</p>
+                    <p className="text-white">{newUsername}</p>
+                  </div>
+                  <div>
+                    <p className="text-white font-bold">Email:</p>
+                    <p className="text-white">{newEmail}</p>
+                  </div>
+                  <div>
+                    <p className="text-white font-bold">Password:</p>
+                    <p className="text-white">••••••••</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {!isPasswordVerified ? (
+              <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+                <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+                  Verifica Password
+                </h1>
+                <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
+                  <p className="mb-1 text-white font-bold text-sm">Password Attuale</p>
+                  <input
+                    type="password"
+                    placeholder="Password attuale"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="mb-3 px-4 py-2 rounded"
+                    required
+                  />
+                  {verificationError && (
+                    <span className="text-black text-sm mb-2">{verificationError}</span>
+                  )}
+                  <button type="submit" className="button-CD py-2 px-8 text-xl">
+                    Verifica
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+                <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+                  Modifica Credenziali
+                </h1>
+                <form className="flex flex-col items-center" onSubmit={handleUpdateCredentials}>
+                  <input
+                    type="text"
+                    placeholder="Nuovo Username"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    className="mb-3 px-4 py-2 rounded"
+                    required
+                  />
+                  <input
+                    type="email"
+                    placeholder="Nuova Email"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    className="mb-3 px-4 py-2 rounded"
+                    required
+                  />
+                  <input
+                    type="password"
+                    placeholder="Nuova Password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="mb-3 px-4 py-2 rounded"
+                    required
+                  />
+                  {Object.values(errors).map((error, index) => (
+                    <p key={index} className="text-red-500 text-sm mb-2">
+                      {error}
+                    </p>
+                  ))}
+                  <button type="submit" className="button-CD py-2 px-8 text-xl">
+                    Aggiorna Credenziali
+                  </button>
+
+                  <button
+                    type="button"
+                    className="delete-account-button mt-4 py-2 px-8 text-xl bg-red-600 hover:bg-red-700 rounded"
+                    onClick={handleDeleteAccount}
+                  >
+                    Elimina Account
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
-          );
-        }else{
-      return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            {selectedSection}
-          </h1>
-          <button
-            type="button"
-            className="button-CD py-2 px-8 mt-3 ml-3 text-xl bg-red-600 hover:bg-red-700"
-            onClick={handleDeleteAccount}
-          >
-            Elimina Account
-          </button>
-        </div>
-      );
-    }
-  } else if (selectedSection === "Sezione Premi") {
+        );
+    } else if (selectedSection === "Sezione Premi") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
@@ -548,36 +501,6 @@ const AreaUtente = () => {
               Corsi seguiti
             </button>
           </li>
-          <li>
-            <button
-              className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Modifica credenziali" ? "bg-[#4b2153] text-[#e0a11b]" : ""
-              }`}
-              onClick={() => setSelectedSection("Modifica credenziali")}
-            >
-              Modifica credenziali
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Modifica avatar" ? "bg-[#4b2153] text-[#e0a11b]" : ""
-              }`}
-              onClick={() => setSelectedSection("Modifica avatar")}
-            >
-              Modifica avatar
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Richiedi supporto" ? "bg-[#4b2153] text-[#e0a11b]" : ""
-              }`}
-              onClick={() => setSelectedSection("Richiedi supporto")}
-            >
-              Richiedi supporto
-            </button>
-          </li>
         </ul>
         {/* Burger menu for mobile */}
         <div className="md:hidden">
@@ -646,42 +569,6 @@ const AreaUtente = () => {
                   onClick={() => setSelectedSection("Corsi seguiti")}
                 >
                   Corsi seguiti
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Modifica credenziali"
-                      ? "bg-[#4b2153] text-[#e0a11b]"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedSection("Modifica credenziali")}
-                >
-                  Modifica credenziali
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Modifica avatar"
-                      ? "bg-[#4b2153] text-[#e0a11b]"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedSection("Modifica avatar")}
-                >
-                  Modifica avatar
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Richiedi supporto"
-                      ? "bg-[#4b2153] text-[#e0a11b]"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedSection("Richiedi supporto")}
-                >
-                  Richiedi supporto
                 </button>
               </li>
             </ul>
