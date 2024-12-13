@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import courseFacade from "../services/courseFacade";
+import {jwtDecode} from "jwt-decode";
 
 const HomePage = ({ user }) => {
   const [courses, setCourses] = useState([]);
@@ -24,32 +25,23 @@ const HomePage = ({ user }) => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      console.log("token = " + token);
       try {
         let data = null;
-        if(token === null || token === undefined || !isTokenValid(token)) {
-
-            // Check if the token has expired
-          if(!isTokenValid(token)) {
-            localStorage.removeItem("token");
-          }
-
-          //Guest
+        if (!isTokenValid(token)) {
+          // Utente non autenticato
           data = await courseFacade.getAllCoursesGuest();
         } else {
-          //User
+          // Utente autenticato
           data = await courseFacade.getAllCoursesUser();
         }
-
         setCourses(data);
       } catch (error) {
         console.error("Errore nel recupero dei corsi", error);
         setError(error.message);
       }
     };
-
     fetchCourses();
-  }, []);
+  }, [token]);
 
   const introductionCourses = courses.filter(
     (course) => course.difficulty === "Facile"
