@@ -24,7 +24,7 @@ const HomePage = ({ user }) => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      console.log("toke = " + token);
+      console.log("token = " + token);
       try {
         let data = null;
         if(token === null || token === undefined || !isTokenValid(token)) {
