@@ -20,6 +20,10 @@ class courseFacade {
   static async getLessonsByCourseName(courseName, token) {
     return await corsiService.getLessonsByCourseName(courseName, token);
   }
+  
+  static async getCourseById(courseId, username) {
+    return await corsiService.getCourseById(courseId, username);
+  }
 }
 
 export default courseFacade;
