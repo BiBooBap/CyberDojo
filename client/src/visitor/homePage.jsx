@@ -9,10 +9,18 @@ const HomePage = ({ user }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const data = await courseFacade.getAllCourses(token); //CONTROLLA SE IL TOKEN È PRESENTE (corretto). Non controlla se l'username esiste come definito nel backend
+        let data = null;
+        if(token == null) {
+          //Guest
+          data = await courseFacade.getAllCoursesGuest();
+        } else {
+          //User
+          data = await courseFacade.getAllCoursesUser();
+        }
+
         setCourses(data);
       } catch (error) {
-        console.error("Errore nel recupero dei corsi HOMEPAGE", error);
+        console.error("Errore nel recupero dei corsi", error);
         setError(error.message);
       }
     };
@@ -30,19 +38,37 @@ const HomePage = ({ user }) => {
     (course) => course.difficulty === "Difficile"
   );
 
-  const handleButtonClick = async (course) => {
+  const handleButtonClick = async (course, event) => {
     if (!user) {
       alert("È necessario registrarsi per iscriversi ai corsi.");
     } else {
+
+      const button = event.target;
+      const originalText = button.textContent;
+
+      if(originalText === "Riprendi" || originalText === "Ripeti") {
+        window.location.href = "/coursePage/?corso=" + course._id;
+      } else {
+
+      button.disabled = true;
+      button.textContent = "Iscrizione in corso...";
+  
       try {
-        await courseFacade.enrollCourse(course.id);
+        await courseFacade.enrollCourse(course._id);
+        button.textContent = "Riprendi";
         alert("Iscrizione avvenuta con successo!");
       } catch (error) {
         console.error("Errore durante l'iscrizione al corso:", error);
+        button.textContent = originalText;
         alert("Errore durante l'iscrizione al corso.");
+      } finally {
+        button.disabled = false;
       }
     }
+    }
   };
+
+  console.log("User enrolled courses:", user ? user.enrolled_courses : "No user");
 
   return (
     <div className="px-8 py-4">
@@ -54,20 +80,20 @@ const HomePage = ({ user }) => {
           <p className="text-red-500">{error}</p>
         ) : (
           courses.map((course) => (
-            <div key={course.id} className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
+            <div key={course._id} className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
-                src={course.icon}
+                src={course.course_image}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <h3 className="font-bold text-lg text-center mb-2">{course.name}</h3>
               <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
-              {user && (
+              {(
                 <button
                   className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
-                  onClick={() => handleButtonClick(course)}
+                  onClick={(event) => handleButtonClick(course, event)}
                 >
                   {user
                     ? course.isEnrolled
@@ -90,21 +116,21 @@ const HomePage = ({ user }) => {
           <p className="text-red-500">{error}</p>
         ) : (
           introductionCourses.map((course) => (
-            <div key={course.id} 
+            <div key={course._id}
             className= "card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
-                src={course.icon}
+                src={course.course_image}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <h3 className="font-bold text-lg text-center mb-2">{course.name}</h3>
               <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
-              {user && (
+              {(
                 <button
                   className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
-                  onClick={() => handleButtonClick(course)}
+                  onClick={(event) => handleButtonClick(course, event)}
                 >
                   {user
                     ? course.isEnrolled
@@ -127,21 +153,21 @@ const HomePage = ({ user }) => {
           <p className="text-red-500">{error}</p>
         ) : (
           intermediateCourses.map((course) => (
-            <div key={course.id} 
+            <div key={course._id} 
             className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
-                src={course.icon}
+                src={course.course_image}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <h3 className="font-bold text-lg text-center mb-2">{course.name}</h3>
               <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
-              {user && (
+              {(
                 <button
                   className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
-                  onClick={() => handleButtonClick(course)}
+                  onClick={(event) => handleButtonClick(course, event)}
                 >
                   {user
                     ? course.isEnrolled
@@ -164,21 +190,21 @@ const HomePage = ({ user }) => {
           <p className="text-red-500">{error}</p>
         ) : (
           advancedCourses.map((course) => (
-            <div key={course.id} 
+            <div key={course._id} 
             className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
               <img
-                src={course.icon}
+                src={course.course_image}
                 alt="Foto corso"
                 className="logo w-14 h-14"
               />
-              <h3 className="font-bold text-lg text-center mb-2">{course.title}</h3>
+              <h3 className="font-bold text-lg text-center mb-2">{course.name}</h3>
               <p className="text-xs mb-4 text-center">
                 Livello difficoltà: {course.difficulty}
               </p>
-              {user && (
+              {(
                 <button
                   className="button-CD px-4 py-2 bg-[#e0a11b] text-white rounded hover:bg-[#d18f1a] transition duration-200"
-                  onClick={() => handleButtonClick(course)}
+                  onClick={(event) => handleButtonClick(course, event)}
                 >
                   {user
                     ? course.isEnrolled

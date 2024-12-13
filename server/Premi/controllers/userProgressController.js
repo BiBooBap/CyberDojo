@@ -3,7 +3,6 @@ const UserProgressFacade = require("../facades/userProgressFacade");
 class UserProgressController {
   static async getProgress(req, res) {
     const username = req.user.username;
-    console.log("Recupero dei progressi per l'utente:", username); // Log del nome utente
     try {
       const progress = await UserProgressFacade.getProgress(username);
       if (!progress.length) {

@@ -1,17 +1,21 @@
 const express = require("express");
 const CourseController = require("../Corsi/controller/courseController");
-const CourseEnrollmentController = require("../Corsi/controller/courseEnrollmentController");
 const authenticate = require("../Middleware/authenticate");
 
 const router = express.Router();
 
-router.post("/enroll", authenticate, CourseEnrollmentController.enrollCourse);
+router.get("/user", authenticate, CourseController.getCoursesUser);
+router.get("/guest", CourseController.getCoursesGuest);
+router.get(
+  "/lessons/:courseName",
+  authenticate,
+  CourseController.getLessonsByCourseName
+);
+router.post("/enroll", authenticate, CourseController.enrollCourse);
 router.get(
   "/enrolled-courses",
   authenticate,
-  CourseEnrollmentController.getEnrolledCourses
+  CourseController.getEnrolledCourses
 );
-
-router.use("/", CourseController);
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const CourseDAO = require("./dao/courseDAO");
-const CourseEnrollmentDAO = require("./dao/courseEnrollmentDAO");
 const CourseServices = require("./services/courseService");
 
 class CourseService {

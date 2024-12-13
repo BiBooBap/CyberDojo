@@ -4,7 +4,6 @@ class CourseDAO {
   static async getAllCourses() {
     const db = await connect();
     const courses = await db.collection("courses").find().toArray();
-    console.log("Corsi dal database:", courses);
     return courses;
   }
 
@@ -20,6 +19,24 @@ class CourseDAO {
   static async getCourseInfo(courseId) {
     const db = await connect();
     return db.collection("courses").findOne({ _id: courseId });
+  }
+
+  static async enrollCourse(courseId, username) {
+    const db = await connect();
+    const lezioni = await CourseDAO.getCourseInfo(courseId);
+
+    return db.collection("user").updateOne(
+      { username },
+      {
+        $push: {
+          enrolled_courses: {
+            course_id: courseId,
+            // Insert the first lesson of that course
+            lesson_reached: lezioni.lessons[0].name,
+          },
+        },
+      }
+    );
   }
 
   static async getEnrolledCourses(username) {

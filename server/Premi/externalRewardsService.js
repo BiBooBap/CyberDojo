@@ -14,7 +14,12 @@ class ExternalRewardsService {
 
   // Checks if the user has taken a test for that course
   static async getTestExistsForUserAndCourse(username, course_id) {
-    return await UserProgressDAO.getTestExistsForUserAndCourse(username, course_id) ? true : false;
+    const testExists = await UserProgressDAO.getTestExistsForUserAndCourse(
+      username,
+      course_id
+    );
+
+    return testExists == null ? false : true;
   }
 }
 
