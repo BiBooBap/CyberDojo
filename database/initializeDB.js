@@ -17,6 +17,7 @@ async function initializeDB() {
         bsonType: "object",
         required: ["email", "username", "password", "role"],
         properties: {
+          _id: { bsonType: "int", description: "Unique ID of the user" },
           email: { bsonType: "string", description: "User's email" },
           username: { bsonType: "string", description: "Username" },
           password: { bsonType: "string", description: "Encrypted password" },
@@ -49,6 +50,7 @@ async function initializeDB() {
   // Insert real data into the 'user' collection
   const users = [
     {
+      _id: 1,
       email: "giuliarossi@gmail.com",
       username: "giulia123",
       password: "password3",
@@ -66,6 +68,7 @@ async function initializeDB() {
       ],
     },
     {
+      _id: 2,
       email: "paolomorandi@gmail.com",
       username: "paoloM",
       password: "password8",
@@ -77,6 +80,7 @@ async function initializeDB() {
       enrolled_courses: [],
     },
     {
+      _id: 3,
       email: "andrealandi@gmail.com",
       username: "andre89",
       password: "password4",
@@ -90,6 +94,7 @@ async function initializeDB() {
       ],
     },
     {
+      _id: 4,
       email: "mariabianchi@gmail.com",
       username: "mariaB",
       password: "password5",
@@ -106,6 +111,7 @@ async function initializeDB() {
       ],
     },
     {
+      _id: 5,
       email: "luigiricci@gmail.com",
       username: "luigiR99",
       password: "password6",
@@ -122,6 +128,7 @@ async function initializeDB() {
       ],
     },
     {
+      _id: 6,
       email: "elisaferrari@gmail.com",
       username: "elisaf90",
       password: "password7",
@@ -271,8 +278,9 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["course_id", "questions"],
+        required: ["_id","course_id", "questions"],
         properties: {
+          _id: { bsonType: "int", description: "Unique ID of the test" },
           course_id: { bsonType: "int", description: "Associated course ID" },
           questions: {
             bsonType: "array",
@@ -306,6 +314,7 @@ async function initializeDB() {
     // Insert real data into the 'tests' collection
     await db.collection("tests").insertMany([
       {
+        _id: 1,
         course_id: 1,
         questions: [
           {
@@ -329,6 +338,7 @@ async function initializeDB() {
         ],
       },
       {
+        _id: 2,
         course_id: 2,
         questions: [
           {
@@ -352,6 +362,7 @@ async function initializeDB() {
         ],
       },
       {
+        _id: 3,
         course_id: 3,
         questions: [
           {
@@ -399,18 +410,43 @@ async function initializeDB() {
             bsonType: "string",
             description: "Problem description",
           },
-          admin_username: {
-            bsonType: "string",
-            description:
-              "Username of the admin who handled the ticket (optional)",
-          },
           creation_date: {
             bsonType: "date",
             description: "Ticket creation date",
           },
+          assigned_admin: {
+            bsonType: "string",
+            description: "Username of the admin assigned to the ticket",
+          },
+          messages: {
+            bsonType: "array",
+            description: "Conversation between user and admin",
+            items: {
+              bsonType: "object",
+              required: ["username", "message", "role", "timestamp"],
+              properties: {
+                username: {
+                  bsonType: "string",
+                  description: "Username of the message sender",
+                },
+                message: {
+                  bsonType: "string",
+                  description: "Content of the message",
+                },
+                role: {
+                  enum: ["user", "admin"],
+                  description: "Role of the message sender",
+                },
+                timestamp: {
+                  bsonType: "date",
+                  description: "Timestamp of the message",
+                },
+              },
+            },
+          },
           is_open: {
             enum: ["Aperto", "Risolto"],
-            description: "Indicates if the ticket is open or resolved"
+            description: "Indicates if the ticket is open or resolved",
           },
         },
       },
@@ -420,55 +456,79 @@ async function initializeDB() {
   await db.collection("tickets").insertMany([
     {
       _id: 1,
-      user_username: "andre89",
-      description: "Problema con l'accesso al corso avanzato",
-      creation_date: new Date(),
-      is_open: "Aperto",
-    },
-    {
-      _id: 2,
-      user_username: "mariaB",
-      description: "Impossibile caricare l'avatar personalizzato",
-      creation_date: new Date(),
-      is_open: "Aperto",
-    },
-    {
-      _id: 3,
-      user_username: "luigiR99",
-      description:
-        "Errore durante il pagamento per l'iscrizione al corso premium",
-      creation_date: new Date(),
-      is_open: "Risolto",
-    },
-    {
-      _id: 4,
-      user_username: "elisaf90",
-      description: "Problema con il salvataggio dei progressi nel corso base",
-      creation_date: new Date(),
-      is_open: "Aperto",
-    },
-    {
-      _id: 5,
-      user_username: "paoloM",
-      description: "Richiesta di supporto per configurazione delle notifiche",
-      creation_date: new Date(),
-      is_open: "Risolto",
-    },
-    {
-      _id: 6,
-      user_username: "giulia123",
-      description: "Il sistema segnala punteggi errati nella classifica",
-      creation_date: new Date(),
-      is_open: "Aperto",
-    },
+    user_username: "andre89",
+    description: "Problema con l'accesso al corso avanzato",
+    creation_date: new Date(),
+    assigned_admin: "paoloM",
+    messages: [
+      {
+        username: "andre89",
+        message: "Non riesco ad accedere al corso avanzato.",
+        role: "user",
+        timestamp: new Date(),
+      },
+      {
+        username: "paoloM",
+        message: "Ciao, prova a ricaricare la pagina e a fare il logout e login.",
+        role: "admin",
+        timestamp: new Date(),
+      },
+    ],
+    is_open: "Aperto",
+  },
+  {
+    _id: 2,
+    user_username: "mariaB",
+    description: "Impossibile caricare l'avatar personalizzato",
+    creation_date: new Date(),
+    assigned_admin: "paoloM",
+    messages: [
+      {
+        username: "mariaB",
+        message: "Non riesco a caricare il mio avatar.",
+        role: "user",
+        timestamp: new Date(),
+      },
+      {
+        username: "paoloM",
+        message: "Ciao, prova a ricaricare la pagina e a fare il logout e login.",
+        role: "admin",
+        timestamp: new Date(),
+      },
+    ],
+    is_open: "Aperto",
+  },
+  {
+    _id: 3,
+    user_username: "luigiR99",
+    description: "Errore l'acquisto del bordo nello shop",
+    creation_date: new Date(),
+    assigned_admin: "paoloM",
+    messages: [
+      {
+        username: "luigiR99",
+        message: "L' acquisto non va a buon fine.",
+        role: "user",
+        timestamp: new Date(),
+      },
+      {
+        username: "paoloM",
+        message: "Verifica se hai abbastanza punti per acquistare il bordo.",
+        role: "admin",
+        timestamp: new Date(),
+      },
+    ],
+    is_open: "Risolto",
+  },
   ]);
   // Creazione della collezione 'rewards' con validatore
   await db.createCollection("rewards", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["user_username", "course_id", "medal", "points", "date"],
+        required: ["_id","user_username", "course_id", "medal", "points", "date"],
         properties: {
+          _id: { bsonType: "int", description: "Unique ID of the reward" },
           user_username: {
             bsonType: "string",
             description: "Username of the user who received the reward",
@@ -489,6 +549,7 @@ async function initializeDB() {
   // Inserimento dati reali nella collezione 'rewards'
   await db.collection("rewards").insertMany([
     {
+      _id: 1,
       user_username: "andre89",
       course_id: 1,
       medal: "Gold", // Assegna il medaglia in base ai punti
@@ -496,6 +557,7 @@ async function initializeDB() {
       date: new Date(),
     },
     {
+      _id: 2,
       user_username: "mariaB",
       course_id: 2,
       medal: "Silver",
@@ -503,6 +565,7 @@ async function initializeDB() {
       date: new Date(),
     },
     {
+      _id: 3,
       user_username: "giulia123",
       course_id: 3,
       medal: "Gold",
@@ -515,8 +578,9 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["user_username", "items"],
+        required: ["_id","user_username", "items"],
         properties: {
+          _id: { bsonType: "int", description: "Unique ID of the inventory" },
           user_username: {
             bsonType: "string",
             description: "Owner's username",
@@ -553,6 +617,7 @@ async function initializeDB() {
     // Insert real data into the 'inventory' collection
     await db.collection("inventory").insertMany([
       {
+        _id: 1,
         user_username: "giulia123",
         items: [
           {
@@ -571,6 +636,7 @@ async function initializeDB() {
         ],
       },
       {
+        _id: 2,
         user_username: "andre89",
         items: [
           {
@@ -582,6 +648,7 @@ async function initializeDB() {
         ],
       },
       {
+        _id: 3,
         user_username: "mariaB",
         items: [
           {
@@ -594,6 +661,7 @@ async function initializeDB() {
         ],
       },
       {
+        _id: 4,
         user_username: "luigiR99",
         items: [
           {
@@ -605,6 +673,7 @@ async function initializeDB() {
         ],
       },
       {
+        _id: 5,
         user_username: "elisaf90",
         items: [
           {
@@ -636,7 +705,7 @@ async function initializeDB() {
         ],
         properties: {
           _id: {
-            bsonType: "objectId",
+            bsonType: "int",
             description: "Unique ID of the shop item",
           },
           name: { bsonType: "string", description: "Name of the item" },
@@ -671,7 +740,7 @@ async function initializeDB() {
   try {
     await db.collection("shop_items").insertMany([
       {
-        _id: new ObjectId(),
+        _id: 1,
         name: "Anello luminoso",
         description: "Un anello per ghermirli, un anello per domarli e nel buio incatenarli.",
         price: 500,
@@ -681,7 +750,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 2,
         name: "Avatar donna",
         description: "Un avatar per lei",
         price: 200,
@@ -691,7 +760,7 @@ async function initializeDB() {
         featured: false,
       },
       {
-        _id: new ObjectId(),
+        _id: 3,
         name: "Avatar uomo",
         description: "Un avatar per lui",
         price: 300,
@@ -701,7 +770,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 4,
         name: "Cappello parlante",
         description: "Scopri il tuo futuro",
         price: 300,
@@ -711,7 +780,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 5,
         name: "Dracarys",
         description: "Bruciali tutti",
         price: 300,
@@ -721,7 +790,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 6,
         name: "Shenron",
         description: "Raccogli tutte le sfere del drago",
         price: 300,
@@ -731,7 +800,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 7,
         name: "Nuvola Speedy",
         description: "Vola veloce fra i corsi",
         price: 300,
@@ -741,7 +810,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 8,
         name: "Thug style",
         description: "Fatti rispettare",
         price: 300,
@@ -751,7 +820,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 9,
         name: "Alla ricerca del tesoro",
         description: "Le avventure di un pirata",
         price: 300,
@@ -761,7 +830,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 10,
         name: "Reverse",
         description: "Trolla i tuoi amici",
         price: 300,
@@ -771,7 +840,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 11,
         name: "Volpe a 9 code",
         description: "Sei un demonio",
         price: 300,
@@ -781,7 +850,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 12,
         name: "The Rock",
         description: "Fai delle comparsate ad Hollywood",
         price: 300,
@@ -791,7 +860,7 @@ async function initializeDB() {
         featured: true,
       },
       {
-        _id: new ObjectId(),
+        _id: 13,
         name: "Z",
         description: "La serie migliore di sempre",
         price: 300,
@@ -811,8 +880,9 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["user_username", "streak", "lastLoginDate"],
+        required: ["_id","user_username", "streak", "lastLoginDate"],
         properties: {
+          _id: { bsonType: "int", description: "Unique ID of the streak" },
           user_username: { bsonType: "string", description: "Username" },
           streak: { bsonType: "int", description: "Current streak count" },
           lastLoginDate: { bsonType: "string", description: "Last login date" },
@@ -825,16 +895,19 @@ async function initializeDB() {
     // Insert real data into the 'streaks' collection
     await db.collection("streaks").insertMany([
       {
+        _id: 1,
         user_username: "andre89",
         streak: 5,
         lastLoginDate: new Date().toISOString().split("T")[0],
       },
       {
+        _id: 2,
         user_username: "mariaB",
         streak: 10,
         lastLoginDate: new Date().toISOString().split("T")[0],
       },
       {
+        _id: 3,
         user_username: "luigiR99",
         streak: 3,
         lastLoginDate: new Date().toISOString().split("T")[0],
