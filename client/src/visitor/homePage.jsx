@@ -6,11 +6,34 @@ const HomePage = ({ user }) => {
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
 
+  const isTokenValid = (token) => {
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const { exp } = jwtDecode(token);
+      if (Date.now() >= exp * 1000) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   useEffect(() => {
     const fetchCourses = async () => {
+      console.log("toke = " + token);
       try {
         let data = null;
-        if(token == null) {
+        if(token === null || token === undefined || !isTokenValid(token)) {
+
+            // Check if the token has expired
+          if(!isTokenValid(token)) {
+            localStorage.removeItem("token");
+          }
+
           //Guest
           data = await courseFacade.getAllCoursesGuest();
         } else {
