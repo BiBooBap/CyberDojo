@@ -17,7 +17,6 @@ async function initializeDB() {
         bsonType: "object",
         required: ["email", "username", "password", "role"],
         properties: {
-          _id: { bsonType: "int", description: "Unique ID of the user" },
           email: { bsonType: "string", description: "User's email" },
           username: { bsonType: "string", description: "Username" },
           password: { bsonType: "string", description: "Encrypted password" },
@@ -50,7 +49,6 @@ async function initializeDB() {
   // Insert real data into the 'user' collection
   const users = [
     {
-      _id: 1,
       email: "giuliarossi@gmail.com",
       username: "giulia123",
       password: "password3",
@@ -68,7 +66,6 @@ async function initializeDB() {
       ],
     },
     {
-      _id: 2,
       email: "paolomorandi@gmail.com",
       username: "paoloM",
       password: "password8",
@@ -80,7 +77,6 @@ async function initializeDB() {
       enrolled_courses: [],
     },
     {
-      _id: 3,
       email: "andrealandi@gmail.com",
       username: "andre89",
       password: "password4",
@@ -94,7 +90,6 @@ async function initializeDB() {
       ],
     },
     {
-      _id: 4,
       email: "mariabianchi@gmail.com",
       username: "mariaB",
       password: "password5",
@@ -111,7 +106,6 @@ async function initializeDB() {
       ],
     },
     {
-      _id: 5,
       email: "luigiricci@gmail.com",
       username: "luigiR99",
       password: "password6",
@@ -128,7 +122,6 @@ async function initializeDB() {
       ],
     },
     {
-      _id: 6,
       email: "elisaferrari@gmail.com",
       username: "elisaf90",
       password: "password7",
