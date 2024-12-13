@@ -1,5 +1,4 @@
 const ShopDAO = require("../dao/shopDAO");
-const { getUserName } = require("../../../client/src/utils/auth");
 
 class ShopManager {
   static async listItems() {
@@ -15,8 +14,7 @@ class ShopManager {
 
   static async purchaseItem(username, itemId) {
     try {
-      const items = await ShopDAO.getItems();
-      const selectedItem = items.find((i) => i._id.toString() === itemId);
+      const selectedItem = await ShopDAO.getItemById(itemId);
       if (!selectedItem) throw new Error("Item non trovato");
 
       const pointsDeducted = await ShopDAO.deductPoints(
@@ -29,6 +27,7 @@ class ShopManager {
         name: selectedItem.name,
         description: selectedItem.description,
         image_path: selectedItem.image_path,
+        type: selectedItem.category,
       });
       if (!inventoryUpdated)
         throw new Error("Errore nell'aggiornamento dell'inventario");
@@ -57,6 +56,14 @@ class ShopManager {
     if (!selectedItem) throw new Error("Item non trovato");
 
     return await ShopDAO.isItemInInventory(username, selectedItem.name);
+  }
+
+  static async getUserProfile(username) {
+    return await ShopDAO.getUserProfile(username);
+  }
+
+  static async updateUserProfile(username, type, imagePath) {
+    return await ShopDAO.updateUserProfile(username, type, imagePath);
   }
 }
 

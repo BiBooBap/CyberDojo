@@ -40,6 +40,9 @@ const AreaUtente = () => {
   // State for inventory
   const [inventory, setInventory] = useState({ avatar: [], border: [], title: [] });
 
+  // State for user profile
+  const [userProfile, setUserProfile] = useState({ avatar: "", border: "", user_title: "" });
+
   // Function to verify the password
   const handleVerifyPassword = async (e) => {
     e.preventDefault();
@@ -53,17 +56,30 @@ const AreaUtente = () => {
     }
   };
 
+
+
   // Function to fetch user information
   const fetchUserInfo = async () => {
     try {
       const userInfo = await ChangeCredentialsFacade.getUserInfo();
       setNewUsername(userInfo.username);
       setNewEmail(userInfo.email);
+      setUserProfile({
+        avatar: userInfo.avatar,
+        border: userInfo.border,
+        user_title: userInfo.user_title,
+      });
     } catch (error) {
       console.error("Errore durante il recupero delle informazioni utente:", error);
       alert("Errore nel recupero delle informazioni utente.");
     }
   };
+      // Log userProfile values
+      useEffect(() => {
+        console.log("Border:", userProfile.border);
+        console.log("Avatar:", userProfile.avatar);
+        console.log("User Title:", userProfile.user_title);
+      }, [userProfile]);
 
   // Function to check if the user is authenticated
   const isUserLoggedIn = () => {
@@ -159,7 +175,7 @@ const AreaUtente = () => {
     }
 
     // RegEx for password (only if it is being changed)
-    if (newPassword) { 
+    if (newPassword) {
       const passwordRegex = /^(?=.*[A-ZÀ-Ù])(?=.*[a-zà-ù])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/;
       if (newPassword.length < 8) {
         newErrors.password = "La password deve avere almeno 8 caratteri.";
@@ -244,8 +260,19 @@ const AreaUtente = () => {
     }
   };
 
+  const handleSelectItem = async (type, imagePath) => {
+    try {
+      await ShopFacade.updateUserProfile(type, imagePath );
+      fetchUserInfo();
+      alert("Profilo aggiornato con successo!");
+    } catch (error) {
+      console.error("Errore durante l'aggiornamento del profilo:", error);
+      alert("Errore durante l'aggiornamento del profilo.");
+    }
+  };
+
   const renderForm = () => {
-   if (selectedSection === "Inventario") {
+    if (selectedSection === "Inventario") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
           <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
@@ -255,11 +282,16 @@ const AreaUtente = () => {
             <h2 className="text-white font-bold text-xl mb-2">Avatars</h2>
             {inventory.avatar.length > 0 ? (
               inventory.avatar.map((item, index) => (
-                  <div key={index} className="inventory-item flex flex-col items-center mb-4">
+                <div key={index} className="inventory-item flex flex-col items-center mb-4">
                   <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
                   <p className="font-bold mb-1">{item.name}</p>
                   <p className="text-sm mb-2 text-center">{item.description}</p>
-                  <button className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]">Seleziona</button> {/* !TODO: Implementare la logica per selezionare l'item */}
+                  <button
+                    className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]"
+                    onClick={() => handleSelectItem('avatar', item.image_path)}
+                  >
+                    Seleziona
+                  </button>
                 </div>
               ))
             ) : (
@@ -274,7 +306,12 @@ const AreaUtente = () => {
                   <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
                   <p className="font-bold mb-1">{item.name}</p>
                   <p className="text-sm mb-2 text-center">{item.description}</p>
-                  <button className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]">Seleziona</button> {/* !TODO: Implementare la logica per selezionare l'item */}
+                  <button
+                    className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]"
+                    onClick={() => handleSelectItem('border', item.image_path)}
+                  >
+                    Seleziona
+                  </button>
                 </div>
               ))
             ) : (
@@ -289,7 +326,12 @@ const AreaUtente = () => {
                   <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
                   <p className="font-bold mb-1">{item.name}</p>
                   <p className="text-sm mb-2 text-center">{item.description}</p>
-                  <button className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]">Seleziona</button> {/* !TODO: Implementare la logica per selezionare l'item */}
+                  <button
+                    className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]"
+                    onClick={() => handleSelectItem('user_title', item.image_path)}
+                  >
+                    Seleziona
+                  </button>
                 </div>
               ))
             ) : (
@@ -299,116 +341,115 @@ const AreaUtente = () => {
         </div>
       );
     }
-
     if (selectedSection === "Gestione Account") {
-        return (
-          <div className="flex flex-col justify-between space-y-8">
-            <div className="card-body py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-              <h2 className="text-[#f7d1cd] font-bold text-xl mb-2">Avatar Profilo</h2>
-              <div className="flex items-center space-x-4">
-                <div className="relative w-32 h-32 mb-3">
-                  <img
-                    src="path/to/image3.png"
-                    alt="Bordo"
-                    className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
-                  />
-                  <img
-                    src="path/to/image3.png"
-                    alt="Avatar"
-                    className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
-                  />
-                  <img src="path/to/image3.png" alt="Titolo" className="w-16 h-16 object-cover rounded-full" />
+      return (
+        <div className="flex flex-col justify-between space-y-8">
+          <div className="card-body py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+            <h2 className="text-[#f7d1cd] font-bold text-xl mb-2">Avatar Profilo</h2>
+            <div className="flex items-center space-x-4">
+              <div className="relative w-32 h-32 mb-3">
+                <img
+                  src={userProfile.border}
+                  alt="Bordo"
+                  className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
+                />
+                <img
+                  src={userProfile.avatar}
+                  alt="Avatar"
+                  className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
+                />
+                <img src={userProfile.user_title} alt="Titolo" className="w-16 h-16 object-cover rounded-full" />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <div>
+                  <p className="text-white font-bold">Username:</p>
+                  <p className="text-white">{newUsername}</p>
                 </div>
-                <div className="flex flex-col space-y-2">
-                  <div>
-                    <p className="text-white font-bold">Username:</p>
-                    <p className="text-white">{newUsername}</p>
-                  </div>
-                  <div>
-                    <p className="text-white font-bold">Email:</p>
-                    <p className="text-white">{newEmail}</p>
-                  </div>
-                  <div>
-                    <p className="text-white font-bold">Password:</p>
-                    <p className="text-white">••••••••</p>
-                  </div>
+                <div>
+                  <p className="text-white font-bold">Email:</p>
+                  <p className="text-white">{newEmail}</p>
+                </div>
+                <div>
+                  <p className="text-white font-bold">Password:</p>
+                  <p className="text-white">••••••••</p>
                 </div>
               </div>
             </div>
-            {!isPasswordVerified ? (
-              <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-                <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-                  Verifica Password
-                </h1>
-                <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
-                  <p className="mb-1 text-white font-bold text-sm">Password Attuale</p>
-                  <input
-                    type="password"
-                    placeholder="Password attuale"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="mb-3 px-4 py-2 rounded"
-                    required
-                  />
-                  {verificationError && (
-                    <span className="text-black text-sm mb-2">{verificationError}</span>
-                  )}
-                  <button type="submit" className="button-CD py-2 px-8 text-xl">
-                    Verifica
-                  </button>
-                </form>
-              </div>
-            ) : (
-              <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-                <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-                  Modifica Credenziali
-                </h1>
-                <form className="flex flex-col items-center" onSubmit={handleUpdateCredentials}>
-                  <input
-                    type="text"
-                    placeholder="Nuovo Username"
-                    value={newUsername}
-                    onChange={(e) => setNewUsername(e.target.value)}
-                    className="mb-3 px-4 py-2 rounded"
-                    required
-                  />
-                  <input
-                    type="email"
-                    placeholder="Nuova Email"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                    className="mb-3 px-4 py-2 rounded"
-                    required
-                  />
-                  <input
-                    type="password"
-                    placeholder="Nuova Password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="mb-3 px-4 py-2 rounded"
-                    required
-                  />
-                  {Object.values(errors).map((error, index) => (
-                    <p key={index} className="text-red-500 text-sm mb-2">
-                      {error}
-                    </p>
-                  ))}
-                  <button type="submit" className="button-CD py-2 px-8 text-xl">
-                    Aggiorna Credenziali
-                  </button>
-
-                  <button
-                    type="button"
-                    className="delete-account-button mt-4 py-2 px-8 text-xl bg-red-600 hover:bg-red-700 rounded"
-                    onClick={handleDeleteAccount}
-                  >
-                    Elimina Account
-                  </button>
-                </form>
-              </div>
-            )}
           </div>
-        );
+          {!isPasswordVerified ? (
+            <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+              <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+                Modifica credenziali
+              </h1>
+              <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
+                <p className="mb-1 text-white font-bold text-sm">Inserisci la tua password attuale</p>
+                <input
+                  type="password"
+                  placeholder="Password attuale"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                  required
+                />
+                {verificationError && (
+                  <span className="text-black text-sm mb-2">{verificationError}</span>
+                )}
+                <button type="submit" className="button-CD py-2 px-8 text-xl">
+                  Verifica
+                </button>
+              </form>
+            </div>
+          ) : (
+            <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+              <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+                Modifica Credenziali
+              </h1>
+              <form className="flex flex-col items-center" onSubmit={handleUpdateCredentials}>
+                <input
+                  type="text"
+                  placeholder="Nuovo Username"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Nuova Email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Nuova Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                  required
+                />
+                {Object.values(errors).map((error, index) => (
+                  <p key={index} className="text-red-500 text-sm mb-2">
+                    {error}
+                  </p>
+                ))}
+                <button type="submit" className="button-CD py-2 px-8 text-xl">
+                  Aggiorna Credenziali
+                </button>
+
+                <button
+                  type="button"
+                  className="delete-account-button mt-4 py-2 px-8 text-xl bg-red-600 hover:bg-red-700 rounded"
+                  onClick={handleDeleteAccount}
+                >
+                  Elimina Account
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+      );
     } else if (selectedSection === "Sezione Premi") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">

@@ -49,6 +49,53 @@ class ShopController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  static async getUserProfile(req, res) {
+    try {
+      const username = req.user.username;
+      const profile = await ShopFacade.getUserProfile(username);
+      res.json(profile);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  static async updateUserProfile(req, res) {
+    try {
+      const username = req.user.username;
+      const { type, imagePath } = req.body;
+
+      if (!type || !imagePath) {
+        return res
+          .status(400)
+          .json({ error: "Type e imagePath sono richiesti" });
+      }
+
+      const result = await ShopFacade.updateUserProfile(
+        username,
+        type,
+        imagePath
+      );
+
+      if (result.modifiedCount === 0) {
+        return res.status(404).json({
+          error: "Utente non trovato o nessun aggiornamento effettuato",
+        });
+      }
+
+      res
+        .status(200)
+        .json({ message: "Profilo aggiornato con successo", result });
+    } catch (error) {
+      console.error(
+        "Errore durante l'aggiornamento del profilo utente:",
+        error
+      );
+      res
+        .status(500)
+        .json({ error: "Errore durante l'aggiornamento del profilo utente" });
+    }
+  }
 }
 
 module.exports = ShopController;

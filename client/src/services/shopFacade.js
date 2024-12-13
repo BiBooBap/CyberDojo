@@ -16,6 +16,15 @@ class ShopFacade {
   static async isItemInInventory(itemId) {
     return await shopService.isItemInInventory(itemId);
   }
+
+  static async getUserProfile() {
+    return await shopService.getUserProfile();
+  }
+
+  static async updateUserProfile(type, imagePath) {
+    console.log("ShopFacade updateUserProfile", type, imagePath);
+    return await shopService.updateUserProfile(type, imagePath);
+  }
 }
 
 export default ShopFacade;
