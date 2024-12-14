@@ -72,6 +72,7 @@ const HomePage = ({ user }) => {
         await courseFacade.enrollCourse(course._id);
         button.textContent = "Riprendi";
         alert("Iscrizione avvenuta con successo!");
+        window.location.reload();
       } catch (error) {
         console.error("Errore durante l'iscrizione al corso:", error);
         button.textContent = originalText;

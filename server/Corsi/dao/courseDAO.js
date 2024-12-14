@@ -47,6 +47,16 @@ class CourseDAO {
     }
     return user.enrolled_courses;
   }
+
+  static async getEnrollment(username, courseId) {
+    const db = await connect();
+    const user = await db.collection("user").findOne({ username });
+    if (!user) {
+      throw new Error("Utente non trovato");
+    }
+    const course = user.enrolled_courses.find(enrollment => enrollment.course_id === courseId);
+    return course;
+  }
 }
 
 module.exports = CourseDAO;

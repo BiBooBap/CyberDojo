@@ -249,7 +249,7 @@ const AreaUtente = () => {
         alert("Account eliminato con successo.");
         // Remove the token and redirect the user
         localStorage.removeItem("token");
-        navigate("/signupPage");
+        window.location.href = "/accessPage";
 
       } catch (error) {
         console.error("Errore durante l'eliminazione dell'account:", error);

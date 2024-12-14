@@ -83,6 +83,7 @@ class CourseService {
     );
 
     const course = await CourseDAO.getCourseInfo(course_id);
+    console.log("Ciao", course);
     const totalLessons = course.lessons.length;
 
     const testExists = await RewardsService.getTestExistsForUserAndCourse(
@@ -112,13 +113,13 @@ class CourseService {
   }
   static async getCourseById(courseId, username) {
     // Retrieve course data
-    const course = await CourseDAO.getCourseById(parseInt(courseId, 10));
+    const course = await CourseDAO.getCourseInfo(parseInt(courseId, 10));
     if (!course) {
       throw new Error("Corso non trovato");
     }
 
     // Get user enrollment information
-    const enrollment = await CourseEnrollmentDAO.getEnrollment(username, parseInt(courseId, 10));
+    const enrollment = await CourseDAO.getEnrollment(username, parseInt(courseId, 10));
     if (!enrollment) {
       throw new Error("Utente non iscritto a questo corso");
     }
@@ -137,12 +138,15 @@ class CourseService {
       completed: index <= lastCompletedIndex,
     }));
 
+    const progress = await CourseService.getProgressOfCourse(username, parseInt(courseId, 10));
+
     return {
       id: course._id,
       title: course.name,
       icon: course.course_image,
       description: course.description,
       lessons,
+      progress,
     };
   }
 

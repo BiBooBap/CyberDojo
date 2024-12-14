@@ -18,7 +18,7 @@ class AuthFacade {
           id: course.course_id,
           title: courseInfo.name,
           icon: courseInfo.course_image,
-          progress
+          progress,
         };
       })
     );
