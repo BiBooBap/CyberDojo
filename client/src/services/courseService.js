@@ -1,4 +1,29 @@
 const corsiService = {
+
+   updateUserProgress : async (courseId,lessonId ) => {
+    try {
+      const token = localStorage.getItem("token"); // Assicurati di avere il token dell'utente
+      const response = await fetch(`http://localhost:3001/courses/update-progress`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ courseId, lessonId }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Errore nell'aggiornamento del progresso: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      console.log("Progresso aggiornato:", data);
+    } catch (error) {
+      console.error("Errore durante l'aggiornamento del progresso:", error);
+      alert("Errore durante l'aggiornamento del progresso.");
+    }
+  },
+
   getCoursesGuest: async () => {
     try {
       const headers = {

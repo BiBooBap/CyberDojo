@@ -22,7 +22,7 @@ const HomePage = ({ user }) => {
       return false;
     }
   };
-
+  
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -153,7 +153,7 @@ const HomePage = ({ user }) => {
                 !user ? "group hover:[transform:rotateY(180deg)]" : ""
               }`}
             >
-              {/* Fronte della card */}
+              {/* Front card */}
               <div className="absolute inset-0 rounded-lg [backface-visibility:hidden] flex flex-col justify-between items-center p-6">
                 <div>
                   <img
@@ -203,7 +203,7 @@ const HomePage = ({ user }) => {
                 !user ? "group hover:[transform:rotateY(180deg)]" : ""
               }`}
             >
-              {/* Fronte della card */}
+              {/*Front Card*/}
               <div className="absolute inset-0 rounded-lg [backface-visibility:hidden] flex flex-col justify-between items-center p-6">
                 <div>
                   <img

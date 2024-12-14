@@ -24,6 +24,10 @@ class courseFacade {
   static async getCourseById(courseId, username) {
     return await corsiService.getCourseById(courseId, username);
   }
+
+  static async updateUserProgress(courseId, lessonId) {
+    return await corsiService.updateUserProgress(courseId, lessonId);
+  }
 }
 
 export default courseFacade;

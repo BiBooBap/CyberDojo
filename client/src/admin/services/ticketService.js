@@ -45,7 +45,6 @@ const ticketService = {
         headers: headers,
       });
       if (!response.ok) {
-        console.log(response);
         throw new Error("Errore nel recupero dei dettagli del ticket");
       }
       const data = await response.json();
