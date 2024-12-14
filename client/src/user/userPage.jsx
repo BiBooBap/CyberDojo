@@ -275,67 +275,100 @@ const AreaUtente = () => {
     if (selectedSection === "Inventario") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+          <h1 className="text-[#f7d1cd] font-bold text-3xl text-center mb-4">
             {selectedSection}
           </h1>
-          <div className="inventory-section">
-            <h2 className="text-white font-bold text-xl mb-2">Avatars</h2>
+      
+          {/* Sezione Avatars */}
+          <div className="inventory-section mb-6">
+            <h2 className="text-white font-bold text-2xl text-center mb-4">Avatars</h2>
             {inventory.avatar.length > 0 ? (
-              inventory.avatar.map((item, index) => (
-                <div key={index} className="inventory-item flex flex-col items-center mb-4">
-                  <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
-                  <p className="font-bold mb-1">{item.name}</p>
-                  <p className="text-sm mb-2 text-center">{item.description}</p>
-                  <button
-                    className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]"
-                    onClick={() => handleSelectItem('avatar', item.image_path)}
+              <div className="flex flex-wrap justify-start gap-6">
+                {inventory.avatar.map((item, index) => (
+                  <div
+                    key={index}
+                    className="inventory-item flex flex-col items-center bg-white border-2 border-[#f7d1cd] rounded-lg p-4 shadow-lg w-48 h-64"
                   >
-                    Seleziona
-                  </button>
-                </div>
-              ))
+                    <img
+                      src={item.image_path}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-full mb-3"
+                    />
+                    <p className="font-bold text-[#54295c] mb-1">{item.name}</p>
+                    <p className="text-sm mb-2 text-center text-gray-700">{item.description}</p>
+                    <button
+                      className="bg-[#f7d1cd] text-[#54295c] py-1 px-4 rounded hover:bg-[#e0a11b] transition-all"
+                      onClick={() => handleSelectItem('avatar', item.image_path)}
+                    >
+                      Seleziona
+                    </button>
+                  </div>
+                ))}
+              </div>
             ) : (
-              <p className="text-white">Nessun avatar disponibile</p>
+              <p className="text-white text-center">Nessun avatar disponibile</p>
             )}
           </div>
-          <div className="inventory-section">
-            <h2 className="text-white font-bold text-xl mb-2">Bordi</h2>
+      
+          {/* Sezione Bordi */}
+          <div className="inventory-section mb-6">
+            <h2 className="text-white font-bold text-2xl text-center mb-4">Bordi</h2>
             {inventory.border.length > 0 ? (
-              inventory.border.map((item, index) => (
-                <div key={index} className="inventory-item flex flex-col items-center mb-4">
-                  <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
-                  <p className="font-bold mb-1">{item.name}</p>
-                  <p className="text-sm mb-2 text-center">{item.description}</p>
-                  <button
-                    className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]"
-                    onClick={() => handleSelectItem('border', item.image_path)}
+              <div className="flex flex-wrap justify-start gap-6">
+                {inventory.border.map((item, index) => (
+                  <div
+                    key={index}
+                    className="inventory-item flex flex-col items-center bg-white border-2 border-[#f7d1cd] rounded-lg p-4 shadow-lg w-48 h-64"
                   >
-                    Seleziona
-                  </button>
-                </div>
-              ))
+                    <img
+                      src={item.image_path}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-full mb-3"
+                    />
+                    <p className="font-bold text-[#54295c] mb-1">{item.name}</p>
+                    <p className="text-sm mb-2 text-center text-gray-700">{item.description}</p>
+                    <button
+                      className="bg-[#f7d1cd] text-[#54295c] py-1 px-4 rounded hover:bg-[#e0a11b] transition-all"
+                      onClick={() => handleSelectItem('border', item.image_path)}
+                    >
+                      Seleziona
+                    </button>
+                  </div>
+                ))}
+              </div>
             ) : (
-              <p className="text-white">Nessun bordo disponibile</p>
+              <p className="text-white text-center">Nessun bordo disponibile</p>
             )}
           </div>
-          <div className="inventory-section">
-            <h2 className="text-white font-bold text-xl mb-2">Titoli</h2>
+      
+          {/* Sezione Titoli */}
+          <div className="inventory-section mb-6">
+            <h2 className="text-white font-bold text-2xl text-center mb-4">Titoli</h2>
             {inventory.title.length > 0 ? (
-              inventory.title.map((item, index) => (
-                <div key={index} className="inventory-item flex flex-col items-center mb-4">
-                  <img src={item.image_path} alt={item.name} className="w-24 h-24 object-cover mb-2" />
-                  <p className="font-bold mb-1">{item.name}</p>
-                  <p className="text-sm mb-2 text-center">{item.description}</p>
-                  <button
-                    className="bg-[#e0a11b] text-white py-1 px-4 rounded cursor-pointer hover:bg-[#d18f1a]"
-                    onClick={() => handleSelectItem('user_title', item.image_path)}
+              <div className="flex flex-wrap justify-start gap-6">
+                {inventory.title.map((item, index) => (
+                  <div
+                    key={index}
+                    className="inventory-item flex flex-col items-center bg-white border-2 border-[#f7d1cd] rounded-lg p-4 shadow-lg w-48 h-64"
                   >
-                    Seleziona
-                  </button>
-                </div>
-              ))
+                    <img
+                      src={item.image_path}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-full mb-3"
+                    />
+                    <p className="font-bold text-[#54295c] mb-1">{item.name}</p>
+                    <p className="text-sm mb-2 text-center text-gray-700">{item.description}</p>
+                    <button
+                      className="bg-[#f7d1cd] text-[#54295c] py-1 px-4 rounded hover:bg-[#e0a11b] transition-all"
+                      onClick={() => handleSelectItem('user_title', item.image_path)}
+                    >
+                      Seleziona
+                    </button>
+                  </div>
+                ))}
+              </div>
             ) : (
-              <p className="text-white">Nessun titolo disponibile</p>
+              <p className="text-white text-center">Nessun titolo disponibile</p>
             )}
           </div>
         </div>
@@ -344,10 +377,11 @@ const AreaUtente = () => {
     if (selectedSection === "Gestione Account") {
       return (
         <div className="flex flex-col justify-between space-y-8">
-          <div className="card-body py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-            <h2 className="text-[#f7d1cd] font-bold text-xl mb-2">Avatar Profilo</h2>
-            <div className="flex items-center space-x-4">
-              <div className="relative w-32 h-32 mb-3">
+        <div className="card-body py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+          <h2 className="text-[#f7d1cd] font-bold text-xl mb-2">Profilo</h2>
+          <div className="flex items-center space-x-4">
+            <div className="relative w-32 h-32 mb-3 flex flex-col items-center">
+              <div className="relative w-32 h-32">
                 <img
                   src={userProfile.border}
                   alt="Bordo"
@@ -358,24 +392,29 @@ const AreaUtente = () => {
                   alt="Avatar"
                   className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
                 />
-                <img src={userProfile.user_title} alt="Titolo" className="w-16 h-16 object-cover rounded-full" />
               </div>
-              <div className="flex flex-col space-y-2">
-                <div>
-                  <p className="text-white font-bold">Username:</p>
-                  <p className="text-white">{newUsername}</p>
-                </div>
-                <div>
-                  <p className="text-white font-bold">Email:</p>
-                  <p className="text-white">{newEmail}</p>
-                </div>
-                <div>
-                  <p className="text-white font-bold">Password:</p>
-                  <p className="text-white">••••••••</p>
-                </div>
+              <img
+                src={userProfile.user_title}
+                alt="Titolo"
+                className="w-16 h-16 object-cover rounded-full mt-20"
+              />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <div>
+                <p className="text-white font-bold">Username:</p>
+                <p className="text-white">{newUsername}</p>
+              </div>
+              <div>
+                <p className="text-white font-bold">Email:</p>
+                <p className="text-white">{newEmail}</p>
+              </div>
+              <div>
+                <p className="text-white font-bold">Password:</p>
+                <p className="text-white">••••••••</p>
               </div>
             </div>
           </div>
+        </div>
           {!isPasswordVerified ? (
             <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
               <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
@@ -453,48 +492,60 @@ const AreaUtente = () => {
     } else if (selectedSection === "Sezione Premi") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            Sezione Premi
+          <h1 className="text-[#f7d1cd] font-bold text-3xl text-center mb-4">
+            {selectedSection}
           </h1>
+          
+          {/* Messaggio di errore */}
           {error ? (
-            <p className="text-red-500">{error}</p>
+            <div className="bg-red-100 text-red-700 px-4 py-3 rounded-lg text-center font-medium shadow-md">
+              {error}
+            </div>
+          ) : rewards.length === 0 ? (
+            <p className="text-center text-white text-lg mt-4">
+              Non hai ancora guadagnato premi.
+            </p>
           ) : (
-            rewards.map((reward) => <RewardItem key={reward._id} reward={reward} />)
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {/* Premi con effetto hover */}
+              {rewards.map((reward) => (
+                <div
+                  key={reward._id}
+                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 p-6 text-black"
+                >
+                  <RewardItem reward={reward} />
+                </div>
+              ))}
+            </div>
           )}
         </div>
       );
+      
     }
-
     if (selectedSection === "Corsi seguiti") {
       return (
         <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            Corsi Seguiti
+          <h1 className="text-[#f7d1cd] font-bold text-3xl text-center mb-4">
+            {selectedSection}
           </h1>
           {userCourses.length > 0 ? (
-            userCourses.map((course, index) => {
-              return (
-                <div key={course.id || course._id || `course-${index}`} className="mb-4">
-                  <h2 className="text-white font-bold text-xl">Titolo: {course.title}</h2>
-                  <p className="text-white">Progresso: {course.progress}%</p>
+            <div className="flex flex-col space-y-4">
+              {userCourses.map((course, index) => (
+                <div
+                  key={course.id || course._id || `course-${index}`}
+                  className="p-4 bg-white rounded-lg shadow-lg"
+                >
+                  <h2 className="text-[#54295c] font-bold text-xl mb-2">{course.title}</h2>
+                  <p className="text-[#54295c]">Progresso: {course.progress}%</p>
                 </div>
-              );
-            })
+              ))}
+            </div>
           ) : (
-            <p className="text-white">Non sei iscritto a nessun corso.</p>
+            <p className="text-white text-center">Non sei iscritto a nessun corso.</p>
           )}
         </div>
       );
     }
-
-    return (
-      <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-        <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-          {selectedSection}
-        </h1>
-        <p className="text-white font-bold text-lg">Coming Soon</p>
-      </div>
-    );
   };
 
   return (
