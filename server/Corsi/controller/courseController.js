@@ -62,7 +62,7 @@ class CourseController {
   static async getCoursePage(req, res) {
     const { courseId } = req.params;
     const username = req.user.username;
-    console.log("Richiesta ricevuta per /courses/:courseId");
+
     try {
       const course = await CourseService.getCourseById(courseId, username);
       res.json(course);
@@ -71,7 +71,18 @@ class CourseController {
       res.status(500).json({ message: "Errore interno del server", error });
     }
   }
+  static async updateUserProgress(req, res) {
+    const { courseId, lessonId } = req.body;
+    const username = req.user.username;
+  
+    try {
+      await CourseService.updateUserProgress(courseId, lessonId, username );
+      res.status(200).json({ message: "Progresso aggiornato con successo." });
+    } catch (error) {
+      console.error("Errore nell'aggiornamento del progresso:", error);
+      res.status(500).json({ message: "Errore interno del server", error });
+    }
+  }
 }
-
 
 module.exports = CourseController;

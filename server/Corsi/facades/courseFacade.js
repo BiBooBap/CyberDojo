@@ -8,6 +8,9 @@ class CoursesFacade {
   static async getCoursesGuest() {
     return await CourseService.getAllCoursesGuest();
   }
+  static async updateUserProgress(courseId, lessonId, username) {
+    return await CourseService.updateUserProgress(courseId, lessonId, username);
+  }
 }
 
 module.exports = CoursesFacade;

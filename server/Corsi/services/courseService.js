@@ -150,6 +150,21 @@ class CourseService {
     };
   }
 
+  static async updateUserProgress(courseId, lessonId, username) {
+    const course = await CourseDAO.getCourseInfo(parseInt(courseId , 10));
+    console.log(courseId);
+    if (!course) {
+      throw new Error("Corso non trovato");
+    }
+
+    const lesson = course.lessons.find((lesson) => lesson.name === lessonId);
+    if (!lesson) {
+      throw new Error("Lezione non trovata");
+    }
+
+    await CourseDAO.updateUserProgress(courseId, lessonId, username);
+  }
+
 }
 
 module.exports = CourseService;

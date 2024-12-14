@@ -18,5 +18,6 @@ router.get(
   CourseController.getEnrolledCourses
 );
 router.get("/:courseId", authenticate, CourseController.getCoursePage);
+router.post("/update-progress", authenticate, CourseController.updateUserProgress);
 
 module.exports = router;

@@ -57,6 +57,44 @@ class CourseDAO {
     const course = user.enrolled_courses.find(enrollment => enrollment.course_id === courseId);
     return course;
   }
+
+static async updateUserProgress(courseId, newLessonId, username) {
+  const db = await connect();
+  try {
+    // Recupera il corso per ottenere l'ordine delle lezioni
+    const course = await CourseDAO.getCourseInfo(parseInt(courseId, 10));
+    if (!course) {
+      throw new Error('Corso non trovato');
+    }
+
+    // Trova l'indice della nuova lezione
+    const newLessonIndex = course.lessons.findIndex(lesson => lesson.name === newLessonId);
+    if (newLessonIndex === -1) {
+      throw new Error('Lezione non trovata nel corso');
+    }
+
+    let userLesson_reached = await CourseDAO.getEnrollment(username, parseInt(courseId, 10));
+    const currentLessonIndex = course.lessons.findIndex(lesson => lesson.name === userLesson_reached.lesson_reached);
+      
+
+    if (newLessonIndex > currentLessonIndex) {
+    // Aggiorna al nuovo progresso
+    userLesson_reached.lesson_reached = newLessonId;
+
+    await db.collection("user").updateOne(
+      { username, "enrolled_courses.course_id": parseInt(courseId, 10) },
+      { $set: { "enrolled_courses.$.lesson_reached": newLessonId } }
+    );
+
+    userLesson_reached.lesson_reached = newLessonId;
+
+    return userLesson_reached;
+  }
+  } catch (error) {
+    console.error('Errore in updateUserProgress:', error);
+    throw error;
+  }
 }
 
+}
 module.exports = CourseDAO;
