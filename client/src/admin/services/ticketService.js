@@ -54,6 +54,42 @@ const ticketService = {
       throw error;
     }
   },
+
+  closeTicket: async (id, token) => {
+    try {
+      const response = await fetch(`http://localhost:3001/assistance/closeticket?id=${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Errore nel recupero dei dettagli del ticket");
+      }
+    } catch (error) {
+      console.error("Errore nel recupero: ", error);
+      throw error;
+    }
+  },
+
+  addMessage: async (id, username, message, role, token) => {
+    try {
+      const response = await fetch(`http://localhost:3001/assistance/addmessage?id=${id}&username=${username}&message=${message}&role=${role}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Errore nel recupero dei dettagli del ticket");
+      }
+    } catch (error) {
+      console.error("Errore nel recupero: ", error);
+      throw error;
+    }
+  },
 };
 
 export default ticketService;

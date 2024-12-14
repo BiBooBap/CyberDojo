@@ -19,6 +19,14 @@ class AssistanceFacade {
   async getAllRequests() {
     return await AssistanceRequestManager.listAllTickets();
   }
+
+  async closeTicket(id) {
+    return await AssistanceRequestManager.closeTicket(id);
+  }
+
+  async addMessage(id, username, message, role) {
+    return await AssistanceRequestManager.addMessage(id, username, message, role);
+  }
 }
 
 module.exports = new AssistanceFacade();

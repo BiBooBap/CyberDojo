@@ -26,6 +26,14 @@ class AssistanceRequestManager {
   async listAllTickets() {
     return await AssistanceRequestDAO.getAllTickets();
   }
+
+  async closeTicket(ticketId) {
+    return await AssistanceRequestDAO.closeTicket(ticketId);
+  }
+
+  async addMessage(ticketId, username, message, role) {
+    return await AssistanceRequestDAO.addMessage(ticketId, username, message, role);
+  }
 }
 
 module.exports = new AssistanceRequestManager();

@@ -47,6 +47,35 @@ class AssistanceController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  static async closeTicket(req, res) {
+    try {
+      const id = req.query.id;
+      const result = await AssistanceFacade.closeTicket(id);
+      if (result.modifiedCount === 0) {
+        return res.status(404).json({ error: "Ticket non trovato" });
+      }
+      res.json({ message: "Ticket chiuso con successo" });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  static async addMessage(req, res) {
+    try {
+      const id = req.query.id;
+      const username = req.query.username;
+      const message = req.query.message;
+      const role = req.query.role;
+      const result = await AssistanceFacade.addMessage(id, username, message, role);
+      if (result.modifiedCount === 0) {
+        return res.status(404).json({ error: "Ticket non trovato" });
+      }
+      res.json({ message: "Messaggio aggiunto con successo" });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = AssistanceController;

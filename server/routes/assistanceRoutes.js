@@ -15,4 +15,10 @@ router.get("/listuser", AssistanceController.listUserRequests);
 // Ottieni una richiesta di assistenza specifica per ID
 router.get("/ticket", AssistanceController.getRequest);
 
+// Chiude un ticket (ADMIN ONLY)
+router.post("/closeticket", AssistanceController.closeTicket);
+
+// Aggiungi un messaggio a un ticket
+router.post("/addmessage", AssistanceController.addMessage);
+
 module.exports = router;

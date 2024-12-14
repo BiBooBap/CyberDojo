@@ -1,17 +1,20 @@
 import ticketFacade from "./services/ticketFacade";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function AdminTicketDetail() {
   const { id } = useParams();
   const [ticket, setTicket] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const user = jwtDecode(localStorage.getItem("token"));
 
   const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchTicket = async () => {
       try {
         const data = await ticketFacade.getTicketDetails(id, token);
-        console.log(data);
         setTicket(data);
       } catch (error) {
         console.error("Errore nel caricamento del ticket:", error);
@@ -20,7 +23,25 @@ function AdminTicketDetail() {
     fetchTicket();
   }, [id, token]);
 
-  
+  const closeTicket = async () => {
+    try {
+      await ticketFacade.closeTicket(id, token);
+      alert("Ticket chiuso con successo.");
+      window.location.href = "/admin/adminTicketDashboard";
+    } catch (error) {
+      console.error("Errore nella chiusura del ticket:", error);
+    }
+  };
+
+  const addMessage = async () => {
+    try {
+      await ticketFacade.addMessage(id, user.username, message, user.role, token);
+      alert("Messaggio inviato con successo.");
+      window.location.reload();
+    } catch (error) {
+      console.error("Errore nell'invio del messaggio:", error);
+    }
+  }
 
   if (!ticket) {
     return <div className="flex items-center justify-center mt-16">Caricamento...</div>;
@@ -41,19 +62,29 @@ function AdminTicketDetail() {
               <p className="text-lg mb-2"><strong>Timestamp:</strong> {new Date(message.timestamp).toLocaleString()}</p>
             </div>
           ))}
-          <textarea
-            className="w-full p-4 mb-4 rounded-lg bg-gray-100 text-gray-700"
-            placeholder="Scrivi una risposta"
-            rows="5"
-          ></textarea>
+          {ticket.is_open === "Aperto" &&
+          <div>
+            <textarea
+              className="w-full p-4 mb-4 rounded-lg bg-gray-100 text-gray-700"
+              placeholder="Scrivi una risposta"
+              rows="3"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            >
+            </textarea>
           <div className="flex space-x-4">
-            <button className="bg-[#54295c] text-white px-6 py-2 rounded-lg">
+            <button 
+            className="bg-[#54295c] text-white px-6 py-2 rounded-lg"
+            onClick={closeTicket}>
               Chiudi ticket
             </button>
-            <button className="bg-[#54295c] text-white px-6 py-2 rounded-lg">
+            <button 
+            className="bg-[#54295c] text-white px-6 py-2 rounded-lg"
+            onClick={addMessage}>
               Invia risposta
             </button>
           </div>
+          </div>}
         </div>
       </main>
     </div>
