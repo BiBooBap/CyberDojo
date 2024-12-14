@@ -5,6 +5,10 @@
 
 /* Custom styles if needed */
 
+.flow {
+  display: flow;
+}
+
 .card-body {
   @apply justify-self-center bg-[#e0a11b] rounded-2xl font-Montserrat justify-items-center;
 }
