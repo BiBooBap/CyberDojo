@@ -3,6 +3,7 @@ import assistanceFacade from "../services/assistanceFacade";
 import { jwtDecode } from "jwt-decode";
 
 function SupportRequest() {
+  const [message, setMessage] = useState("");
   const [description, setDescription] = useState("");
   const [userTickets, setUserTickets] = useState([]);
   const [error, setError] = useState("");
@@ -30,10 +31,18 @@ function SupportRequest() {
       return;
     }
 
+    const messageRegex = /^.{10,}$/;
+
+    if (!messageRegex.test(message)) {
+      alert("Il messaggio deve contenere almeno 10 caratteri.");
+      return;
+    }
+
     try {
-      await assistanceFacade.sendSupportRequest(username, description, token);
+      await assistanceFacade.sendSupportRequest(username, description, token, message);
       alert("Richiesta inviata con successo!");
       setDescription("");
+      setMessage("");
       fetchUserTickets();
     } catch (error) {
       console.error("Errore durante l'invio della richiesta:", error);
@@ -60,20 +69,27 @@ function SupportRequest() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center">
       <main className="flex-grow flex flex-col items-center justify-center w-full px-4">
-        <div className="bg-[#e0a11b] rounded-lg p-8 shadow-lg w-full max-w-md mb-8">
+        <div className="bg-[#e0a11b] rounded-lg p-8 shadow-lg w-full max-w-md mb-8 mt-2">
           <h2 className="text-white text-2xl font-bold mb-6 text-center">
             Richiedi supporto
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <textarea
+              <input tipe="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full p-2 rounded-2xl text-gray-700"
-                placeholder="Descrivi il tuo problema"
+                className="w-full p-2 rounded-2xl text-gray-700 mb-2"
+                placeholder="Titolo della richiesta"
                 rows="4"
                 required
               />
+              <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Messaggio"
+              className="w-full p-2 mb-4 rounded-2xl text-gray-700"
+              required
+            />
             </div>
             <button
               type="submit"

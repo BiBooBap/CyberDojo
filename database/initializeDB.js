@@ -389,8 +389,9 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["user_username", "description", "creation_date"],
+        required: ["_id", "user_username", "description", "creation_date"],
         properties: {
+          _id: { bsonType: "int", description: "Unique ID of the ticket" },
           user_username: {
             bsonType: "string",
             description: "Username of the user who opened the ticket",
@@ -440,6 +441,7 @@ async function initializeDB() {
   // Insert real data into the 'tickets' collection
   await db.collection("tickets").insertMany([
     {
+      _id: 1,
       user_username: "andre89",
       description: "Problema con l'accesso al corso avanzato",
       creation_date: new Date(),
@@ -461,6 +463,7 @@ async function initializeDB() {
       is_open: "Aperto",
     },
     {
+      _id: 2,
       user_username: "mariaB",
       description: "Impossibile caricare l'avatar personalizzato",
       creation_date: new Date(),
@@ -482,6 +485,7 @@ async function initializeDB() {
       is_open: "Aperto",
     },
     {
+      _id: 3,
       user_username: "luigiR99",
       description: "Errore l'acquisto del bordo nello shop",
       creation_date: new Date(),

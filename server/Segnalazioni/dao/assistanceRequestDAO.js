@@ -1,17 +1,37 @@
 const { connect } = require("../../../database/db");
 
 class AssistanceRequestDAO {
-  static async createTicket(userUsername, description) {
+  static async createTicket(userUsername, description, message) {
     const db = await connect();
-    console.log(userUsername);
-    console.log(description);
-    const result = await db.collection("tickets").insertOne({
+    
+    // Utilizza un meccanismo di incremento atomico per evitare duplicazioni
+    const lastTicket = await db.collection("tickets")
+    .find()
+    .sort({ _id: -1 })
+    .limit(1)
+    .project({ _id: 1 })
+    .toArray();
+
+    var lastId = lastTicket.length > 0 ? lastTicket[0]._id : 0;
+    const newId = lastId + 1;
+    console.log(message);
+    console.log(newId);
+    
+    
+    const ticket = {
+      _id: newId,
       user_username: userUsername,
       description: description,
       creation_date: new Date(),
+      messages: [],
       is_open: "Aperto",
-    });
-    return result.insertedId;
+    };
+    
+    await db.collection("tickets").insertOne(ticket);
+
+    // Aggiungi il messaggio iniziale
+    this.addMessage(newId, userUsername, message, "user");
+    return ticket._id;
   }
 
   static async getTicketById(id) {

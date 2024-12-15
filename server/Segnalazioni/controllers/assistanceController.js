@@ -3,12 +3,14 @@ const AssistanceFacade = require("../facades/assistanceFacade");
 class AssistanceController {
   static async createRequest(req, res) {
     try {
-      const { userUsername, description } = req.body;
+      const { userUsername, description, message } = req.body;
       console.log(userUsername);
       console.log(description);
+      console.log(message);
       const ticketId = await AssistanceFacade.sendRequest(
         userUsername,
-        description
+        description,
+        message
       );
       res
         .status(201)

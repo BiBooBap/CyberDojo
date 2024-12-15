@@ -8,11 +8,11 @@ class AssistanceRequestManager {
     AssistanceRequestManager.instance = this;
   }
 
-  async createTicket(userUsername, description) {
-    if (!userUsername || !description) {
+  async createTicket(userUsername, description, message) {
+    if (!userUsername || !description || !message) {
       throw new Error("Username e descrizione sono obbligatori.");
     }
-    return await AssistanceRequestDAO.createTicket(userUsername, description);
+    return await AssistanceRequestDAO.createTicket(userUsername, description, message);
   }
 
   async getTicket(ticketId) {

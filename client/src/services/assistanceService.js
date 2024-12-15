@@ -1,6 +1,6 @@
 const assistanceService = {
   // Funzione per inviare una nuova richiesta di supporto
-  sendSupportRequest: async (username, description, token) => {
+  sendSupportRequest: async (username, description, token, message) => {
     try {
       const response = await fetch("http://localhost:3001/assistance/create", {
         method: "POST",
@@ -8,7 +8,7 @@ const assistanceService = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userUsername: username, description }),
+        body: JSON.stringify({ userUsername: username, description, message }),
       });
 
       if (!response.ok) {

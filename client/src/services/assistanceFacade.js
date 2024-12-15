@@ -2,11 +2,12 @@ import assistanceService from "./assistanceService";
 
 class AssistanceFacade {
   // Funzione per inviare una nuova richiesta di supporto
-  static async sendSupportRequest(username, description, token) {
+  static async sendSupportRequest(username, description, token, message) {
     return await assistanceService.sendSupportRequest(
       username,
       description,
-      token
+      token,
+      message
     );
   }
 
