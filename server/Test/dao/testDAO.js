@@ -1,17 +1,17 @@
 const { connect } = require("../../../database/db");
 
 class TestDAO {
-  // Crea un nuovo test statico per un corso
-  async createTest(test) {
-    const db = await connect();
-    const result = await db.collection("tests").insertOne(test);
-    return result.insertedId;
-  }
-
   // Recupera tutti i test associati a un corso
   async getTestsByCourse(courseId) {
+    console.log("Sto nel FruttoDAO");
     const db = await connect();
-    return await db.collection("tests").find({ course_id: courseId }).toArray();
+    const tests = await db
+      .collection("tests")
+      .find({ course_id: courseId })
+      .toArray();
+
+    console.log(`Tests found for course ${courseId}:`, tests);
+    return tests;
   }
 
   // Aggiunge un risultato (ricompensa) alla collezione rewards

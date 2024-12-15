@@ -1,18 +1,10 @@
 const TestDAO = require("../dao/testDAO");
 
 const testFacade = {
-  // Crea un nuovo test per un corso specifico
-  async createTest(courseId, questions) {
-    const test = {
-      course_id: courseId,
-      questions,
-    };
-    return await TestDAO.createTest(test);
-  },
-
   // Recupera i test per un corso
   async getTestsForCourse(courseId) {
-    return await TestDAO.getTestsByCourse(courseId); // Filtra per courseId
+    console.log("Sto qui nel facacacacade");
+    return await TestDAO.getTestsByCourse(parseInt(courseId, 10)); // Filtra per courseId
   },
 
   // Calcola il punteggio, assegna i punti e inserisce la ricompensa nella collezione rewards

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import courseFacade from "../services/courseFacade";
 
 function CoursePage() {
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("corso");
   const [course, setCourse] = useState(null);
-  const [selectedLesson, setSelectedLesson] = useState(null); // Stato per la lezione selezionata
+  const [selectedLesson, setSelectedLesson] = useState(null);
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -21,7 +21,6 @@ function CoursePage() {
     fetchCourseData();
   }, [courseId]);
 
-  // Gestione dello scroll quando il modal è aperto
   useEffect(() => {
     if (selectedLesson) {
       document.body.style.overflow = "hidden";
@@ -34,17 +33,14 @@ function CoursePage() {
     return <div>Loading...</div>;
   }
 
-  // Funzione per gestire il clic sulla lezione
   const handleLessonClick = (lesson) => {
     setSelectedLesson(lesson);
   };
 
-  // Funzione per chiudere il modal
   const closeModal = () => {
     setSelectedLesson(null);
   };
 
-  // Funzione per passare alla prossima lezione
   const handleNextLesson = () => {
     const currentIndex = course.lessons.findIndex(
       (lesson) => lesson.name === selectedLesson.name
@@ -52,21 +48,20 @@ function CoursePage() {
     const nextLesson = course.lessons[currentIndex + 1];
     if (nextLesson) {
       setSelectedLesson(nextLesson);
-      courseFacade.updateUserProgress(courseId,nextLesson.name);
+      courseFacade.updateUserProgress(courseId, nextLesson.name);
     } else {
-      // Chiudi il modal se non ci sono altre lezioni
       closeModal();
     }
   };
 
-  // Funzione per tornare alla lezione precedente
   const handlePreviousLesson = () => {
     const currentIndex = course.lessons.findIndex(
       (lesson) => lesson.name === selectedLesson.name
     );
-    const previousLesson = course.lessons[currentIndex - 1];
-    if (previousLesson) {
-      setSelectedLesson(previousLesson);
+    const prevLesson = course.lessons[currentIndex - 1];
+    if (prevLesson) {
+      setSelectedLesson(prevLesson);
+      courseFacade.updateUserProgress(courseId, prevLesson.name);
     }
   };
 
@@ -169,7 +164,7 @@ function CoursePage() {
               </button>
               <button
                 onClick={handleNextLesson}
-                className={`bg-green-500 text-white px-4 py-2 rounded ${
+                className={`bg-blue-500 text-white px-4 py-2 rounded mr-2 ${
                   course.lessons.findIndex(
                     (lesson) => lesson.id === selectedLesson.id
                   ) === course.lessons.length - 1
@@ -184,6 +179,17 @@ function CoursePage() {
               >
                 Prossima Lezione
               </button>
+              {/* Pulsante per andare al Quiz */}
+              {course.lessons.findIndex(
+                (lesson) => lesson.id === selectedLesson.id
+              ) === course.lessons.length - 1 && (
+                <Link
+                to={`/quiz/${course.id}`}
+                className="bg-green-500 text-white px-4 py-2 rounded ml-2 inline-block"
+                >
+                Quiz Finale
+                </Link>
+              )}
             </div>
           </div>
         </div>

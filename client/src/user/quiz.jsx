@@ -1,26 +1,118 @@
-import React, { useState } from 'react';
 
-const QuizApp = () => {
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import quizFacade from '../services/quizFacade';
+
+/*
+const QuizPage = () => {
+  const { courseId } = useParams();
+  const [tests, setTests] = useState([]);
+  const [currentTestIndex, setCurrentTestIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState({});
+  const [score, setScore] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+
+  useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const testsData = await quizFacade.getTestsForCourse(courseId);
+        console.log("TESTDATA", testsData);
+        setTests(testsData);
+      } catch (error) {
+        console.error('Errore nel recupero dei test:', error);
+      }
+    };
+
+    fetchTests();
+  }, [courseId]);
+
+  const handleAnswerChange = (questionName, answer) => {
+    setUserAnswers((prev) => ({ ...prev, [questionName]: answer }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const currentTest = tests[currentTestIndex];
+      const result = await quizFacade.evaluateTest(currentTest.id, userAnswers);
+      setScore(result.score);
+      setFeedback(result.feedback);
+    } catch (error) {
+      console.error('Errore nella valutazione del test:', error);
+    }
+  };
+
+  if (tests.length === 0) {
+    return <div>Loading Quiz...</div>;
+  }
+
+  const currentTest = tests[currentTestIndex];
+
+  return (
+    <div className="quiz-container">
+      <h1>{currentTest.title}</h1>
+      {currentTest.questions.map((question, qIndex) => (
+        <div key={qIndex} className="question-section">
+          <h3>{question.question}</h3>
+          {question.answers.map((answer, aIndex) => (
+            <label key={aIndex}>
+              <input
+                type="radio"
+                name={`question-${qIndex}`}
+                value={answer}
+                checked={userAnswers[question.question] === answer}
+                onChange={() => handleAnswerChange(question.name, answer)}
+              />
+              {answer}
+            </label>
+          ))}
+        </div>
+      ))}
+      <button onClick={handleSubmit} className="submit-button">
+        Submit
+      </button>
+      {score !== null && (
+        <div className="result-section">
+          <h2>Risultato: {score}</h2>
+          <p>{feedback}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default QuizPage;
+*/
+
+
+
+const QuizPage = () => {
+  const { courseId } = useParams();
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userAnswers, setUserAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-  const questions = [
-    {
-      text: 'Qual è la capitale della Francia?',
-      answers: ['Parigi', 'Londra', 'Roma', 'Berlino'],
-    },
-    {
-      text: 'Qual è la capitale dell\'Italia?',
-      answers: ['Parigi', 'Londra', 'Roma', 'Berlino'],
-    },
-    {
-      text: 'Qual è la capitale della Germania?',
-      answers: ['Parigi', 'Londra', 'Roma', 'Berlino'],
-    },
-    {
-        text: 'Prova4',
-        answers: ['Prova', 'Prova', 'Prova', 'Prova'],
-      },
-  ];
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      try {
+        const quizzes = await quizFacade.getTestsForCourse(courseId);
+        console.log('Dati quiz ricevuti:', quizzes);
+        if (quizzes.length > 0) {
+          setQuestions(quizzes[0].questions);
+          console.log('Domande impostate:', quizzes[0].questions);
+        } else {
+          setError("Nessun quiz trovato per questo corso.");
+        }
+      } catch (err) {
+        setError("Errore durante il caricamento del quiz.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuiz();
+  }, [courseId]);
 
   const handlePrev = () => {
     if (currentQuestionIndex > 0) {
@@ -33,6 +125,31 @@ const QuizApp = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
+
+  if (loading) {
+    return <div>Caricamento del quiz...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!questions || questions.length === 0) {
+    return <div>Nessuna domanda disponibile.</div>;
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+
+  if (!currentQuestion) {
+    return <div>Domanda non trovata.</div>;
+  }
+
+  const handleAnswerChange = (index, questionName, answer) => {
+    userAnswers[index] = answer;
+    
+  };
+
+  
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -68,10 +185,14 @@ const QuizApp = () => {
         <div style={{ backgroundColor: '#54295c', color: 'white', padding: '10px', borderRadius: '10px', width: '200px', zIndex: 10 }}>
           <h2 style={{ fontSize: '14px', textAlign: 'center' }}>{questions[currentQuestionIndex].text}</h2>
           <div style={{ backgroundColor: '#EAE6FA', padding: '10px', borderRadius: '10px', marginTop: '10px' }}>
+          <h1 className="text-black text-center">
+        {questions[currentQuestionIndex].question}
+          </h1>
             {questions[currentQuestionIndex].answers.map((answer, index) => (
               <button 
                 key={index} 
                 style={{ display: 'block', margin: '10px auto', padding: '10px 20px', backgroundColor: '#EAE6FA', border: '1px solid #000', borderRadius: '5px', width: '100%', color: 'black' }}
+                onClick={(event) => handleAnswerChange(currentQuestionIndex, questions[currentQuestionIndex].name, answer)}
               >
                 {answer}
               </button>
@@ -102,19 +223,19 @@ const QuizApp = () => {
             ←
           </button>
           <div style={{ flexGrow: 1, textAlign: 'center', padding: '0 20px' }}>
-            {/* Rimosso il div delle risposte sotto */}
+            
+            </div>
+            <button 
+              onClick={handleNext} 
+              disabled={currentQuestionIndex === questions.length - 1} 
+              style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}
+            >
+              →
+            </button>
           </div>
-          <button 
-            onClick={handleNext} 
-            disabled={currentQuestionIndex === questions.length - 1} 
-            style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}
-          >
-            →
-          </button>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default QuizApp;
+    );
+  };
+  
+  export default QuizPage;
