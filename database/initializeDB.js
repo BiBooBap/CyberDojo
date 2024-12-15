@@ -271,7 +271,7 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["_id","course_id", "questions"],
+        required: ["_id", "course_id", "questions"],
         properties: {
           _id: { bsonType: "int", description: "Unique ID of the test" },
           course_id: { bsonType: "int", description: "Associated course ID" },
@@ -389,12 +389,8 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["_id", "user_username", "description", "creation_date"],
+        required: ["user_username", "description", "creation_date"],
         properties: {
-          _id: {
-            bsonType: "int",
-            description: "Unique ID of the ticket",
-          },
           user_username: {
             bsonType: "string",
             description: "Username of the user who opened the ticket",
@@ -406,10 +402,6 @@ async function initializeDB() {
           creation_date: {
             bsonType: "date",
             description: "Ticket creation date",
-          },
-          assigned_admin: {
-            bsonType: "string",
-            description: "Username of the admin assigned to the ticket",
           },
           messages: {
             bsonType: "array",
@@ -448,78 +440,81 @@ async function initializeDB() {
   // Insert real data into the 'tickets' collection
   await db.collection("tickets").insertMany([
     {
-      _id: 1,
-    user_username: "andre89",
-    description: "Problema con l'accesso al corso avanzato",
-    creation_date: new Date(),
-    assigned_admin: "paoloM",
-    messages: [
-      {
-        username: "andre89",
-        message: "Non riesco ad accedere al corso avanzato.",
-        role: "user",
-        timestamp: new Date(),
-      },
-      {
-        username: "paoloM",
-        message: "Ciao, prova a ricaricare la pagina e a fare il logout e login.",
-        role: "admin",
-        timestamp: new Date(),
-      },
-    ],
-    is_open: "Aperto",
-  },
-  {
-    _id: 2,
-    user_username: "mariaB",
-    description: "Impossibile caricare l'avatar personalizzato",
-    creation_date: new Date(),
-    assigned_admin: "paoloM",
-    messages: [
-      {
-        username: "mariaB",
-        message: "Non riesco a caricare il mio avatar.",
-        role: "user",
-        timestamp: new Date(),
-      },
-      {
-        username: "paoloM",
-        message: "Ciao, prova a ricaricare la pagina e a fare il logout e login.",
-        role: "admin",
-        timestamp: new Date(),
-      },
-    ],
-    is_open: "Aperto",
-  },
-  {
-    _id: 3,
-    user_username: "luigiR99",
-    description: "Errore l'acquisto del bordo nello shop",
-    creation_date: new Date(),
-    assigned_admin: "paoloM",
-    messages: [
-      {
-        username: "luigiR99",
-        message: "L' acquisto non va a buon fine.",
-        role: "user",
-        timestamp: new Date(),
-      },
-      {
-        username: "paoloM",
-        message: "Verifica se hai abbastanza punti per acquistare il bordo.",
-        role: "admin",
-        timestamp: new Date(),
-      },
-    ],
-    is_open: "Risolto",
-  },
+      user_username: "andre89",
+      description: "Problema con l'accesso al corso avanzato",
+      creation_date: new Date(),
+      messages: [
+        {
+          username: "andre89",
+          message: "Non riesco ad accedere al corso avanzato.",
+          role: "user",
+          timestamp: new Date(),
+        },
+        {
+          username: "paoloM",
+          message:
+            "Ciao, prova a ricaricare la pagina e a fare il logout e login.",
+          role: "admin",
+          timestamp: new Date(),
+        },
+      ],
+      is_open: "Aperto",
+    },
+    {
+      user_username: "mariaB",
+      description: "Impossibile caricare l'avatar personalizzato",
+      creation_date: new Date(),
+      messages: [
+        {
+          username: "mariaB",
+          message: "Non riesco a caricare il mio avatar.",
+          role: "user",
+          timestamp: new Date(),
+        },
+        {
+          username: "paoloM",
+          message:
+            "Ciao, prova a ricaricare la pagina e a fare il logout e login.",
+          role: "admin",
+          timestamp: new Date(),
+        },
+      ],
+      is_open: "Aperto",
+    },
+    {
+      user_username: "luigiR99",
+      description: "Errore l'acquisto del bordo nello shop",
+      creation_date: new Date(),
+      messages: [
+        {
+          username: "luigiR99",
+          message: "L' acquisto non va a buon fine.",
+          role: "user",
+          timestamp: new Date(),
+        },
+        {
+          username: "paoloM",
+          message: "Verifica se hai abbastanza punti per acquistare il bordo.",
+          role: "admin",
+          timestamp: new Date(),
+        },
+      ],
+      is_open: "Risolto",
+    },
   ]);
   // Creazione della collezione 'rewards' con validatore
   await db.createCollection("rewards", {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["_id","user_username", "course_id", "medal", "points", "date"],
+        required: [
+          "_id",
+          "user_username",
+          "course_id",
+          "medal",
+          "points",
+          "date",
+        ],
         properties: {
           _id: { bsonType: "int", description: "Unique ID of the reward" },
           user_username: {
@@ -571,7 +566,7 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["_id","user_username", "items"],
+        required: ["_id", "user_username", "items"],
         properties: {
           _id: { bsonType: "int", description: "Unique ID of the inventory" },
           user_username: {
@@ -735,7 +730,8 @@ async function initializeDB() {
       {
         _id: 1,
         name: "Anello luminoso",
-        description: "Un anello per ghermirli, un anello per domarli e nel buio incatenarli.",
+        description:
+          "Un anello per ghermirli, un anello per domarli e nel buio incatenarli.",
         price: 500,
         category: "border",
         stock: 10,
@@ -873,7 +869,7 @@ async function initializeDB() {
     validator: {
       $jsonSchema: {
         bsonType: "object",
-        required: ["_id","user_username", "streak", "lastLoginDate"],
+        required: ["_id", "user_username", "streak", "lastLoginDate"],
         properties: {
           _id: { bsonType: "int", description: "Unique ID of the streak" },
           user_username: { bsonType: "string", description: "Username" },

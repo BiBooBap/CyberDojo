@@ -3,9 +3,11 @@ const { connect } = require("../../../database/db");
 class AssistanceRequestDAO {
   static async createTicket(userUsername, description) {
     const db = await connect();
+    console.log(userUsername);
+    console.log(description);
     const result = await db.collection("tickets").insertOne({
       user_username: userUsername,
-      description,
+      description: description,
       creation_date: new Date(),
     });
     return result.insertedId;

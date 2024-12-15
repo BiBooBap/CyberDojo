@@ -4,6 +4,8 @@ class AssistanceController {
   static async createRequest(req, res) {
     try {
       const { userUsername, description } = req.body;
+      console.log(userUsername);
+      console.log(description);
       const ticketId = await AssistanceFacade.sendRequest(
         userUsername,
         description
@@ -67,7 +69,12 @@ class AssistanceController {
       const username = req.query.username;
       const message = req.query.message;
       const role = req.query.role;
-      const result = await AssistanceFacade.addMessage(id, username, message, role);
+      const result = await AssistanceFacade.addMessage(
+        id,
+        username,
+        message,
+        role
+      );
       if (result.modifiedCount === 0) {
         return res.status(404).json({ error: "Ticket non trovato" });
       }
