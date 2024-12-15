@@ -45,7 +45,6 @@ function SupportRequest() {
     try {
       const tickets = await assistanceFacade.getUserTickets(token, username);
       setUserTickets(tickets);
-      console.log(ticket);
     } catch (error) {
       console.error("Errore nel recupero dei ticket dell'utente:", error);
       setError("Errore nel recupero dei tuoi ticket. Riprova più tardi.");
@@ -107,7 +106,7 @@ function SupportRequest() {
                   </p>
                   <p>
                     <strong>Stato:</strong>
-                    {ticket.is_open === "Risolto" ? (
+                    {ticket.is_open === "Aperto" ? (
                       <span className="text-green-600">Aperto</span>
                     ) : (
                       <span className="text-red-600">Risolto</span>

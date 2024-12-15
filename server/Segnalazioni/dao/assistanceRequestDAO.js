@@ -9,6 +9,7 @@ class AssistanceRequestDAO {
       user_username: userUsername,
       description: description,
       creation_date: new Date(),
+      is_open: "Aperto",
     });
     return result.insertedId;
   }
