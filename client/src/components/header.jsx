@@ -1,11 +1,12 @@
-// header.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
-import { isUserLoggedIn, getUserRole } from "../utils/auth";
+import { isUserLoggedIn, getUserRole, getToken } from "../utils/auth"; // [`isUserLoggedIn`](client/src/utils/auth.js), [`getUserRole`](client/src/utils/auth.js), [`getToken`](client/src/utils/auth.js)
+import UserFacade from "../services/userFacade"; // [`UserFacade`](client/src/services/userFacade.js)
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [points, setPoints] = useState(0);
   const isLoggedIn = isUserLoggedIn();
   const userRole = getUserRole();
 
@@ -17,6 +18,21 @@ const Header = () => {
     localStorage.removeItem("token");
     window.location.href = "/homepage";
   };
+
+  useEffect(() => {
+    const fetchPoints = async () => {
+      try {
+        const userPoints = await UserFacade.fetchUserPoints();
+        setPoints(userPoints);
+      } catch (error) {
+        console.error("Errore nel recupero dei punti:", error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchPoints();
+    }
+  }, [isLoggedIn]);
 
   return (
     <header className="header bg-[#54295c] text-white p-4 flex justify-between items-center">
@@ -50,9 +66,26 @@ const Header = () => {
                   <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                     <Link to="/supportrequestpage">Supporto</Link>
                   </button>
+                  {/* Sezione Punti Utente */}
+                  <div className="flex items-center space-x-2 mx-2">
+                    <img
+                      src="/img/coin.png"
+                      alt="Coins Icon"
+                      className="coins-icon w-5 h-5 rounded-full"
+                    />
+                    <span>{points}</span> {/* Punti Dinamici */}
+                  </div>
+                  {/* Icona Area Utente */}
+                  <Link to="/areaUtente">
+                    <img
+                      src="/img/default.png" // Assicurati di avere questa icona nella cartella img
+                      alt="Area Utente"
+                      className="user-icon w-6 h-6 rounded-full mx-2"
+                    />
+                  </Link>
                 </>
               )}
-              {userRole === "admin" && (
+                {userRole === "admin" && (
                 <>
                   <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                     <Link to="/admin/adminTicketDashboard">Dashboard</Link>
@@ -60,6 +93,13 @@ const Header = () => {
                   {/* Aggiungi altre voci per l'admin se necessario */}
                 </>
               )}
+              {/* Pulsante Logout */}
+              <button
+                onClick={handleLogout}
+                className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg"
+              >
+                Logout
+              </button>
             </>
           ) : (
             // **Utente non loggato**
@@ -70,6 +110,7 @@ const Header = () => {
               <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                 <Link to="/accessPage">Accedi o Registrati</Link>
               </button>
+              {/* Pulsante Supporto */}
               <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                 <Link to="/supporto">Supporto</Link>
               </button>
@@ -78,40 +119,6 @@ const Header = () => {
         </nav>
       </div>
       <div className="user-container flex items-center space-x-4">
-        {isLoggedIn ? (
-          <>
-            {userRole === "user" && (
-              <>
-                <div className="hidden md:flex items-center space-x-2">
-                  <img
-                    src="/img/coin.png"
-                    alt="Coins Icon"
-                    className="coins-icon w-5 h-5 rounded-full"
-                  />
-                  <span>1</span>{" "}
-                  {/* Sostituisci con il saldo effettivo delle monete */}
-                </div>
-                {/* Aggiungi l'icona "Area Utente" */}
-                <button className="nav-link hover:bg-[#4b2153] px-2 py-2 rounded text-center mx-2 font-bold text-lg">
-                  <Link to="/areaUtente">
-                    <img
-                      src="/img/shop/iconautente.png"
-                      alt="Area Utente"
-                      className="w-6 h-6 inline"
-                    />
-                  </Link>
-                </button>
-              </>
-            )}
-            {/* Pulsante Logout */}
-            <button
-              onClick={handleLogout}
-              className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg"
-            >
-              Logout
-            </button>
-          </>
-        ) : null}
         <button
           className="menu-toggle md:hidden focus:outline-none"
           onClick={toggleMenu}

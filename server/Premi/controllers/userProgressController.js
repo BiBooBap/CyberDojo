@@ -1,6 +1,19 @@
 const UserProgressFacade = require("../facades/userProgressFacade");
 
 class UserProgressController {
+
+  static async getPoints(req, res) {
+    const username = req.user.username;
+    try {
+      const points = await UserProgressFacade.getPoints(username); // [`UserProgressFacade.getPoints`](server/Premi/facades/userProgressFacade.js)
+      res.json({ points });
+    } catch (error) {
+      console.error("Errore nel recupero dei punti:", error);
+      res.status(500).json({ message: "Errore interno del server" });
+    }
+  }
+  
+
   static async getProgress(req, res) {
     const username = req.user.username;
     try {

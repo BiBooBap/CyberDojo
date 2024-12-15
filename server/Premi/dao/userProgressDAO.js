@@ -1,7 +1,15 @@
 const { connect } = require("../../../database/db");
 const { ObjectId } = require("mongodb");
 
+
 class UserProgressDAO {
+
+  static async findUserByUsername(username) {
+    const db = await connect();
+    const user = await db.collection("user").findOne({ username });
+    return user;
+  }
+
   static async getProgressByUsername(username) {
     const db = await connect();
     return db.collection("rewards").find({ user_username: username }).toArray();

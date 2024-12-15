@@ -33,6 +33,7 @@ app.use("/courses", courseRoutes);
 app.use("/tests", testRoutes);
 app.use("/streaks", streakRoutes);
 app.use("/shop", shopRoutes);
+app.use("/user", require("./routes/userRoutes"));
 
 // Server startup
 app.listen(port, () => {

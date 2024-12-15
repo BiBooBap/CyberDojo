@@ -1,7 +1,13 @@
 const UserProgressDAO = require("../dao/userProgressDAO");
 const notifier = require("../services/progressNotifier");
+const UserProgressManager = require("../services/userProgressManager");
 
 class UserProgressFacade {
+
+  static async getPoints (username) {
+    return await UserProgressManager.getUserPoints(username);
+  }
+
   static async getProgress(username) {
     const progress = await UserProgressDAO.getProgressByUsername(username);
     for (let reward of progress) {

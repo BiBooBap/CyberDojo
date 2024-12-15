@@ -28,7 +28,8 @@ const ShopItem = ({ item }) => {
     try {
       await shopFacade.purchase(item._id);
       alert("Acquisto avvenuto con successo!");
-      setIsPurchased(true); // Aggiorna lo stato dopo l'acquisto
+      setIsPurchased(true);
+      window.location.reload();
     } catch (error) {
       console.error("Errore durante l'acquisto dell'oggetto:", error);
       alert("Errore durante l'acquisto dell'oggetto.");
