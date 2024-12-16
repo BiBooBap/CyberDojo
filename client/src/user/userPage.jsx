@@ -382,21 +382,24 @@ const AreaUtente = () => {
           <div className="flex items-center space-x-4">
             <div className="relative w-32 h-32 mb-3 flex flex-col items-center">
               <div className="relative w-32 h-32">
+                {/* border */}
                 <img
                   src={userProfile.border}
                   alt="Bordo"
-                  className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
+                  className="w-40 h-40 object-cover rounded-full absolute top-0 left-0 z-10"
                 />
+                 {/* avatar  */}
                 <img
                   src={userProfile.avatar}
                   alt="Avatar"
-                  className="w-32 h-32 object-cover rounded-full absolute top-0 left-0"
+                  className="w-32 h-32 object-cover rounded-full absolute top-4 left-0 z-20"
                 />
               </div>
+              {/* Power up title on the top */}
               <img
                 src={userProfile.user_title}
                 alt="Titolo"
-                className="w-16 h-16 object-cover rounded-full mt-20"
+                className="w-16 h-16 object-cover rounded-full absolute top-[-1.5rem] left-1/2 transform -translate-x-1/2 z-30"
               />
             </div>
             <div className="flex flex-col space-y-2">
@@ -531,6 +534,7 @@ const AreaUtente = () => {
           {userCourses.length > 0 ? (
             <div className="flex flex-col space-y-4">
               {userCourses.map((course, index) => (
+                <button onClick={() => window.location.href = "/coursePage/?corso=" + course.id }>
                 <div
                   key={course.id || course._id || `course-${index}`}
                   className="p-4 bg-white rounded-lg shadow-lg"
@@ -538,6 +542,8 @@ const AreaUtente = () => {
                   <h2 className="text-[#54295c] font-bold text-xl mb-2">{course.title}</h2>
                   <p className="text-[#54295c]">Progresso: {course.progress}%</p>
                 </div>
+                
+                </button>
               ))}
             </div>
           ) : (

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
-import { isUserLoggedIn, getUserRole, getToken } from "../utils/auth"; // [`isUserLoggedIn`](client/src/utils/auth.js), [`getUserRole`](client/src/utils/auth.js), [`getToken`](client/src/utils/auth.js)
-import UserFacade from "../services/userFacade"; // [`UserFacade`](client/src/services/userFacade.js)
+import { isUserLoggedIn, getUserRole, getToken } from "../utils/auth"; // authentication functions
+import UserFacade from "../services/userFacade";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -94,11 +94,15 @@ const Header = () => {
                 </>
               )}
               {/* Pulsante Logout */}
-              <button
-                onClick={handleLogout}
-                className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg"
-              >
-                Logout
+               <button
+                 onClick={handleLogout}
+                  className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2"
+                >
+                  <img
+                   src="/img/logout_icon.png"
+                   alt="Logout"
+                   className="w-6 h-6"
+                   />
               </button>
             </>
           ) : (
