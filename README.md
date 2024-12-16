@@ -9,6 +9,7 @@ This project was created with the goal of introducing young people to the world 
 - [Installation](#Installation)
 - [Usage](#Usage)
 - [Project Structure](#Project-Structure)
+- [Testing](#Testing)
 - [Contributions](#Contributions)
 - [Credits](#Credits)
 - [License](#License)
@@ -147,6 +148,16 @@ Cyberdojo/ #main folder
 |-LICENSE
 |-README.md
 |-requirment.txt #project dependecies
+
+## Testing
+
+Below is a brief overview of the testing strategy implemented for the project:
+
+Jest Testing for React and Node.js
+We utilize Jest as our primary testing framework for both the frontend (React) and the backend (Node.js) components. Jest provides a robust, flexible environment for writing and running tests, ensuring code reliability and simplifying the identification of bugs and regressions. Through unit and integration tests, we verify the correctness of critical functions, UI components, and API endpoints, maintaining a high level of confidence in the stability of our application.
+
+Upcoming: Cypress Integration (NextRelease)
+In future releases, we plan to incorporate Cypress for end-to-end testing. This addition will further strengthen our testing suite by validating user flows, cross-browser compatibility, and overall user experience in a real-world browser environment. Integrating Cypress will complement our existing Jest tests, offering a more comprehensive quality assurance process for upcoming features and improvements.
 
 ## Contributions
 

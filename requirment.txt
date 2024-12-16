@@ -8,6 +8,8 @@ jsonwebtoken: "^9.0.2"
 mongodb: "^6.11.0"
 DevDependencies:
 globals: "^15.12.0"
+TestingDependencies:
+jest@29.7.0
 
 Client - package.json:
 
