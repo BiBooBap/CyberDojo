@@ -2,7 +2,6 @@ const quizService = {
   getTestsForCourse: async (courseId) => {
     try {
       const token = localStorage.getItem("token");
-      console.log("courseId SERVICE", courseId);
       const response = await fetch(
         `http://localhost:3001/tests/course/${courseId}`,
         {

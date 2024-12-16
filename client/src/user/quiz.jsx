@@ -1,79 +1,199 @@
-
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import quizFacade from '../services/quizFacade';
 
-/*
 const QuizPage = () => {
   const { courseId } = useParams();
+  const navigate = useNavigate();
   const [tests, setTests] = useState([]);
   const [currentTestIndex, setCurrentTestIndex] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [score, setScore] = useState(null);
-  const [feedback, setFeedback] = useState(null);
+  const [feedback] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showResultPopup, setShowResultPopup] = useState(false);
 
   useEffect(() => {
     const fetchTests = async () => {
       try {
         const testsData = await quizFacade.getTestsForCourse(courseId);
-        console.log("TESTDATA", testsData);
-        setTests(testsData);
+
+        if (testsData.length === 0) {
+          setError("Nessun quiz trovato per questo corso.");
+        } else {
+          setTests(testsData);
+          setCurrentTestIndex(0);
+          setCurrentQuestionIndex(0);
+        }
       } catch (error) {
         console.error('Errore nel recupero dei test:', error);
+        setError("Errore nel recupero dei test.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTests();
   }, [courseId]);
 
-  const handleAnswerChange = (questionName, answer) => {
-    setUserAnswers((prev) => ({ ...prev, [questionName]: answer }));
+  const handleAnswerChange = (questionId, answerIndex) => {
+    setUserAnswers((prev) => ({ ...prev, [questionId]: answerIndex }));
+  };
+
+  const handleNext = () => {
+    setCurrentQuestionIndex((prev) => prev + 1);
+  };
+
+  const handlePrev = () => {
+    setCurrentQuestionIndex((prev) => prev - 1);
   };
 
   const handleSubmit = async () => {
     try {
       const currentTest = tests[currentTestIndex];
-      const result = await quizFacade.evaluateTest(currentTest.id, userAnswers);
+      const selectedAnswers = userAnswers;
+
+      const result = await quizFacade.evaluateTest(currentTest._id, selectedAnswers);
       setScore(result.score);
-      setFeedback(result.feedback);
+      setShowResultPopup(true);
     } catch (error) {
       console.error('Errore nella valutazione del test:', error);
+      setError("Errore nella valutazione del test.");
     }
   };
 
+  if (loading) {
+    return <div className="text-center">Caricamento del quiz...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
+
   if (tests.length === 0) {
-    return <div>Loading Quiz...</div>;
+    return <div className="text-center">Nessun quiz disponibile per questo corso.</div>;
   }
 
   const currentTest = tests[currentTestIndex];
+  const questions = currentTest.questions;
+  const currentQuestion = questions[currentQuestionIndex];
+
+  if (!currentQuestion) {
+    return <div className="text-center">Domanda non trovata.</div>;
+  }
 
   return (
-    <div className="quiz-container">
-      <h1>{currentTest.title}</h1>
-      {currentTest.questions.map((question, qIndex) => (
-        <div key={qIndex} className="question-section">
-          <h3>{question.question}</h3>
-          {question.answers.map((answer, aIndex) => (
-            <label key={aIndex}>
-              <input
-                type="radio"
-                name={`question-${qIndex}`}
-                value={answer}
-                checked={userAnswers[question.question] === answer}
-                onChange={() => handleAnswerChange(question.name, answer)}
-              />
-              {answer}
-            </label>
-          ))}
+    <div className="quiz-container mx-auto p-4 max-w-2xl">
+      <h1 className="text-black text-center text-2xl font-bold mb-4">
+        {currentTest.title}
+      </h1>
+      
+      {/* Indicatori delle Domande */}
+      <div className="flex justify-center mb-4">
+        {questions.map((_, index) => (
+          <div
+            key={index}
+            className={`w-5 h-5 rounded-full mr-1 ${
+              index === currentQuestionIndex ? 'bg-[#F0C674]' : 'bg-gray-300'
+            }`}
+          ></div>
+        ))}
+      </div>
+
+      {/* Sezione della Domanda Corrente */}
+      <div className="question-section mb-6">
+        <h3 className="text-black text-center font-semibold mb-4">
+          {currentQuestion.question}
+        </h3>
+        {currentQuestion.answers.map((answer, aIndex) => (
+          <button
+            key={aIndex}
+            onClick={() => handleAnswerChange(currentQuestionIndex, aIndex)}
+            className={`block w-full text-left px-4 py-2 mb-2 rounded 
+              ${userAnswers[currentQuestionIndex] === aIndex ? 'bg-[#F0C674]' : 'bg-gray-200'}
+              hover:bg-[#F0C674] transition-colors`}
+          >
+            {answer}
+          </button>
+        ))}
+      </div>
+
+      {/* Navigazione tra le Domande */}
+      <div className="flex justify-between">
+        <button
+          onClick={handlePrev}
+          disabled={currentQuestionIndex === 0}
+          className={`px-4 py-2 rounded ${
+            currentQuestionIndex === 0
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-blue-500 text-white hover:bg-blue-600'
+          } transition-colors`}
+        >
+          Precedente
+        </button>
+        {currentQuestionIndex < questions.length - 1 ? (
+          <button
+            onClick={handleNext}
+            disabled={userAnswers[currentQuestionIndex] === undefined}
+            className={`px-4 py-2 rounded ${
+              userAnswers[currentQuestionIndex] === undefined
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+            } transition-colors`}
+          >
+            Successiva
+          </button>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            disabled={userAnswers[currentQuestionIndex] === undefined}
+            className={`px-4 py-2 rounded ${
+              userAnswers[currentQuestionIndex] === undefined
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-green-500 text-white hover:bg-green-600'
+            } transition-colors`}
+          >
+            Invia
+          </button>
+        )}
+      </div>
+
+      {/* Sezione dei Risultati */}
+      {showResultPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg w-11/12 md:w-1/2 relative">
+            {/* Pulsante X per chiudere il popup */}
+            <button
+              onClick={() => setShowResultPopup(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-xl font-bold"
+              aria-label="Chiudi"
+            >
+              &times;
+            </button>
+            <h2 className="text-black text-center text-xl font-semibold">
+              Risultato: {score}
+            </h2>
+            <p className="text-center">{feedback}</p>
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={() => navigate('/')}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+              >
+                Torna alla Home
+              </button>
+            </div>
+          </div>
         </div>
-      ))}
-      <button onClick={handleSubmit} className="submit-button">
-        Submit
-      </button>
+      )}
+
       {score !== null && (
-        <div className="result-section">
-          <h2>Risultato: {score}</h2>
-          <p>{feedback}</p>
+        <div className="result-section mt-6 p-4 bg-gray-100 rounded">
+          <h2 className="text-black text-center text-xl font-semibold">
+            Risultato: {score}
+          </h2>
+          <p className="text-center">{feedback}</p>
         </div>
       )}
     </div>
@@ -81,161 +201,3 @@ const QuizPage = () => {
 };
 
 export default QuizPage;
-*/
-
-
-
-const QuizPage = () => {
-  const { courseId } = useParams();
-  const [questions, setQuestions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [userAnswers, setUserAnswers] = useState({});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  useEffect(() => {
-    const fetchQuiz = async () => {
-      try {
-        const quizzes = await quizFacade.getTestsForCourse(courseId);
-        console.log('Dati quiz ricevuti:', quizzes);
-        if (quizzes.length > 0) {
-          setQuestions(quizzes[0].questions);
-          console.log('Domande impostate:', quizzes[0].questions);
-        } else {
-          setError("Nessun quiz trovato per questo corso.");
-        }
-      } catch (err) {
-        setError("Errore durante il caricamento del quiz.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchQuiz();
-  }, [courseId]);
-
-  const handlePrev = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-
-  if (loading) {
-    return <div>Caricamento del quiz...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!questions || questions.length === 0) {
-    return <div>Nessuna domanda disponibile.</div>;
-  }
-
-  const currentQuestion = questions[currentQuestionIndex];
-
-  if (!currentQuestion) {
-    return <div>Domanda non trovata.</div>;
-  }
-
-  const handleAnswerChange = (index, questionName, answer) => {
-    userAnswers[index] = answer;
-    
-  };
-
-  
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ display: 'flex', gap: '5px', marginBottom: '20px' }}>
-        {questions.map((_, index) => (
-          <div
-            key={index}
-            style={{
-              width: '20px',
-              height: '20px',
-              backgroundColor: index === currentQuestionIndex ? '#F0C674' : '#EAEAEA',
-              borderRadius: '50%',
-            }}
-          ></div>
-        ))}
-      </div>
-      <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
-        {currentQuestionIndex > 0 && (
-          <div style={{ backgroundColor: '#54295c', color: 'white', padding: '10px', borderRadius: '10px', width: '200px', position: 'absolute', left: 'calc(50% - 210px)', zIndex: 5, opacity: 0.5 }}>
-            <h2 style={{ fontSize: '14px', textAlign: 'center' }}>{questions[currentQuestionIndex - 1].text}</h2>
-            <div style={{ backgroundColor: '#EAE6FA', padding: '10px', borderRadius: '10px', marginTop: '10px' }}>
-              {questions[currentQuestionIndex - 1].answers.map((answer, index) => (
-                <button 
-                  key={index} 
-                  style={{ display: 'block', margin: '10px auto', padding: '10px 20px', backgroundColor: '#EAE6FA', border: '1px solid #000', borderRadius: '5px', width: '100%', color: 'black' }}
-                >
-                  {answer}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-        <div style={{ backgroundColor: '#54295c', color: 'white', padding: '10px', borderRadius: '10px', width: '200px', zIndex: 10 }}>
-          <h2 style={{ fontSize: '14px', textAlign: 'center' }}>{questions[currentQuestionIndex].text}</h2>
-          <div style={{ backgroundColor: '#EAE6FA', padding: '10px', borderRadius: '10px', marginTop: '10px' }}>
-          <h1 className="text-black text-center">
-        {questions[currentQuestionIndex].question}
-          </h1>
-            {questions[currentQuestionIndex].answers.map((answer, index) => (
-              <button 
-                key={index} 
-                style={{ display: 'block', margin: '10px auto', padding: '10px 20px', backgroundColor: '#EAE6FA', border: '1px solid #000', borderRadius: '5px', width: '100%', color: 'black' }}
-                onClick={(event) => handleAnswerChange(currentQuestionIndex, questions[currentQuestionIndex].name, answer)}
-              >
-                {answer}
-              </button>
-            ))}
-          </div>
-        </div>
-        {currentQuestionIndex < questions.length - 1 && (
-          <div style={{ backgroundColor: '#54295c', color: 'white', padding: '10px', borderRadius: '10px', width: '200px', position: 'absolute', right: 'calc(50% - 210px)', zIndex: 5, opacity: 0.5 }}>
-            <h2 style={{ fontSize: '14px', textAlign: 'center' }}>{questions[currentQuestionIndex + 1].text}</h2>
-            <div style={{ backgroundColor: '#EAE6FA', padding: '10px', borderRadius: '10px', marginTop: '10px' }}>
-              {questions[currentQuestionIndex + 1].answers.map((answer, index) => (
-                <button 
-                  key={index} 
-                  style={{ display: 'block', margin: '10px auto', padding: '10px 20px', backgroundColor: '#EAE6FA', border: '1px solid #000', borderRadius: '5px', width: '100%', color: 'black' }}
-                >
-                  {answer}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', position: 'absolute', top: '50%', transform: 'translateY(-50%)' }}>
-          <button 
-            onClick={handlePrev} 
-            disabled={currentQuestionIndex === 0} 
-            style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}
-          >
-            ←
-          </button>
-          <div style={{ flexGrow: 1, textAlign: 'center', padding: '0 20px' }}>
-            
-            </div>
-            <button 
-              onClick={handleNext} 
-              disabled={currentQuestionIndex === questions.length - 1} 
-              style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}
-            >
-              →
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-  
-  export default QuizPage;
