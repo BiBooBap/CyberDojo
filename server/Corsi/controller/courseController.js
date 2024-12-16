@@ -2,6 +2,7 @@ const CourseFacade = require("../facades/courseFacade");
 const CourseService = require("../services/courseService");
 
 class CourseController {
+  // Method to recover all courses for the guest
   static async getCoursesGuest(req, res) {
     try {
       const courses = await CourseFacade.getCoursesGuest();
@@ -12,6 +13,7 @@ class CourseController {
     }
   }
 
+  // Method to recover all courses for the user
   static async getCoursesUser(req, res) {
     if (!req.user) {
       return res.status(401).json({ message: "Utente non autenticato" });
@@ -26,6 +28,7 @@ class CourseController {
     }
   }
 
+  // Method to recover all lessons for a course
   static async getLessonsByCourseName(req, res) {
     const { courseName } = req.params;
     try {
@@ -36,6 +39,7 @@ class CourseController {
     }
   }
 
+  // Method to enroll to a course
   static async enrollCourse(req, res) {
     const username = req.user.username;
     const { courseId } = req.body;
@@ -48,6 +52,7 @@ class CourseController {
     }
   }
 
+  // Method to recover all enrolled courses for a user
   static async getEnrolledCourses(req, res) {
     const { username } = req.user;
 
@@ -59,6 +64,7 @@ class CourseController {
     }
   }
 
+  // Method to recover the course page
   static async getCoursePage(req, res) {
     const { courseId } = req.params;
     const username = req.user.username;
@@ -71,10 +77,12 @@ class CourseController {
       res.status(500).json({ message: "Errore interno del server", error });
     }
   }
+
+  // Method to update the user progress
   static async updateUserProgress(req, res) {
     const { courseId, lessonId } = req.body;
     const username = req.user.username;
-  
+
     try {
       await CourseService.updateUserProgress(courseId, lessonId, username );
       res.status(200).json({ message: "Progresso aggiornato con successo." });

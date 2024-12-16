@@ -1,12 +1,11 @@
 const express = require("express");
-const cors = require("cors"); // Importa il pacchetto cors
+const cors = require("cors"); // Import the course package
 const authRoutes = require("./routes/authRoutes");
 const registrationRoutes = require("./routes/registrationRoutes");
 const userProgressRoutes = require("./routes/userProgressRoutes");
 const assistanceRoutes = require("./routes/assistanceRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const testRoutes = require("./routes/testRoutes");
-const streakRoutes = require("./routes/streakRoutes");
 const shopRoutes = require("./routes/shopRoutes");
 
 const app = express();
@@ -31,7 +30,6 @@ app.use("/progress", userProgressRoutes);
 app.use("/assistance", assistanceRoutes);
 app.use("/courses", courseRoutes);
 app.use("/tests", testRoutes);
-app.use("/streaks", streakRoutes);
 app.use("/shop", shopRoutes);
 app.use("/user", require("./routes/userRoutes"));
 

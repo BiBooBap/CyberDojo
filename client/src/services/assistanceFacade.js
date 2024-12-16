@@ -1,7 +1,7 @@
 import assistanceService from "./assistanceService";
 
 class AssistanceFacade {
-  // Funzione per inviare una nuova richiesta di supporto
+  // Function to send a new support request
   static async sendSupportRequest(username, description, token, message) {
     return await assistanceService.sendSupportRequest(
       username,
@@ -11,7 +11,7 @@ class AssistanceFacade {
     );
   }
 
-  // Funzione per recuperare i ticket dell'utente
+  // Function to retrieve the user's tickets
   static async getUserTickets(token, username) {
     return await assistanceService.getUserTickets(token, username);
   }

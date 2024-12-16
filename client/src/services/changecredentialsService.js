@@ -1,4 +1,5 @@
 const ChangeCredentialsService = {
+    // Function to send a request to the server to get the user's information
     getUserInfo: async () => {
         try {
             const token = localStorage.getItem('token');
@@ -21,6 +22,7 @@ const ChangeCredentialsService = {
         }
     },
 
+    // Function to send a request to the server to update the user's information
     sendNewCredentials: async (formData) => {
         try {
           const token = localStorage.getItem('token');
@@ -54,6 +56,7 @@ const ChangeCredentialsService = {
         }
     },
 
+    // Function to send a request to the server to control the user's password
     verifyPassword: async (currentPassword) => {
         try {
             const token = localStorage.getItem('token');
@@ -79,6 +82,7 @@ const ChangeCredentialsService = {
         }
     },
 
+    // Function to send a request to the server to delete the user's account
     deleteAccount: async () => {
         try {
             const token = localStorage.getItem('token');

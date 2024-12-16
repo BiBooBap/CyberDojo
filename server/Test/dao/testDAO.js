@@ -14,7 +14,6 @@ class TestDAO {
 
   // Adds a reward to the rewards collection
   static async addReward(reward) {
-    
     const db = await connect();
 
     const lastReward = await db.collection("rewards")
@@ -27,7 +26,7 @@ class TestDAO {
     var lastId = lastReward.length > 0 ? lastReward[0]._id : 0;
     const newId = lastId + 1;
     reward._id = newId;
-    
+
     const result = await db.collection("rewards").insertOne(reward);
     return result.insertedId;
   }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import assistanceFacade from "../services/assistanceFacade";
 import { jwtDecode } from "jwt-decode";
 
+// Support request page
 function SupportRequest() {
   const [message, setMessage] = useState("");
   const [description, setDescription] = useState("");
@@ -21,9 +22,11 @@ function SupportRequest() {
     }
   }
 
+  // Handle the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Description must be at least 10 characters long
     const descriptionRegex = /^.{10,}$/;
 
     if (!descriptionRegex.test(description)) {
@@ -31,6 +34,7 @@ function SupportRequest() {
       return;
     }
 
+    // Message must be at least 10 characters long
     const messageRegex = /^.{10,}$/;
 
     if (!messageRegex.test(message)) {
@@ -50,6 +54,7 @@ function SupportRequest() {
     }
   };
 
+  // Fetch user tickets
   const fetchUserTickets = async () => {
     try {
       const tickets = await assistanceFacade.getUserTickets(token, username);
@@ -66,6 +71,7 @@ function SupportRequest() {
     }
   }, [token, username]);
 
+  // Render the component
   return (
     <div className="min-h-screen bg-white flex flex-col items-center">
       <main className="flex-grow flex flex-col items-center justify-center w-full px-4">

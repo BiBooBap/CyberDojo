@@ -1,5 +1,6 @@
 import React from "react";
 
+// Functional component to display a reward item
 const RewardItem = ({ reward }) => {
   const getMedalImagePath = (medal) => {
     switch (medal) {
@@ -15,6 +16,7 @@ const RewardItem = ({ reward }) => {
     }
   };
 
+  // Return the JSX to render
   return (
     <div className="reward-item">
       <h3>{reward.course_name}</h3>

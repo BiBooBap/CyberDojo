@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import courseFacade from "../services/courseFacade";
 
+// CoursePage component
 function CoursePage() {
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("corso");
   const [course, setCourse] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
+  // Fetch course data
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
@@ -21,6 +24,7 @@ function CoursePage() {
     fetchCourseData();
   }, [courseId]);
 
+  // Disable scrolling when modal (pop-up) is open
   useEffect(() => {
     if (selectedLesson) {
       document.body.style.overflow = "hidden";
@@ -33,18 +37,24 @@ function CoursePage() {
     return <div>Loading...</div>;
   }
 
+  // Handle click on lesson card
   const handleLessonClick = (lesson) => {
     setSelectedLesson(lesson);
   };
 
+  // Close modal (pop-up)
   const closeModal = () => {
     setSelectedLesson(null);
+    window.location.reload();
   };
 
+  // Handle next lesson
   const handleNextLesson = () => {
+    // Get the current lesson index
     const currentIndex = course.lessons.findIndex(
       (lesson) => lesson.name === selectedLesson.name
     );
+    // Get the next lesson
     const nextLesson = course.lessons[currentIndex + 1];
     if (nextLesson) {
       setSelectedLesson(nextLesson);
@@ -54,10 +64,12 @@ function CoursePage() {
     }
   };
 
+  // Handle previous lesson
   const handlePreviousLesson = () => {
     const currentIndex = course.lessons.findIndex(
       (lesson) => lesson.name === selectedLesson.name
     );
+    // Get the previous lesson
     const prevLesson = course.lessons[currentIndex - 1];
     if (prevLesson) {
       setSelectedLesson(prevLesson);
@@ -65,11 +77,12 @@ function CoursePage() {
     }
   };
 
+  // Handle final quiz
   const handleFinalQuiz = () => {
       window.location.href = `/quiz/${course.id}`;
   };
-  
 
+  // Return the CoursePage component
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow p-8 bg-white">
@@ -93,11 +106,10 @@ function CoursePage() {
             ></div>
           </div>
 
-          {/* Final Quiz Button */}
           <button
             className="bg-yellow-500 text-white py-3 px-6 rounded-lg mb-8 flex items-center space-x-2"
             disabled={course.progress !== 100}
-            onClick={course.progress === 100 ? handleFinalQuiz : undefined}
+            onClick={course.progress === 100 ? () => setShowConfirmModal(true) : undefined}
           >
             <span className="font-bold">Quiz Finale</span>
             {course.progress === 100 ? (
@@ -110,6 +122,28 @@ function CoursePage() {
               </span>
             )}
           </button>
+          {/* Confirmation Pop-up */}
+          {showConfirmModal && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-6 rounded-lg">
+                <p>Sei sicuro di voler ripetere il test?</p>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => setShowConfirmModal(false)}
+                    className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                  >
+                    No
+                  </button>
+                  <button
+                    onClick={handleFinalQuiz}
+                    className="bg-green-500 text-white px-4 py-2 rounded"
+                  >
+                    Sì
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Lesson Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -137,11 +171,11 @@ function CoursePage() {
         </div>
       </main>
 
-      {/* Modal */}
+      {/* Modal (pop-up) */}
       {selectedLesson && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg w-11/12 md:w-1/2 relative">
-            {/* Close button for the modal */}
+            {/* Close button for the modal (pop-up) */}
             <button
               onClick={closeModal}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-xl font-bold"

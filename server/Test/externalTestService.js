@@ -1,6 +1,6 @@
 const TestDAO = require("./dao/testDAO");
 
-class TestService {
+class ExternalTestService {
 
   // Method to get all tests for a specific course
   static async getTestsByCourse(courseId) {
@@ -28,8 +28,10 @@ class TestService {
       }
     });
 
+    // Calculate points and medal based on score
     const { points, medal } = this.calculatePoints(score);
 
+    // Add reward to user
     const existingReward = await TestDAO.getRewardByUserAndCourse(username, test.course_id);
     if (existingReward) {
       const totalPoints = this.calculateTotalPoints(medal, existingReward.medal);
@@ -75,12 +77,15 @@ class TestService {
     const medalRarity = { Bronze: 1, Silver: 2, Gold: 3 };
     let totalPoints = 0;
 
+    // Calculate total points based on new medal
     for (const [medal, points] of Object.entries(medalPoints)) {
       if (medalRarity[medal] <= medalRarity[newMedal]) {
         totalPoints += points;
       }
     }
 
+
+    // If user already has a medal, subtract the points of the existing medal
     if (existingMedal) {
       for (const [medal, points] of Object.entries(medalPoints)) {
         if (medalRarity[medal] <= medalRarity[existingMedal]) {
@@ -93,4 +98,4 @@ class TestService {
   }
 }
 
-module.exports = TestService;
+module.exports = ExternalTestService;

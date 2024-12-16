@@ -1,12 +1,14 @@
 const { connect } = require("../../../database/db");
 
 class CourseDAO {
+  // Method to get all courses
   static async getAllCourses() {
     const db = await connect();
     const courses = await db.collection("courses").find().toArray();
     return courses;
   }
 
+  // Method to get all lessons of a course
   static async getLessonsByCourseName(courseName) {
     const db = await connect();
     const course = await db.collection("courses").findOne({ name: courseName });
@@ -16,11 +18,13 @@ class CourseDAO {
     return course.lessons;
   }
 
+  // Method to get course info
   static async getCourseInfo(courseId) {
     const db = await connect();
     return db.collection("courses").findOne({ _id: courseId });
   }
 
+  // Method to enroll a course
   static async enrollCourse(courseId, username) {
     const db = await connect();
     const lezioni = await CourseDAO.getCourseInfo(courseId);
@@ -39,6 +43,7 @@ class CourseDAO {
     );
   }
 
+  // Method to get enrolled courses
   static async getEnrolledCourses(username) {
     const db = await connect();
     const user = await db.collection("user").findOne({ username });
@@ -48,6 +53,7 @@ class CourseDAO {
     return user.enrolled_courses;
   }
 
+  // Method to get enrollment
   static async getEnrollment(username, courseId) {
     const db = await connect();
     const user = await db.collection("user").findOne({ username });
@@ -58,16 +64,17 @@ class CourseDAO {
     return course;
   }
 
+  // Method to get lesson reached
 static async updateUserProgress(courseId, newLessonId, username) {
   const db = await connect();
   try {
-    // Recupera il corso per ottenere l'ordine delle lezioni
+    // Retrieve the course to get the order of lessons
     const course = await CourseDAO.getCourseInfo(parseInt(courseId, 10));
     if (!course) {
       throw new Error('Corso non trovato');
     }
 
-    // Trova l'indice della nuova lezione
+    // Find the index of the new lesson
     const newLessonIndex = course.lessons.findIndex(lesson => lesson.name === newLessonId);
     if (newLessonIndex === -1) {
       throw new Error('Lezione non trovata nel corso');
@@ -75,10 +82,9 @@ static async updateUserProgress(courseId, newLessonId, username) {
 
     let userLesson_reached = await CourseDAO.getEnrollment(username, parseInt(courseId, 10));
     const currentLessonIndex = course.lessons.findIndex(lesson => lesson.name === userLesson_reached.lesson_reached);
-      
 
     if (newLessonIndex > currentLessonIndex) {
-    // Aggiorna al nuovo progresso
+    // Update to new progress
     userLesson_reached.lesson_reached = newLessonId;
 
     await db.collection("user").updateOne(

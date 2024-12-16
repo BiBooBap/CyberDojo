@@ -3,13 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
+// Component for displaying ticket details for admin
 function AdminTicketDetail() {
   const { id } = useParams();
   const [ticket, setTicket] = useState(null);
   const [message, setMessage] = useState("");
 
+  // Get user data from token
   const user = jwtDecode(localStorage.getItem("token"));
 
+  // Get token from local storage
   const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchTicket = async () => {
@@ -23,6 +26,8 @@ function AdminTicketDetail() {
     fetchTicket();
   }, [id, token]);
 
+
+  // Close ticket
   const closeTicket = async () => {
     try {
       await ticketFacade.closeTicket(id, token);
@@ -33,6 +38,7 @@ function AdminTicketDetail() {
     }
   };
 
+  // Add message
   const addMessage = async () => {
     try {
       await ticketFacade.addMessage(id, user.username, message, user.role, token);
@@ -43,10 +49,12 @@ function AdminTicketDetail() {
     }
   }
 
+  // If ticket is not loaded yet
   if (!ticket) {
     return <div className="flex items-center justify-center mt-16">Caricamento...</div>;
   }
 
+  // Display ticket details
   return (
     <div className="min-h-screen flex pt-16">
       <main className="flex-grow p-8 bg-white">
@@ -73,12 +81,12 @@ function AdminTicketDetail() {
             >
             </textarea>
           <div className="flex space-x-4">
-            <button 
+            <button
             className="bg-[#54295c] text-white px-6 py-2 rounded-lg"
             onClick={closeTicket}>
               Chiudi ticket
             </button>
-            <button 
+            <button
             className="bg-[#54295c] text-white px-6 py-2 rounded-lg"
             onClick={addMessage}>
               Invia risposta

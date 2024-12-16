@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import RegistrationFacade from "./services/registrationFacade";
 
+// SignUpPage component
 const SignUpPage = () => {
-  // Gestione dello stato
+  // State variables
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,6 +73,7 @@ const SignUpPage = () => {
     }
   };
 
+  // Return the JSX element
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="card-body py-8 px-6 bg-white rounded shadow-md">

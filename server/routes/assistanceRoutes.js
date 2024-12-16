@@ -3,22 +3,22 @@ const AssistanceController = require("../Segnalazioni/controllers/assistanceCont
 
 const router = express.Router();
 
-// Crea una nuova richiesta di assistenza
+// Create a new support request
 router.post("/create", AssistanceController.createRequest);
 
-// Ottieni tutte le richieste di assistenza
+// Get all support requests
 router.get("/tickets", AssistanceController.getAllRequests);
 
-// Elenco delle richieste di un utente
+// List of a user's requests
 router.get("/listuser", AssistanceController.listUserRequests);
 
-// Ottieni una richiesta di assistenza specifica per ID
+// Get an ID-specific support request
 router.get("/ticket", AssistanceController.getRequest);
 
-// Chiude un ticket (ADMIN ONLY)
+// Closes a ticket (ADMIN ONLY)
 router.post("/closeticket", AssistanceController.closeTicket);
 
-// Aggiungi un messaggio a un ticket
+// Add a message to a ticket
 router.post("/addmessage", AssistanceController.addMessage);
 
 module.exports = router;

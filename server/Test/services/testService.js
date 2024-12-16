@@ -3,7 +3,7 @@ const TestDAO = require("../dao/testDAO");
 class TestService {
     // Retrieve tests for a course
     static async getTestsForCourse(courseId) {
-        return await TestDAO.getTestsByCourse(courseId); // Filtra per courseId
+        return await TestDAO.getTestsByCourse(courseId); // Filter by courseId
     }
 
     // Calculate the score, assign points, and insert the reward into the rewards collection

@@ -1,11 +1,13 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserDao = require("../dao/userDao");
+const CourseService = require("../../Corsi/externalCourseService");
 
 const secretKey = "sigmasigmaonthewall";
 
 class AuthService {
 
+  // Method to generate the token
   static generateToken(user) {
     return jwt.sign(
       { username: user.username, role: user.role },
@@ -14,6 +16,32 @@ class AuthService {
     );
   }
 
+  // Method to get user's courses
+  static async getUserCourses(username) {
+    const enrolledCourses = await CourseService.getEnrolledCourses(username);
+
+    if (!enrolledCourses || enrolledCourses.length === 0) {
+      throw new Error("L'utente non è iscritto a nessun corso");
+    }
+
+    const courses = await Promise.all(
+      enrolledCourses.map(async (course) => {
+        const courseInfo = await CourseService.getCourseInfo(course.course_id);
+
+        const progress = await CourseService.getProgressOfCourse(username, course.course_id);
+
+        return {
+          id: course.course_id,
+          title: courseInfo.name,
+          icon: courseInfo.course_image,
+          progress,
+        };
+      })
+    );
+    return courses;
+  }
+
+  // method to login by username and password
   static async loginByUsername(username, password) {
 
     const user = await UserDao.findUserByUsername(username);
@@ -31,6 +59,7 @@ class AuthService {
     return token;
   }
 
+  // Method to login by email and password
   static async loginByEmail(email, password) {
     const user = await UserDao.findUserByEmail(email);
     if (!user) {
@@ -47,6 +76,7 @@ class AuthService {
     return token;
   }
 
+  // Method to check user's current password
   static async verifyCurrentPassword(username, currentPassword) {
     const user = await UserDao.findUserByUsername(username);
     if (!user) {
@@ -64,6 +94,7 @@ class AuthService {
     return true;
   }
 
+  // Method to get user's information
   static async getUserInfo(username) {
     const user = await UserDao.findUserByUsername(username);
     if (!user) {
@@ -75,6 +106,7 @@ class AuthService {
     };
   }
 
+  // Method to update user's information
   static async updateUserInfo( username, newEmail, newUsername, newPassword) {
 
     if (!newEmail || !newUsername) {
@@ -114,9 +146,14 @@ class AuthService {
 
     // Check if there are fields to update
     if (Object.keys(updateFields).length > 0) {
-      await UserDao.updateUser(username, updateFields);
+      await UserDao.updateUser(username, updateFields); // Update user's information
 
       const updatedUser = await UserDao.findUserByUsername(newUsername);
+
+      if(isUsernameChanged) {
+        // Update User's entry in database
+        await UserDao.updateUserInDatabase(currentUser.username, newUsername);
+      }
 
       return {
         message: "Informazioni aggiornate con successo",
@@ -125,7 +162,6 @@ class AuthService {
       };
 
     } else {
-      console.log("Nessun campo da aggiornare.");
       return { message: "Informazioni aggiornate con successo", newUsername: null, token: null };
     }
   }

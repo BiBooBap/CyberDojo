@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import quizFacade from '../services/quizFacade';
 
+// QuizPage component
 const QuizPage = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const QuizPage = () => {
   const [error, setError] = useState(null);
   const [showResultPopup, setShowResultPopup] = useState(false);
 
+  // Fetch tests for the course
   useEffect(() => {
     const fetchTests = async () => {
       try {
@@ -38,18 +40,22 @@ const QuizPage = () => {
     fetchTests();
   }, [courseId]);
 
+  // Handle user answer change
   const handleAnswerChange = (questionId, answerIndex) => {
     setUserAnswers((prev) => ({ ...prev, [questionId]: answerIndex }));
   };
 
+  // Handle navigation between questions
   const handleNext = () => {
     setCurrentQuestionIndex((prev) => prev + 1);
   };
 
+  // Handle navigation between questions
   const handlePrev = () => {
     setCurrentQuestionIndex((prev) => prev - 1);
   };
 
+  // Handle questions submission
   const handleSubmit = async () => {
     try {
       const currentTest = tests[currentTestIndex];
@@ -84,12 +90,13 @@ const QuizPage = () => {
     return <div className="text-center">Domanda non trovata.</div>;
   }
 
+  // Render the quiz page
   return (
     <div className="quiz-container mx-auto p-4 max-w-2xl">
       <h1 className="text-black text-center text-2xl font-bold mb-4">
         {currentTest.title}
       </h1>
-      
+
       {/* Question Indicators */}
       <div className="flex justify-center mb-4">
         {questions.map((_, index) => (
@@ -111,7 +118,7 @@ const QuizPage = () => {
           <button
             key={aIndex}
             onClick={() => handleAnswerChange(currentQuestionIndex, aIndex)}
-            className={`block w-full text-left px-4 py-2 mb-2 rounded 
+            className={`block w-full text-left px-4 py-2 mb-2 rounded
               ${userAnswers[currentQuestionIndex] === aIndex ? 'bg-[#F0C674]' : 'bg-gray-200'}
               hover:bg-[#F0C674] transition-colors`}
           >

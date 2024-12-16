@@ -1,10 +1,10 @@
 const ShopDAO = require("../dao/shopDAO");
 
 class ShopManager {
+  // Retrieve the list of items available in the shop.
   static async listItems() {
     try {
       const items = await ShopDAO.getItems();
-      console.log("Items retrieved:", items);
       return items;
     } catch (error) {
       console.error("Errore nel recupero degli oggetti:", error);
@@ -12,6 +12,7 @@ class ShopManager {
     }
   }
 
+  // Purchase an item from the shop.
   static async purchaseItem(username, itemId) {
     try {
       const selectedItem = await ShopDAO.getItemById(itemId);
@@ -39,10 +40,10 @@ class ShopManager {
     }
   }
 
+  // Retrieve the inventory of a user.
   static async getInventory(username) {
     try {
       const inventory = await ShopDAO.getInventory(username);
-      console.log("Inventory retrieved:", inventory);
       return inventory;
     } catch (error) {
       console.error("Errore nel recupero dell'inventario:", error);
@@ -50,6 +51,7 @@ class ShopManager {
     }
   }
 
+  // Checks if a specific item is present in a user's inventory
   static async isItemInInventory(username, itemId) {
     const items = await ShopDAO.getItems();
     const selectedItem = items.find((i) => i._id.toString() === itemId);
@@ -58,10 +60,12 @@ class ShopManager {
     return await ShopDAO.isItemInInventory(username, selectedItem.name);
   }
 
+  // Retrieves the profile information for a given user
   static async getUserProfile(username) {
     return await ShopDAO.getUserProfile(username);
   }
 
+  // Updates the profile information for a given user
   static async updateUserProfile(username, type, imagePath) {
     return await ShopDAO.updateUserProfile(username, type, imagePath);
   }

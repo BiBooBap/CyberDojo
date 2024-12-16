@@ -1,3 +1,4 @@
+// Import necessary components and utilities
 import {
   BrowserRouter as Router,
   Route,
@@ -21,10 +22,14 @@ import ProtectedRoute from "./utils/ProtectedRoute.js";
 import { getUserRole, getPayload } from "./utils/auth";
 import NotAdminRoute from "./utils/NotAdminRoute.js";
 import SupportVisitorPage from "./visitor/supportVisitorPage.jsx";
+import Privacy from "./privacy.jsx";
+import TerminiECondizioni from "./termAndCondition.jsx";
 
+// Retrieve the user's role and payload from authentication utilities
 function App() {
   const userRole = getUserRole();
   const currentUser = getPayload();
+
 
   return (
     <Router>
@@ -41,6 +46,16 @@ function App() {
                 </NotAdminRoute>
               }
             />
+
+            <Route
+              path="/privacy"
+              element={
+                <NotAdminRoute>
+                  <Privacy />
+                </NotAdminRoute>
+              }
+            />
+
             <Route
               path="/supporto"
               element={
@@ -49,6 +64,16 @@ function App() {
                 </VisitorRoute>
               }
             />
+
+            <Route
+              path="/termAndCondition"
+              element={
+                <NotAdminRoute>
+                  <TerminiECondizioni />
+                </NotAdminRoute>
+              }
+            />
+
             {/* ^ Landing page ^ */}
             <Route
               path="/SignUpPage"

@@ -1,4 +1,5 @@
 const progressService = {
+  // Function to get the progress of the user
   getProgress: async () => {
     try {
       const token = localStorage.getItem("token");

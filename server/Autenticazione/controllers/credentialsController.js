@@ -78,6 +78,7 @@ router.post("/update-user-info", authenticate, async (req, res) => {
       });
     }
 
+    // Return the message if the username has not been updated
     res.json({ message: result.message });
   } catch (error) {
     console.error(

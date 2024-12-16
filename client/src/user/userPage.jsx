@@ -7,6 +7,7 @@ import ShopFacade from "../services/shopFacade";
 import courseFacade from "../services/courseFacade";
 import "../index.css";
 
+// Component for the user page
 const AreaUtente = () => {
   const [selectedSection, setSelectedSection] = useState("Gestione Account");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,9 +77,6 @@ const AreaUtente = () => {
   };
       // Log userProfile values
       useEffect(() => {
-        console.log("Border:", userProfile.border);
-        console.log("Avatar:", userProfile.avatar);
-        console.log("User Title:", userProfile.user_title);
       }, [userProfile]);
 
   // Function to check if the user is authenticated
@@ -104,7 +102,6 @@ const AreaUtente = () => {
     const fetchRewards = async () => {
       try {
         const data = await ProgressFacade.getProgress();
-        console.log("Dati recuperati:", data);
         setRewards(data);
       } catch (error) {
         console.error("Errore nel recupero dei premi:", error);
@@ -139,6 +136,7 @@ const AreaUtente = () => {
     }
   }, [selectedSection]);
 
+  // Fetch user courses when "Corsi seguiti" is selected
   useEffect(() => {
     const fetchUserCourses = async () => {
       try {
@@ -279,7 +277,7 @@ const AreaUtente = () => {
             {selectedSection}
           </h1>
       
-          {/* Sezione Avatars */}
+          {/* Section Avatars */}
           <div className="inventory-section mb-6">
             <h2 className="text-white font-bold text-2xl text-center mb-4">Avatars</h2>
             {inventory.avatar.length > 0 ? (
@@ -310,7 +308,7 @@ const AreaUtente = () => {
             )}
           </div>
       
-          {/* Sezione Bordi */}
+          {/* Section Borders */}
           <div className="inventory-section mb-6">
             <h2 className="text-white font-bold text-2xl text-center mb-4">Bordi</h2>
             {inventory.border.length > 0 ? (
@@ -341,7 +339,7 @@ const AreaUtente = () => {
             )}
           </div>
       
-          {/* Sezione Titoli */}
+          {/* Section Titles */}
           <div className="inventory-section mb-6">
             <h2 className="text-white font-bold text-2xl text-center mb-4">Titoli</h2>
             {inventory.title.length > 0 ? (
@@ -374,6 +372,7 @@ const AreaUtente = () => {
         </div>
       );
     }
+    {/* Section for adding a prize*/}
     if (selectedSection === "Gestione Account") {
       return (
         <div className="flex flex-col justify-between space-y-8">
@@ -469,7 +468,6 @@ const AreaUtente = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="mb-3 px-4 py-2 rounded"
-                  required
                 />
                 {Object.values(errors).map((error, index) => (
                   <p key={index} className="text-red-500 text-sm mb-2">
@@ -498,8 +496,7 @@ const AreaUtente = () => {
           <h1 className="text-[#f7d1cd] font-bold text-3xl text-center mb-4">
             {selectedSection}
           </h1>
-          
-          {/* Messaggio di errore */}
+          {/* Error message */}
           {error ? (
             <div className="bg-red-100 text-red-700 px-4 py-3 rounded-lg text-center font-medium shadow-md">
               {error}
@@ -510,7 +507,7 @@ const AreaUtente = () => {
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {/* Premi con effetto hover */}
+              {/* Prizes with hover effect */}
               {rewards.map((reward) => (
                 <div
                   key={reward._id}
@@ -523,7 +520,6 @@ const AreaUtente = () => {
           )}
         </div>
       );
-      
     }
     if (selectedSection === "Corsi seguiti") {
       return (
@@ -542,7 +538,6 @@ const AreaUtente = () => {
                   <h2 className="text-[#54295c] font-bold text-xl mb-2">{course.title}</h2>
                   <p className="text-[#54295c]">Progresso: {course.progress}%</p>
                 </div>
-                
                 </button>
               ))}
             </div>
@@ -554,6 +549,7 @@ const AreaUtente = () => {
     }
   };
 
+  // Return the JSX for the user page
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <div className="bg-[#54295c] text-white w-full md:w-1/4 md:relative md:mb-0" style={{ marginBottom: "-2.5rem" }}>

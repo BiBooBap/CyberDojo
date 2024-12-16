@@ -1,5 +1,5 @@
 const assistanceService = {
-  // Funzione per inviare una nuova richiesta di supporto
+  // Function to send a new support request
   sendSupportRequest: async (username, description, token, message) => {
     try {
       const response = await fetch("http://localhost:3001/assistance/create", {
@@ -23,7 +23,7 @@ const assistanceService = {
     }
   },
 
-  // Funzione per recuperare i ticket dell'utente
+  // Function to get all the support requests
   getUserTickets: async (token, username) => {
     try {
       const response = await fetch(

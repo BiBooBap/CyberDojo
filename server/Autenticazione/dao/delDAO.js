@@ -20,13 +20,10 @@ class DelDao {
       await ExternalRewardsService.deleteProgress(username);
 
       // Deletion of the tickets
-      await  db.collection("tickets").deleteMany({ user_username: username });
+      await db.collection("tickets").deleteMany({ user_username: username });
 
       // Deletion of the inventory
       await ExternalShopService.deleteInventory(username);
-
-      // Deletion of the streak
-      await ExternalRewardsService.deleteStreak(username);
 
       return { success: true };
     } catch (error) {

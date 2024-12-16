@@ -1,4 +1,5 @@
 const shopService = {
+  // Function to retrieve items from the server
   getItems: async () => {
     try {
       const response = await fetch("http://localhost:3001/shop/items", {
@@ -7,12 +8,10 @@ const shopService = {
           "Content-Type": "application/json",
         },
       });
-      console.log("Response status:", response.status);
       if (!response.ok) {
         throw new Error("Errore nel recupero degli oggetti");
       }
       const data = await response.json();
-      console.log("Data:", data);
       return data;
     } catch (error) {
       console.error("Errore nel recupero degli oggetti:", error);
@@ -20,6 +19,7 @@ const shopService = {
     }
   },
 
+  // Function to purchase an item
   purchaseItem: async (itemId) => {
     try {
       const token = localStorage.getItem("token");
@@ -41,6 +41,7 @@ const shopService = {
     }
   },
 
+  // Function to retrieve the user's inventory
   getUserInventory: async () => {
     try {
       const token = localStorage.getItem("token");
@@ -61,6 +62,7 @@ const shopService = {
     }
   },
 
+  // Function to check if an item is in the user's inventory
   isItemInInventory: async (itemId) => {
     try {
       const token = localStorage.getItem("token");
@@ -84,6 +86,7 @@ const shopService = {
     }
   },
 
+  // Function to retrieve the user's profile
   getUserProfile: async () => {
     try {
       const token = localStorage.getItem("token");
@@ -104,6 +107,7 @@ const shopService = {
     }
   },
 
+  // Function to update the user's profile
   updateUserProfile: async (type, imagePath) => {
     try {
       const token = localStorage.getItem("token");

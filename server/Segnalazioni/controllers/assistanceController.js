@@ -1,12 +1,10 @@
 const AssistanceFacade = require("../facades/assistanceFacade");
 
 class AssistanceController {
+  // Method for creating a support request
   static async createRequest(req, res) {
     try {
       const { userUsername, description, message } = req.body;
-      console.log(userUsername);
-      console.log(description);
-      console.log(message);
       const ticketId = await AssistanceFacade.sendRequest(
         userUsername,
         description,
@@ -20,6 +18,7 @@ class AssistanceController {
     }
   }
 
+  // Method for getting a support request
   static async getRequest(req, res) {
     try {
       const id = req.query.id;
@@ -33,6 +32,7 @@ class AssistanceController {
     }
   }
 
+  // Method for listing all the support requests of a user
   static async listUserRequests(req, res) {
     try {
       const { userUsername } = req.query;
@@ -43,6 +43,7 @@ class AssistanceController {
     }
   }
 
+  // Method for listing all the support requests
   static async getAllRequests(req, res) {
     try {
       const tickets = await AssistanceFacade.getAllRequests();
@@ -52,6 +53,7 @@ class AssistanceController {
     }
   }
 
+  // Method for closing a support request
   static async closeTicket(req, res) {
     try {
       const id = req.query.id;
@@ -65,6 +67,7 @@ class AssistanceController {
     }
   }
 
+  // Method for adding a message to a support request
   static async addMessage(req, res) {
     try {
       const id = req.query.id;

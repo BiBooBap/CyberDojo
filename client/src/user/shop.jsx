@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { isUserLoggedIn } from "../utils/auth";
 import shopFacade from "../services/shopFacade";
 
+// Component that represents a single item in the store
 const ShopItem = ({ item }) => {
   const [isPurchased, setIsPurchased] = useState(false);
 
@@ -19,6 +20,7 @@ const ShopItem = ({ item }) => {
     checkIfPurchased();
   }, [item._id]);
 
+  // Function that handles the purchase of an item
   const handlePurchase = async () => {
     if (!isUserLoggedIn()) {
       alert("È necessario essere autenticati per acquistare gli oggetti.");
@@ -36,6 +38,7 @@ const ShopItem = ({ item }) => {
     }
   };
 
+  // Render the item
   return (
     <div className="card-body p-6 mb-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center w-80">
 <img
@@ -56,6 +59,7 @@ const ShopItem = ({ item }) => {
   );
 };
 
+// Component that represents the store
 const NegozioPunti = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
@@ -74,6 +78,7 @@ const NegozioPunti = () => {
     fetchItems();
   }, []);
 
+  // Render the store
   return (
     <div className="px-8 py-4">
       <h1 className="font-Montserrat justify-self-center font-bold text-xl mb-3 mt-3">

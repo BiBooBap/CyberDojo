@@ -4,7 +4,7 @@ const authenticate = require("../Middleware/authenticate");
 
 const router = express.Router();
 
-// Rotta per ottenere i punti dell'utente
+// Route to get user points
 router.get("/points", authenticate, UserController.getPoints);
 
 module.exports = router;

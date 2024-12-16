@@ -2,15 +2,18 @@ import ticketFacade from "./services/ticketFacade";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+// AdminTicketDashboard component
 function AdminTicketDashboard() {
   const [tickets, setTickets] = useState([]);
   const token = localStorage.getItem("token");
   const [activeLink, setActiveLink] = useState("");
 
+  // Function to handle the click on the sidebar links
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
 
+  // Fetch the tickets when the component mounts
   useEffect(() => {
     const fetchTickets = async () => {
       try {
@@ -25,11 +28,13 @@ function AdminTicketDashboard() {
     fetchTickets();
   }, []);
 
+  // Filter the tickets based on the active link
   const openTickets = tickets.filter((tickets) => tickets.is_open === "Aperto");
   const closedTickets = tickets.filter(
     (tickets) => tickets.is_open === "Risolto"
   );
 
+  // Return the JSX to render
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -105,18 +110,17 @@ function AdminTicketDashboard() {
                   <p className="text-sm mt-2">
                     {new Date(ticket.creation_date).toLocaleDateString()}
                   </p>
-                  {(ticket.is_open === "Aperto" && 
+                  {(ticket.is_open === "Aperto" &&
                   <button className="bg-[#8773B9] text-white mt-3 px-4 py-2 rounded-lg">
                       <Link to={`/admin/adminTicketDetail/${ticket._id}`}>
                       Rispondi
                     </Link>
-                  </button>) 
+                  </button>)
                   ||
-                      (ticket.is_open === "Risolto" && 
+                      (ticket.is_open === "Risolto" &&
                       <button className="bg-[#8773b946] text-white mt-3 px-4 py-2 rounded-lg">
                         Chiuso
                     </button>)}
-                  
                 </div>
               </div>
             ))}

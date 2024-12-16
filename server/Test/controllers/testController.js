@@ -1,6 +1,7 @@
 const TestFacade = require("../facades/testFacade");
 
 class TestController {
+  // Method for obtaining tests for a course
   static async getTestsForCourse(req, res) {
     const { courseId } = req.params;
     try {
@@ -11,6 +12,7 @@ class TestController {
     }
   }
 
+  // Method for correcting the test
   static async evaluateTest(req, res) {
     const { testId } = req.params;
     const { answers } = req.body;

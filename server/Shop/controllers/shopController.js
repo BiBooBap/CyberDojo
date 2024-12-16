@@ -1,6 +1,7 @@
 const ShopFacade = require("../facades/shopFacade");
 
 class ShopController {
+  // Method for obtaining the list of items in the shop
   static async listItems(req, res) {
     try {
       const items = await ShopFacade.getItems();
@@ -10,6 +11,7 @@ class ShopController {
     }
   }
 
+  // Method for purchasing an item
   static async purchaseItem(req, res) {
     try {
       const username = req.user.username;
@@ -23,6 +25,7 @@ class ShopController {
     }
   }
 
+  // Method for obtaining the user's inventory
   static async getInventory(req, res) {
     try {
       const username = req.user.username;
@@ -36,6 +39,7 @@ class ShopController {
     }
   }
 
+  // Method for checking if an item is in the user's inventory
   static async isItemInInventory(req, res) {
     try {
       const username = req.user.username;
@@ -50,6 +54,7 @@ class ShopController {
     }
   }
 
+  // Method for obtaining the user's profile
   static async getUserProfile(req, res) {
     try {
       const username = req.user.username;
@@ -60,6 +65,7 @@ class ShopController {
     }
   }
 
+  // Method for updating the user's profile
   static async updateUserProfile(req, res) {
     try {
       const username = req.user.username;

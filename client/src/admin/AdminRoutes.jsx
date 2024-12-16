@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import AdminTicketDashboard from "./adminTicketDashboard.jsx";
 import AdminTicketDetail from "./adminTicketDetail.jsx";
 
+// AdminRoutes component
 function AdminRoutes() {
   return (
     <div className="admin-layout flex">

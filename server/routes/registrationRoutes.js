@@ -3,6 +3,7 @@ const registrationController = require("../Registrazione/controllers/registratio
 
 const router = express.Router();
 
+// Registration routes
 router.use("/", registrationController);
 
 module.exports = router;

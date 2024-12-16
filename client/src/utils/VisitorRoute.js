@@ -3,8 +3,8 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { isUserLoggedIn } from "./auth";
 
+// If the user is logged in, redirect to homepage
 function VisitorRoute({ children }) {
-  // Se l'utente è loggato, reindirizza alla homepage
   return !isUserLoggedIn() ? children : <Navigate to="/homepage" replace />;
 }
 

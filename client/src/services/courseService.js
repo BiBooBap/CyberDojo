@@ -1,8 +1,9 @@
 const corsiService = {
 
-   updateUserProgress : async (courseId,lessonId ) => {
+  // Function to update the progress of the user
+  updateUserProgress : async (courseId,lessonId ) => {
     try {
-      const token = localStorage.getItem("token"); // Assicurati di avere il token dell'utente
+      const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:3001/courses/update-progress`, {
         method: "POST",
         headers: {
@@ -11,19 +12,19 @@ const corsiService = {
         },
         body: JSON.stringify({ courseId, lessonId }),
       });
-  
+
       if (!response.ok) {
         throw new Error(`Errore nell'aggiornamento del progresso: ${response.statusText}`);
       }
-  
+
       const data = await response.json();
-      console.log("Progresso aggiornato:", data);
     } catch (error) {
       console.error("Errore durante l'aggiornamento del progresso:", error);
       alert("Errore durante l'aggiornamento del progresso.");
     }
   },
 
+  // Function to get courses for guest
   getCoursesGuest: async () => {
     try {
       const headers = {
@@ -50,6 +51,7 @@ const corsiService = {
     }
   },
 
+  // Function to get courses for user
   getCoursesUser: async () => {
     try {
       const headers = {
@@ -77,6 +79,7 @@ const corsiService = {
     }
   },
 
+  // Function to get lessons by course name
   getLessonsByCourseName: async (courseName, token) => {
     try {
       const headers = {
@@ -112,6 +115,7 @@ const corsiService = {
     }
   },
 
+  // Function to enroll in a course
   enrollCourse: async (courseId) => {
     try {
       const token = localStorage.getItem("token");
@@ -134,6 +138,7 @@ const corsiService = {
     }
   },
 
+  // Function to get enrolled courses
   getEnrolledCourses: async () => {
     try {
       const token = localStorage.getItem("token");
@@ -155,6 +160,7 @@ const corsiService = {
     }
   },
 
+  // Function to get course by id
   getCourseById: async (courseId) => {
     try {
       const response = await fetch(

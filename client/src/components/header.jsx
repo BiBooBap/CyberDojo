@@ -4,21 +4,25 @@ import { Link } from "react-router-dom";
 import { isUserLoggedIn, getUserRole, getToken } from "../utils/auth"; // authentication functions
 import UserFacade from "../services/userFacade";
 
+// Header component
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [points, setPoints] = useState(0);
   const isLoggedIn = isUserLoggedIn();
   const userRole = getUserRole();
 
+  // Function to open and close the menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Function to handle the logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/homepage";
   };
 
+  // Fetch user points
   useEffect(() => {
     const fetchPoints = async () => {
       try {
@@ -29,14 +33,16 @@ const Header = () => {
       }
     };
 
+    // Fetch points only if the user is logged in
     if (isLoggedIn) {
       fetchPoints();
     }
   }, [isLoggedIn]);
 
+  // Return the header component
   return (
     <header className="header bg-[#54295c] text-white p-4 flex justify-between items-center">
-      <div className="logo-container flex items-center space-x-3">
+      <Link to="/homepage" className="logo-container flex items-center space-x-3">
         <img
           src="/img/CD.png"
           alt="CyberDojo Logo"
@@ -45,7 +51,7 @@ const Header = () => {
         <h1 className="title text-xl font-semibold hidden md:block">
           CyberDojo
         </h1>
-      </div>
+      </Link>
       <div className="menu-container flex-1 flex justify-center md:justify-center">
         <nav
           className={`nav flex-col md:flex-row md:flex ${
@@ -66,19 +72,19 @@ const Header = () => {
                   <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                     <Link to="/supportrequestpage">Supporto</Link>
                   </button>
-                  {/* Sezione Punti Utente */}
+                  {/* User Points Section */}
                   <div className="flex items-center space-x-2 mx-2">
                     <img
                       src="/img/coin.png"
                       alt="Coins Icon"
                       className="coins-icon w-5 h-5 rounded-full"
                     />
-                    <span>{points}</span> {/* Punti Dinamici */}
+                    <span>{points}</span> {/* Dynamic Points */}
                   </div>
-                  {/* Icona Area Utente */}
+                  {/* User Area Icon */}
                   <Link to="/areaUtente">
                     <img
-                      src="/img/default.png" // Assicurati di avere questa icona nella cartella img
+                      src="/img/default.png"
                       alt="Area Utente"
                       className="user-icon w-6 h-6 rounded-full mx-2"
                     />
@@ -90,19 +96,18 @@ const Header = () => {
                   <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                     <Link to="/admin/adminTicketDashboard">Dashboard</Link>
                   </button>
-                  {/* Aggiungi altre voci per l'admin se necessario */}
                 </>
               )}
-              {/* Pulsante Logout */}
-               <button
-                 onClick={handleLogout}
+              {/* Logout Button */}
+              <button
+                onClick={handleLogout}
                   className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2"
                 >
                   <img
-                   src="/img/logout_icon.png"
-                   alt="Logout"
-                   className="w-6 h-6"
-                   />
+                    src="/img/logout_icon.png"
+                    alt="Logout"
+                    className="w-6 h-6"
+                    />
               </button>
             </>
           ) : (
@@ -114,7 +119,7 @@ const Header = () => {
               <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                 <Link to="/accessPage">Accedi o Registrati</Link>
               </button>
-              {/* Pulsante Supporto */}
+              {/* Support Button*/}
               <button className="nav-link hover:bg-[#4b2153] px-4 py-2 rounded text-center mx-2 font-bold text-lg">
                 <Link to="/supporto">Supporto</Link>
               </button>
@@ -127,7 +132,7 @@ const Header = () => {
           className="menu-toggle md:hidden focus:outline-none"
           onClick={toggleMenu}
         >
-          {/* Icona menu per dispositivi mobili */}
+          {/* Menu icon for mobile devices */}
           <svg
             className="w-6 h-6"
             fill="none"

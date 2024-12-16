@@ -2,6 +2,7 @@ const { connect } = require("./db");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 
+// Run the script
 async function clearDB() {
   const db = await connect();
   await db.dropDatabase();
@@ -310,59 +311,58 @@ async function initializeDB() {
         description: "Impara le basi di HTML",
         difficulty: "Facile",
         lessons: [
-           {
-      name: "Introduzione a HTML",
-      content:
-        "HTML è un linguaggio che serve per creare le pagine web che vedi su Internet, come i mattoncini per costruire una casa.",
-    },
-    {
-      name: "Struttura di una pagina HTML",
-      content:
-        "La struttura di una pagina HTML è l'ossatura che organizza i contenuti, come una mappa che mostra dove mettere le stanze in una casa.",
-    },
-    {
-      name: "Tag e Attributi di Base",
-      content:
-        "I tag sono comandi speciali che dicono al browser come mostrare il contenuto, e gli attributi sono come piccole istruzioni aggiuntive per quei tag.",
-    },
-    {
-      name: "Creare Intestazioni e Paragrafi",
-      content:
-        "Le intestazioni sono titoli che danno un'idea di cosa parla una sezione, mentre i paragrafi sono blocchi di testo che raccontano informazioni.",
-    },
-    {
-      name: "Liste ordinate e non ordinate",
-      content:
-        "Le liste sono modi per organizzare elementi in ordine o senza ordine, come una lista della spesa o una serie di passi da seguire.",
-    },
-    {
-      name: "Inserire Immagini e Link",
-      content:
-        "Immagini rendono le pagine più colorate e interessanti, mentre i link collegano una pagina a un'altra, come porte che ti portano in stanze diverse.",
-    },
-    {
-      name: "Tabelle in HTML",
-      content:
-        "Le tabelle sono strutture organizzate in righe e colonne che aiutano a mostrare dati in modo ordinato, come una griglia di giochi.",
-    },
-    {
-      name: "Formulari e Input",
-      content:
-        "I formulari permettono agli utenti di inserire informazioni, come compilare un modulo con il proprio nome e indirizzo.",
-    },
-    {
-      name: "Incorporare Video e Audio",
-      content:
-        "Puoi aggiungere video e audio alle pagine web per renderle più interattive e divertenti, come ascoltare musica o guardare un film.",
-    },
-    {
-      name: "Semantic HTML",
-      content:
-        "Semantic HTML usa tag che descrivono meglio il contenuto, aiutando il browser e i motori di ricerca a capire di cosa parla la pagina.",
-    },
-        ],
-        course_image: "/img/courses/basic.png",
-      },
+          {
+            name: "Introduzione a HTML",
+            content: "HTML è un linguaggio che serve per creare le pagine web che vedi su Internet, come i mattoncini per costruire una casa.",
+          },
+          {
+            name: "Struttura di una pagina HTML",
+            content:
+              "La struttura di una pagina HTML è l'ossatura che organizza i contenuti, come una mappa che mostra dove mettere le stanze in una casa.",
+          },
+          {
+            name: "Tag e Attributi di Base",
+            content:
+              "I tag sono comandi speciali che dicono al browser come mostrare il contenuto, e gli attributi sono come piccole istruzioni aggiuntive per quei tag.",
+          },
+          {
+            name: "Creare Intestazioni e Paragrafi",
+            content:
+              "Le intestazioni sono titoli che danno un'idea di cosa parla una sezione, mentre i paragrafi sono blocchi di testo che raccontano informazioni.",
+          },
+          {
+            name: "Liste ordinate e non ordinate",
+            content:
+              "Le liste sono modi per organizzare elementi in ordine o senza ordine, come una lista della spesa o una serie di passi da seguire.",
+          },
+          {
+            name: "Inserire Immagini e Link",
+            content:
+              "Immagini rendono le pagine più colorate e interessanti, mentre i link collegano una pagina a un'altra, come porte che ti portano in stanze diverse.",
+          },
+          {
+            name: "Tabelle in HTML",
+            content:
+              "Le tabelle sono strutture organizzate in righe e colonne che aiutano a mostrare dati in modo ordinato, come una griglia di giochi.",
+          },
+          {
+            name: "Formulari e Input",
+            content:
+              "I formulari permettono agli utenti di inserire informazioni, come compilare un modulo con il proprio nome e indirizzo.",
+          },
+          {
+            name: "Incorporare Video e Audio",
+            content:
+              "Puoi aggiungere video e audio alle pagine web per renderle più interattive e divertenti, come ascoltare musica o guardare un film.",
+          },
+          {
+            name: "Semantic HTML",
+            content:
+              "Semantic HTML usa tag che descrivono meglio il contenuto, aiutando il browser e i motori di ricerca a capire di cosa parla la pagina.",
+          },
+              ],
+              course_image: "/img/courses/basic.png",
+            },
 
       {
         _id: 4,
@@ -425,10 +425,10 @@ async function initializeDB() {
       },
       {
       _id: 5,
-       name: "Corso sui Social e la Sicurezza",
+      name: "Corso sui Social e la Sicurezza",
       description: "Impara come usare i social in modo sicuro",
-       difficulty: "Facile",
-       lessons: [
+      difficulty: "Facile",
+      lessons: [
     {
       name: "Introduzione ai Social Media",
       content:
@@ -1915,7 +1915,7 @@ async function initializeDB() {
       is_open: "Risolto",
     },
   ]);
-  // Creazione della collezione 'rewards' con validatore
+  // Creation of the 'rewards' collection with validator
   await db.createCollection("rewards", {
     validator: {
       $jsonSchema: {
@@ -1938,7 +1938,7 @@ async function initializeDB() {
           medal: {
             bsonType: "string",
             enum: ["Bronze", "Silver", "Gold"],
-            description: "Type of medal obtained (Bronze, Silver, Gold)",
+            description: "Type of medal obtained (Bronze, Silver, Gold)", // Award medal based on points
           },
           points: { bsonType: "int", description: "Points obtained" },
           date: { bsonType: "date", description: "Reward date" },
@@ -1953,7 +1953,7 @@ async function initializeDB() {
       _id: 1,
       user_username: "andre89",
       course_id: 1,
-      medal: "Gold", // Assegna il medaglia in base ai punti
+      medal: "Gold",
       points: 150,
       date: new Date(),
     },
@@ -2277,52 +2277,10 @@ async function initializeDB() {
     console.error("Error inserting shop items:", error);
   }
 
-  // Collection: Streaks
-  await db.createCollection("streaks", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["_id", "user_username", "streak", "lastLoginDate"],
-        properties: {
-          _id: { bsonType: "int", description: "Unique ID of the streak" },
-          user_username: { bsonType: "string", description: "Username" },
-          streak: { bsonType: "int", description: "Current streak count" },
-          lastLoginDate: { bsonType: "string", description: "Last login date" },
-        },
-      },
-    },
-  });
-
-  try {
-    // Insert real data into the 'streaks' collection
-    await db.collection("streaks").insertMany([
-      {
-        _id: 1,
-        user_username: "andre89",
-        streak: 5,
-        lastLoginDate: new Date().toISOString().split("T")[0],
-      },
-      {
-        _id: 2,
-        user_username: "mariaB",
-        streak: 10,
-        lastLoginDate: new Date().toISOString().split("T")[0],
-      },
-      {
-        _id: 3,
-        user_username: "luigiR99",
-        streak: 3,
-        lastLoginDate: new Date().toISOString().split("T")[0],
-      },
-    ]);
-    console.log("Streaks inserted successfully");
-  } catch (error) {
-    console.error("Error inserting streaks:", error);
-  }
-
   console.log("Database initialized");
   process.exit();
 }
+// Clear the database before initializing it
 async function main() {
   await clearDB();
   await initializeDB();

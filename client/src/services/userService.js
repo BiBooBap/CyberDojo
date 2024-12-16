@@ -1,4 +1,5 @@
 const userService = {
+  // Fetches the user points from the backend
     getUserPoints: async () => {
         const token = localStorage.getItem("token");
       try {
@@ -20,5 +21,5 @@ const userService = {
       }
     },
   };
-  
-  export default userService;
+
+export default userService;

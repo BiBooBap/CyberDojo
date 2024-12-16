@@ -1,5 +1,6 @@
 import React from "react";
 
+// SupportVisitorPage component
 function SupportVisitorPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-[#ffffff] p-4">

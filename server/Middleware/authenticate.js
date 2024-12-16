@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const secretKey = "sigmasigmaonthewall";
 
+// Middleware to verify token validity
 const authenticate = (req, res, next) => {
   const authHeader = req.header("Authorization");
 

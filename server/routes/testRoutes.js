@@ -4,10 +4,10 @@ const authenticate = require("../Middleware/authenticate");
 
 const router = express.Router();
 
-// Rotta per recuperare tutti i test associati a un corso
+// Route to retrieve all tests associated with a course
 router.get("/course/:courseId", TestController.getTestsForCourse);
 
-// Rotta per valutare un test
+// Route to evaluate a test
 router.post("/evaluate/:testId", authenticate, TestController.evaluateTest);
 
 module.exports = router;

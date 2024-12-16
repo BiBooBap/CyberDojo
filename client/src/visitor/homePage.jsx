@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import courseFacade from "../services/courseFacade";
 import { jwtDecode } from "jwt-decode";
 
+// Home page component
 const HomePage = ({ user }) => {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
 
+  // Function to check if the token is valid
   const isTokenValid = (token) => {
     if (!token) {
       return false;
@@ -22,16 +24,17 @@ const HomePage = ({ user }) => {
       return false;
     }
   };
-  
+
+  // Fetch courses from the API
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         let data = null;
         if (!isTokenValid(token)) {
-          // Utente non autenticato
+          // Unauthenticated user
           data = await courseFacade.getAllCoursesGuest();
         } else {
-          // Utente autenticato
+          // Authenticated user
           data = await courseFacade.getAllCoursesUser();
         }
         setCourses(data);
@@ -43,6 +46,7 @@ const HomePage = ({ user }) => {
     fetchCourses();
   }, [token]);
 
+  // Filter courses by difficulty
   const introductionCourses = courses.filter(
     (course) => course.difficulty === "Facile"
   );
@@ -53,6 +57,7 @@ const HomePage = ({ user }) => {
     (course) => course.difficulty === "Difficile"
   );
 
+  // Function to handle the button click
   const handleButtonClick = async (course, event) => {
     if (!user) {
       alert("È necessario registrarsi per iscriversi ai corsi.");
@@ -70,7 +75,7 @@ const HomePage = ({ user }) => {
           await courseFacade.enrollCourse(course._id);
           button.textContent = "Riprendi";
           alert("Iscrizione avvenuta con successo!");
-          window.location.reload();
+          window.location.href = "/coursePage/?corso=" + course._id;
         } catch (error) {
           console.error("Errore durante l'iscrizione al corso:", error);
           button.textContent = originalText;
@@ -87,6 +92,7 @@ const HomePage = ({ user }) => {
     user ? user.enrolled_courses : "No user"
   );
 
+  // Check if the user is enrolled in a course
   return (
     <div className="px-8 py-4">
       <h1 className="font-Montserrat font-bold text-center text-xl mb-6 mt-6">
@@ -103,7 +109,7 @@ const HomePage = ({ user }) => {
                 !user ? "group hover:[transform:rotateY(180deg)]" : ""
               }`}
             >
-              {/* Fronte della card */}
+              {/* Front of the card */}
               <div className="absolute inset-0 rounded-lg [backface-visibility:hidden] flex flex-col justify-between items-center p-6">
                 <div>
                   <img
@@ -131,7 +137,7 @@ const HomePage = ({ user }) => {
                     : "Iscriviti"}
                 </button>
               </div>
-              {/* Retro della card con la descrizione del corso */}
+              {/* Back of the card with the course description */}
               <div className="card-body absolute inset-0 h-full w-full rounded-lg px-6 py-4 text-center [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
                 <p className="text-black">{course.description}</p>
               </div>
@@ -153,7 +159,7 @@ const HomePage = ({ user }) => {
                 !user ? "group hover:[transform:rotateY(180deg)]" : ""
               }`}
             >
-              {/* Front card */}
+              {/* Front of the card */}
               <div className="absolute inset-0 rounded-lg [backface-visibility:hidden] flex flex-col justify-between items-center p-6">
                 <div>
                   <img
@@ -181,7 +187,7 @@ const HomePage = ({ user }) => {
                     : "Iscriviti"}
                 </button>
               </div>
-              {/* Retro della card con la descrizione del corso */}
+              {/* Back of the card with the course description */}
               <div className="card-body absolute inset-0 h-full w-full rounded-lg px-6 py-4 text-center [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
                 <p className="text-black">{course.description}</p>
               </div>
@@ -203,7 +209,7 @@ const HomePage = ({ user }) => {
                 !user ? "group hover:[transform:rotateY(180deg)]" : ""
               }`}
             >
-              {/*Front Card*/}
+              {/*Front of the Card*/}
               <div className="absolute inset-0 rounded-lg [backface-visibility:hidden] flex flex-col justify-between items-center p-6">
                 <div>
                   <img
@@ -231,7 +237,7 @@ const HomePage = ({ user }) => {
                     : "Iscriviti"}
                 </button>
               </div>
-              {/* Retro della card con la descrizione del corso */}
+              {/* Back of the card with the course description */}
               <div className="card-body absolute inset-0 h-full w-full rounded-lg px-6 py-4 text-center [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
                 <p className="text-black">{course.description}</p>
               </div>
@@ -253,7 +259,7 @@ const HomePage = ({ user }) => {
                 !user ? "group hover:[transform:rotateY(180deg)]" : ""
               }`}
             >
-              {/* Fronte della card */}
+              {/* Front of the card */}
               <div className="absolute inset-0 rounded-lg [backface-visibility:hidden] flex flex-col justify-between items-center p-6">
                 <div>
                   <img
@@ -281,7 +287,7 @@ const HomePage = ({ user }) => {
                     : "Iscriviti"}
                 </button>
               </div>
-              {/* Retro della card con la descrizione del corso */}
+              {/* Back of the card with the course description */}
               <div className="card-body absolute inset-0 h-full w-full rounded-lg px-6 py-4 text-center [transform:rotateY(180deg)] [backface-visibility:hidden] flex items-center justify-center">
                 <p className="text-black">{course.description}</p>
               </div>
