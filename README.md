@@ -1,4 +1,4 @@
-#CyberDojo
+# CyberDojo
 
 This project was created with the goal of introducing young people to the world of computer science in a fun and engaging way. By using gamification techniques, virtual rewards, and interactive learning paths, the application sparks interest in digital skills while fostering a more conscious understanding of the fundamentals of computer science. Through challenges, levels, and rewards, young learners can experiment, learn, and grow as active and creative users of technology.
 
