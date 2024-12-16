@@ -10,7 +10,7 @@ const QuizPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [score, setScore] = useState(null);
-  const [feedback] = useState(null);
+  const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showResultPopup, setShowResultPopup] = useState(false);
@@ -90,7 +90,7 @@ const QuizPage = () => {
         {currentTest.title}
       </h1>
       
-      {/* Indicatori delle Domande */}
+      {/* Question Indicators */}
       <div className="flex justify-center mb-4">
         {questions.map((_, index) => (
           <div
@@ -102,7 +102,7 @@ const QuizPage = () => {
         ))}
       </div>
 
-      {/* Sezione della Domanda Corrente */}
+      {/* Current Question Section */}
       <div className="question-section mb-6">
         <h3 className="text-black text-center font-semibold mb-4">
           {currentQuestion.question}
@@ -120,7 +120,7 @@ const QuizPage = () => {
         ))}
       </div>
 
-      {/* Navigazione tra le Domande */}
+      {/* Navigation between questions */}
       <div className="flex justify-between">
         <button
           onClick={handlePrev}
@@ -160,11 +160,11 @@ const QuizPage = () => {
         )}
       </div>
 
-      {/* Sezione dei Risultati */}
+      {/* Results Section */}
       {showResultPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg w-11/12 md:w-1/2 relative">
-            {/* Pulsante X per chiudere il popup */}
+            {/* X button to close the popup */}
             <button
               onClick={() => setShowResultPopup(false)}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-xl font-bold"
@@ -185,15 +185,6 @@ const QuizPage = () => {
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {score !== null && (
-        <div className="result-section mt-6 p-4 bg-gray-100 rounded">
-          <h2 className="text-black text-center text-xl font-semibold">
-            Risultato: {score}
-          </h2>
-          <p className="text-center">{feedback}</p>
         </div>
       )}
     </div>

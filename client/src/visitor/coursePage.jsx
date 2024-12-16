@@ -65,11 +65,16 @@ function CoursePage() {
     }
   };
 
+  const handleFinalQuiz = () => {
+      window.location.href = `/quiz/${course.id}`;
+  };
+  
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow p-8 bg-white">
         <div className="max-w-5xl mx-auto">
-          {/* Sezione Titolo Corso */}
+          {/* Course title*/}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
               <img src={course.icon} alt="Course Icon" className="w-32 h-32" />
@@ -92,6 +97,7 @@ function CoursePage() {
           <button
             className="bg-yellow-500 text-white py-3 px-6 rounded-lg mb-8 flex items-center space-x-2"
             disabled={course.progress !== 100}
+            onClick={course.progress === 100 ? handleFinalQuiz : undefined}
           >
             <span className="font-bold">Quiz Finale</span>
             {course.progress === 100 ? (
@@ -105,13 +111,15 @@ function CoursePage() {
             )}
           </button>
 
-          {/* Card delle Lezioni */}
+          {/* Lesson Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {course.lessons.map((lesson, index) => (
               <div
                 key={index}
-                className="bg-yellow-400 p-6 rounded-lg shadow-md flex items-start space-x-4 cursor-pointer"
-                onClick={() => handleLessonClick(lesson)} // Gestore di clic
+                className={`bg-yellow-400 p-6 rounded-lg shadow-md flex items-start space-x-4 ${
+                  lesson.completed ? 'cursor-pointer' : 'cursor-default opacity-50'
+                }`}
+                onClick={lesson.completed ? () => handleLessonClick(lesson) : undefined}
               >
                 <div>
                   <h2 className="text-2xl font-bold mb-2">{lesson.name}</h2>
@@ -133,7 +141,7 @@ function CoursePage() {
       {selectedLesson && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg w-11/12 md:w-1/2 relative">
-            {/* Pulsante X per chiudere il modal */}
+            {/* Close button for the modal */}
             <button
               onClick={closeModal}
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-xl font-bold"
@@ -144,42 +152,48 @@ function CoursePage() {
             <h2 className="text-2xl font-bold mb-4">{selectedLesson.name}</h2>
             <p>{selectedLesson.description}</p>
             <div className="flex justify-end mt-4">
-              {/* Pulsanti Lezione Precedente e Prossima Lezione */}
-              <button
-                onClick={handlePreviousLesson}
-                className={`bg-blue-500 text-white px-4 py-2 rounded mr-2 ${
-                  course.lessons.findIndex(
-                    (lesson) => lesson.id === selectedLesson.id
-                  ) === 0
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                disabled={
-                  course.lessons.findIndex(
-                    (lesson) => lesson.id === selectedLesson.id
-                  ) === 0
-                }
-              >
-                Lezione Precedente
-              </button>
-              <button
-                onClick={handleNextLesson}
-                className={`bg-blue-500 text-white px-4 py-2 rounded mr-2 ${
-                  course.lessons.findIndex(
-                    (lesson) => lesson.id === selectedLesson.id
-                  ) === course.lessons.length - 1
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                disabled={
-                  course.lessons.findIndex(
-                    (lesson) => lesson.id === selectedLesson.id
-                  ) === course.lessons.length - 1
-                }
-              >
-                Prossima Lezione
-              </button>
-              {/* Pulsante per andare al Quiz */}
+              {/* Previous and Next Lesson Buttons */}
+              {course.lessons.findIndex(
+                (lesson) => lesson.id === selectedLesson.id
+              ) !== course.lessons.length - 1 && (
+                <>
+                  <button
+                    onClick={handlePreviousLesson}
+                    className={`bg-blue-500 text-white px-4 py-2 rounded mr-2 ${
+                      course.lessons.findIndex(
+                        (lesson) => lesson.id === selectedLesson.id
+                      ) === 0
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      course.lessons.findIndex(
+                        (lesson) => lesson.id === selectedLesson.id
+                      ) === 0
+                    }
+                  >
+                    Lezione Precedente
+                  </button>
+                  <button
+                    onClick={handleNextLesson}
+                    className={`bg-blue-500 text-white px-4 py-2 rounded mr-2 ${
+                      course.lessons.findIndex(
+                        (lesson) => lesson.id === selectedLesson.id
+                      ) === course.lessons.length - 1
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      course.lessons.findIndex(
+                        (lesson) => lesson.id === selectedLesson.id
+                      ) === course.lessons.length - 1
+                    }
+                  >
+                    Prossima Lezione
+                  </button>
+                  {/*Quiz Button */}
+                </>
+              )}
               {course.lessons.findIndex(
                 (lesson) => lesson.id === selectedLesson.id
               ) === course.lessons.length - 1 && (

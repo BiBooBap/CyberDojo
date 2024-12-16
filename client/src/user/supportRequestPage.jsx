@@ -84,12 +84,12 @@ function SupportRequest() {
                 required
               />
               <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Messaggio"
-              className="w-full p-2 mb-4 rounded-2xl text-gray-700"
-              required
-            />
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Messaggio"
+                className="w-full p-2 mb-4 rounded-2xl text-gray-700"
+                required
+              />
             </div>
             <button
               type="submit"
@@ -109,7 +109,7 @@ function SupportRequest() {
             <p className="text-center">Non hai inviato nessuna richiesta.</p>
           ) : (
             <ul className="space-y-4">
-              {userTickets.map((ticket) => (
+              {[...userTickets].reverse().map((ticket) => (
                 <li
                   key={ticket._id}
                   className="border rounded-lg p-4 shadow-md bg-gray-50"
