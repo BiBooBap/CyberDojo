@@ -111,43 +111,31 @@ This project was created with the goal of introducing young people to the world 
 
 ## Project Structure
 
-Cyberdojo/ #main folder
-|--.github
-|--client #client folder
-|-------Cypress
-|-------Public
-|-------src
-|-------.gitignore
-|--------cypress.config.js
-|--------package-lock.json
-|--------package.json
-|--------postcss.config.js
-|--------tailwind.config.js
-|--database #database folder
-|--------db.js
-|--------initializeDB.js
-|--------package-lock.json
-|--------package.json
-|--------seed.js
-|--server #server folder
-|--------Autenticazione
-|--------Corsi
-|--------Middleware
-|--------Premi
-|--------Registrazione
-|--------routes
-|--------Segnalazioni
-|--------Shop
-|--------Test
-|--------.gitignore
-|--------index.js
-|--------package-lock.json
-|--------package.json
-|--------README_backend.md
-|--------server.js
-|-LICENSE
-|-README.md
-|-requirment.txt #project dependecies
+├── Cyberdojo [main folder]<br>
+&emsp;&emsp;├── .github<br>
+&emsp;&emsp;├── client<br>
+&emsp;&emsp;│&emsp;&emsp;├── Cypress<br>
+&emsp;&emsp;│&emsp;&emsp;├── Public<br>
+&emsp;&emsp;│&emsp;&emsp;└── src<br>
+&emsp;&emsp;├── database<br>
+&emsp;&emsp;│&emsp;&emsp;├── initializeDB.js<br>
+&emsp;&emsp;│&emsp;&emsp;├── seed.js<br>
+&emsp;&emsp;│&emsp;&emsp;└── db.js<br>
+&emsp;&emsp;├── server<br>
+&emsp;&emsp;│&emsp;&emsp;├── Autenticazione<br>
+&emsp;&emsp;│&emsp;&emsp;├── Corsi<br>
+&emsp;&emsp;│&emsp;&emsp;├── Middleware<br>
+&emsp;&emsp;│&emsp;&emsp;├── Premi<br>
+&emsp;&emsp;│&emsp;&emsp;├── Registrazione<br>
+&emsp;&emsp;│&emsp;&emsp;├── routes<br>
+&emsp;&emsp;│&emsp;&emsp;├── Segnalazioni<br>
+&emsp;&emsp;│&emsp;&emsp;├── Shop<br>
+&emsp;&emsp;│&emsp;&emsp;├── Test<br>
+&emsp;&emsp;│&emsp;&emsp;├── index.js<br>
+&emsp;&emsp;│&emsp;&emsp;└── server.js<br>
+&emsp;&emsp;├── LICENSE<br>
+&emsp;&emsp;├── README.md<br>
+&emsp;&emsp;└── requirment.txt<br>
 
 ## Testing
 
