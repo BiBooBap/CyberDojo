@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const uri = "mongodb://localhost:27017"; // Modifica con il tuo URI
+const uri = "mongodb://localhost:27017"; // Edit with your URI
 const dbName = "CyberDojo";
 
 async function connect() {

@@ -1,4 +1,5 @@
 const ChangeCredentialsService = {
+    // Function to send a request to the server to get the user's information
     getUserInfo: async () => {
         try {
             const token = localStorage.getItem('token');
@@ -21,6 +22,7 @@ const ChangeCredentialsService = {
         }
     },
 
+    // Function to send a request to the server to update the user's information
     sendNewCredentials: async (formData) => {
         try {
           const token = localStorage.getItem('token');
@@ -44,16 +46,17 @@ const ChangeCredentialsService = {
           // If a new token is present, update the localStorage
           if (data.token) {
             localStorage.setItem('token', data.token);
-         }
+          }
 
-         return data;
+        return data;
 
         } catch (error) {
-          console.error("Errore durante l'aggiornamento delle credenziali:", error);
-          throw error;
+            console.error("Errore durante l'aggiornamento delle credenziali:", error);
+            throw error;
         }
     },
 
+    // Function to send a request to the server to control the user's password
     verifyPassword: async (currentPassword) => {
         try {
             const token = localStorage.getItem('token');
@@ -79,6 +82,30 @@ const ChangeCredentialsService = {
         }
     },
 
+    // Function to send a request to the server to delete the user's account
+    deleteAccount: async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:3001/auth/delete-user', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Errore durante l\'eliminazione dell\'account.');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Errore durante l\'eliminazione dell\'account:', error);
+            throw error;
+        }
+    }
 };
 
     export default ChangeCredentialsService;

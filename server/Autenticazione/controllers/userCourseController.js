@@ -4,6 +4,7 @@ const authenticate = require("../../Middleware/authenticate");
 
 const router = express.Router();
 
+// Get the courses followed by the user
 router.get("/", authenticate, async (req, res) => {
   const { username } = req.user;
 

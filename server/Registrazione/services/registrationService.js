@@ -3,6 +3,7 @@ const RegistrationDao = require("../dao/registrationDao");
 const ExternalAuthService = require("../../Autenticazione/externalAuthService");
 
 class RegistrationService {
+  // Method for registering a new user
   static async registerUser(email, username, password) {
     const emailExists = await ExternalAuthService.checkEmailExists(email);
     const usernameExists = await ExternalAuthService.checkUsernameExists(username);
@@ -15,6 +16,7 @@ class RegistrationService {
       throw new Error("Email già registrata");
     }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
       email,

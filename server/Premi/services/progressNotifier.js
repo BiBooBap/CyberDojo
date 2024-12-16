@@ -14,7 +14,7 @@ class ProgressNotifier {
   
   class ProgressObserver {
     update(event, data) {
-      console.log(`Event: ${event}`, data); // Personalizza l'azione, ad esempio aggiornare una dashboard
+      console.log(`Event: ${event}`, data);
     }
   }
   

@@ -1,3 +1,4 @@
+// Import necessary components and utilities
 import {
   BrowserRouter as Router,
   Route,
@@ -12,7 +13,7 @@ import Login from "./loginPage.jsx";
 import HomePage from "./visitor/homePage.jsx";
 import NegozioPunti from "./user/shop.jsx";
 import AreaUtente from "./user/userPage.jsx";
-import QuizApp from "./user/quiz.jsx";
+import QuizPage from "./user/quiz.jsx";
 import CoursePage from "./visitor/coursePage.jsx";
 import SupportRequest from "./user/supportRequestPage.jsx";
 import AdminRoutes from "./admin/AdminRoutes.jsx";
@@ -20,10 +21,15 @@ import VisitorRoute from "./utils/VisitorRoute.js";
 import ProtectedRoute from "./utils/ProtectedRoute.js";
 import { getUserRole, getPayload } from "./utils/auth";
 import NotAdminRoute from "./utils/NotAdminRoute.js";
+import SupportVisitorPage from "./visitor/supportVisitorPage.jsx";
+import Privacy from "./privacy.jsx";
+import TerminiECondizioni from "./termAndCondition.jsx";
 
+// Retrieve the user's role and payload from authentication utilities
 function App() {
   const userRole = getUserRole();
   const currentUser = getPayload();
+
 
   return (
     <Router>
@@ -40,6 +46,34 @@ function App() {
                 </NotAdminRoute>
               }
             />
+
+            <Route
+              path="/privacy"
+              element={
+                <NotAdminRoute>
+                  <Privacy />
+                </NotAdminRoute>
+              }
+            />
+
+            <Route
+              path="/supporto"
+              element={
+                <VisitorRoute>
+                  <SupportVisitorPage />
+                </VisitorRoute>
+              }
+            />
+
+            <Route
+              path="/termAndCondition"
+              element={
+                <NotAdminRoute>
+                  <TerminiECondizioni />
+                </NotAdminRoute>
+              }
+            />
+
             {/* ^ Landing page ^ */}
             <Route
               path="/SignUpPage"
@@ -86,7 +120,15 @@ function App() {
               path="/quiz"
               element={
                 <ProtectedRoute requiredRole="user">
-                  <QuizApp />
+                  <QuizPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/quiz/:courseId"
+              element={
+                <ProtectedRoute requiredRole="user">
+                  <QuizPage />
                 </ProtectedRoute>
               }
             />

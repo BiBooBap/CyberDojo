@@ -4,20 +4,26 @@ const authenticate = require("../Middleware/authenticate");
 
 const router = express.Router();
 
-// Rotta per ottenere la lista degli oggetti disponibili
+// Route to get the list of available objects
 router.get("/items", ShopController.listItems);
 
-// Rotta per acquistare un oggetto
+// Route to purchase an item
 router.post("/purchase", authenticate, ShopController.purchaseItem);
 
-// Rotta per ottenere l'inventario di un utente
+// Route to get a user's inventory
 router.get("/inventory", authenticate, ShopController.getInventory);
 
-// Rotta per verificare se un item è nell'inventario
+// Route to check if an item is in the inventory
 router.get(
   "/isItemInInventory",
   authenticate,
   ShopController.isItemInInventory
 );
+
+// Route to get the user's profile
+router.get("/profile", authenticate, ShopController.getUserProfile);
+
+// Route to update the user's profile
+router.post("/profile", authenticate, ShopController.updateUserProfile);
 
 module.exports = router;

@@ -1,9 +1,22 @@
 const UserProgressFacade = require("../facades/userProgressFacade");
 
 class UserProgressController {
+
+  // Method for obtaining a user's points
+  static async getPoints(req, res) {
+    const username = req.user.username;
+    try {
+      const points = await UserProgressFacade.getPoints(username);
+      res.json({ points });
+    } catch (error) {
+      console.error("Errore nel recupero dei punti:", error);
+      res.status(500).json({ message: "Errore interno del server" });
+    }
+  }
+
+  // Method for obtaining a user's progress
   static async getProgress(req, res) {
     const username = req.user.username;
-    console.log("Recupero dei progressi per l'utente:", username); // Log del nome utente
     try {
       const progress = await UserProgressFacade.getProgress(username);
       if (!progress.length) {
@@ -16,6 +29,7 @@ class UserProgressController {
     }
   }
 
+  // Method for adding a user's progress
   static async addProgress(req, res) {
     const { corso_id, descrizione, punti } = req.body;
     const utente_username = req.user.username;
@@ -34,6 +48,7 @@ class UserProgressController {
     }
   }
 
+  // Method for updating a user's progress
   static async updateProgress(req, res) {
     const { id, updateFields } = req.body;
     try {
@@ -47,6 +62,7 @@ class UserProgressController {
     }
   }
 
+  // Method for deleting a user's progress
   static async deleteProgress(req, res) {
     const { id } = req.body;
     try {

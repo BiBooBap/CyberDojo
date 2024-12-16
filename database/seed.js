@@ -1,4 +1,4 @@
-//caricamente istanze DB
+//Load DB instances
 
 const { initializeDB } = require('./initializeDB');
 

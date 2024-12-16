@@ -1,24 +1,19 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AdminSidebar from "./layout/adminSidebar.jsx";
 import AdminTicketDashboard from "./adminTicketDashboard.jsx";
 import AdminTicketDetail from "./adminTicketDetail.jsx";
 
+// AdminRoutes component
 function AdminRoutes() {
   return (
     <div className="admin-layout flex">
-      <AdminSidebar />
       <div className="admin-content flex-grow">
         <Routes>
           <Route
-            path="admin/adminTicketDashboard"
+            path="adminTicketDashboard"
             element={<AdminTicketDashboard />}
           />
-          <Route
-            path="admin/adminTicketDetail"
-            element={<AdminTicketDetail />}
-          />
-          {/* Altre route admin */}
+          <Route path="adminTicketDetail/:id" element={<AdminTicketDetail />} />
         </Routes>
       </div>
     </div>

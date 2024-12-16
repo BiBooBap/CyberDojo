@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import LoginFacade from "./services/loginFacade";
 
+// Component for the login page
 const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [notification, setNotification] = useState("");
 
+  // Function to handle the login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailRegex =
@@ -23,11 +25,11 @@ const Login = () => {
         setNotification("Login avvenuto con successo!");
         localStorage.setItem("token", response.token);
 
-        // Decodifica il token per ottenere il ruolo dell'utente
+        // Decode the token to get the user's role
         const payload = JSON.parse(atob(response.token.split(".")[1]));
         const role = payload.role;
 
-        // Reindirizza in base al ruolo
+        // Redirect based on role
         if (role === "admin") {
           window.location.href = "/admin/adminTicketDashboard";
         } else {
@@ -42,6 +44,7 @@ const Login = () => {
     }
   };
 
+  // Return the login form
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="card-body py-8 px-6 bg-white rounded shadow-md">

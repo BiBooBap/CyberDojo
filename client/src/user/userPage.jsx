@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import ChangeCredentialsFacade from "../services/changecredentialsFacade";
 import ProgressFacade from "../services/progressFacade";
 import RewardItem from "../utils/RewardItem";
+import ShopFacade from "../services/shopFacade";
+import courseFacade from "../services/courseFacade";
 import "../index.css";
 
+// Component for the user page
 const AreaUtente = () => {
   const [selectedSection, setSelectedSection] = useState("Gestione Account");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +35,15 @@ const AreaUtente = () => {
   const [rewards, setRewards] = useState([]);
   const [error, setError] = useState(null);
 
+  // State for user courses
+  const [userCourses, setUserCourses] = useState([]);
+
+  // State for inventory
+  const [inventory, setInventory] = useState({ avatar: [], border: [], title: [] });
+
+  // State for user profile
+  const [userProfile, setUserProfile] = useState({ avatar: "", border: "", user_title: "" });
+
   // Function to verify the password
   const handleVerifyPassword = async (e) => {
     e.preventDefault();
@@ -45,17 +57,27 @@ const AreaUtente = () => {
     }
   };
 
+
+
   // Function to fetch user information
   const fetchUserInfo = async () => {
     try {
       const userInfo = await ChangeCredentialsFacade.getUserInfo();
       setNewUsername(userInfo.username);
       setNewEmail(userInfo.email);
+      setUserProfile({
+        avatar: userInfo.avatar,
+        border: userInfo.border,
+        user_title: userInfo.user_title,
+      });
     } catch (error) {
       console.error("Errore durante il recupero delle informazioni utente:", error);
       alert("Errore nel recupero delle informazioni utente.");
     }
   };
+      // Log userProfile values
+      useEffect(() => {
+      }, [userProfile]);
 
   // Function to check if the user is authenticated
   const isUserLoggedIn = () => {
@@ -70,12 +92,16 @@ const AreaUtente = () => {
     }
   }, [navigate]);
 
+  //Loading user information
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
   // Fetch rewards when "Sezione Premi" is selected
   useEffect(() => {
     const fetchRewards = async () => {
       try {
         const data = await ProgressFacade.getProgress();
-        console.log("Dati recuperati:", data);
         setRewards(data);
       } catch (error) {
         console.error("Errore nel recupero dei premi:", error);
@@ -85,6 +111,44 @@ const AreaUtente = () => {
 
     if (selectedSection === "Sezione Premi") {
       fetchRewards();
+    }
+  }, [selectedSection]);
+
+  // Fetch invetory when "Inventario" is selected
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const userInventory = await ShopFacade.getUserInventory();
+        const organizedInventory = { avatar: [], border: [], title: [] };
+        userInventory.items.forEach(item => {
+          if (item.type === "avatar") organizedInventory.avatar.push(item);
+          else if (item.type === "border") organizedInventory.border.push(item);
+          else if (item.type === "title") organizedInventory.title.push(item);
+        });
+        setInventory(organizedInventory);
+      } catch (error) {
+        console.error("Errore nel recupero dell'inventario:", error);
+      }
+    };
+
+    if (selectedSection === "Inventario") {
+      fetchInventory();
+    }
+  }, [selectedSection]);
+
+  // Fetch user courses when "Corsi seguiti" is selected
+  useEffect(() => {
+    const fetchUserCourses = async () => {
+      try {
+        const courses = await courseFacade.getEnrolledCourses();
+        setUserCourses(courses);
+      } catch (error) {
+        console.error("Errore nel recupero dei corsi seguiti:", error);
+      }
+    };
+
+    if (selectedSection === "Corsi seguiti") {
+      fetchUserCourses();
     }
   }, [selectedSection]);
 
@@ -109,7 +173,7 @@ const AreaUtente = () => {
     }
 
     // RegEx for password (only if it is being changed)
-    if (newPassword) { 
+    if (newPassword) {
       const passwordRegex = /^(?=.*[A-ZÀ-Ù])(?=.*[a-zà-ù])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/;
       if (newPassword.length < 8) {
         newErrors.password = "La password deve avere almeno 8 caratteri.";
@@ -176,215 +240,316 @@ const AreaUtente = () => {
 
   // Function to handle account deletion
   const handleDeleteAccount = async () => {
-    if (window.confirm("Sei sicuro di voler eliminare il tuo account?")) {
+    if (window.confirm("Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.")) {
       try {
-        await ChangeCredentialsFacade.deleteAccount(); // Assicurati di implementare questa funzione nel facade
+        const response = await ChangeCredentialsFacade.deleteAccount();
+
         alert("Account eliminato con successo.");
-        navigate("/signupPage"); // Reindirizza dopo l'eliminazione
+        // Remove the token and redirect the user
+        localStorage.removeItem("token");
+        window.location.href = "/accessPage";
+
       } catch (error) {
         console.error("Errore durante l'eliminazione dell'account:", error);
         alert("Errore durante l'eliminazione dell'account.");
       }
+    } else {
+      return;
+    }
+  };
+
+  const handleSelectItem = async (type, imagePath) => {
+    try {
+      await ShopFacade.updateUserProfile(type, imagePath );
+      fetchUserInfo();
+      alert("Profilo aggiornato con successo!");
+    } catch (error) {
+      console.error("Errore durante l'aggiornamento del profilo:", error);
+      alert("Errore durante l'aggiornamento del profilo.");
     }
   };
 
   const renderForm = () => {
-    if (selectedSection === "Modifica credenziali") {
-      if (!isPasswordVerified) {
-        return (
-          <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-            <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-              Verifica Password
-            </h1>
-            <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
-              <p className="mb-1 text-white font-bold text-sm">Password Attuale</p>
-              <input
-                type="password"
-                placeholder="Password attuale"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-                required
-              />
-              {verificationError && (
-                <span className="text-black text-sm mb-2">{verificationError}</span>
-              )}
-              <button type="submit" className="button-CD py-2 px-8 text-xl">
-                Verifica
-              </button>
-            </form>
+    if (selectedSection === "Inventario") {
+      return (
+        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+          <h1 className="text-[#f7d1cd] font-bold text-3xl text-center mb-4">
+            {selectedSection}
+          </h1>
+      
+          {/* Section Avatars */}
+          <div className="inventory-section mb-6">
+            <h2 className="text-white font-bold text-2xl text-center mb-4">Avatars</h2>
+            {inventory.avatar.length > 0 ? (
+              <div className="flex flex-wrap justify-start gap-6">
+                {inventory.avatar.map((item, index) => (
+                  <div
+                    key={index}
+                    className="inventory-item flex flex-col items-center bg-white border-2 border-[#f7d1cd] rounded-lg p-4 shadow-lg w-48 h-64"
+                  >
+                    <img
+                      src={item.image_path}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-full mb-3"
+                    />
+                    <p className="font-bold text-[#54295c] mb-1">{item.name}</p>
+                    <p className="text-sm mb-2 text-center text-gray-700">{item.description}</p>
+                    <button
+                      className="bg-[#f7d1cd] text-[#54295c] py-1 px-4 rounded hover:bg-[#e0a11b] transition-all"
+                      onClick={() => handleSelectItem('avatar', item.image_path)}
+                    >
+                      Seleziona
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-white text-center">Nessun avatar disponibile</p>
+            )}
           </div>
-        );
-      }
-
-      return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            Modifica Credenziali
-          </h1>
-          <form className="flex flex-col items-center" onSubmit={handleUpdateCredentials}>
-            {/* New Username */}
-            <p className="mb-1 text-white font-bold text-sm">Nuovo Username</p>
-            <input
-              type="text"
-              placeholder="Nuovo Username"
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-              className={`rounded-2xl w-full md:w-72 h-8 pl-2 login-input mb-2 ${
-                errors.username ? "border-red-500" : ""
-              }`}
-              style={{ color: "black" }}
-              required
-            />
-            {errors.username && (
-              <span className="text-black text-sm mb-2">{errors.username}</span>
+      
+          {/* Section Borders */}
+          <div className="inventory-section mb-6">
+            <h2 className="text-white font-bold text-2xl text-center mb-4">Bordi</h2>
+            {inventory.border.length > 0 ? (
+              <div className="flex flex-wrap justify-start gap-6">
+                {inventory.border.map((item, index) => (
+                  <div
+                    key={index}
+                    className="inventory-item flex flex-col items-center bg-white border-2 border-[#f7d1cd] rounded-lg p-4 shadow-lg w-48 h-64"
+                  >
+                    <img
+                      src={item.image_path}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-full mb-3"
+                    />
+                    <p className="font-bold text-[#54295c] mb-1">{item.name}</p>
+                    <p className="text-sm mb-2 text-center text-gray-700">{item.description}</p>
+                    <button
+                      className="bg-[#f7d1cd] text-[#54295c] py-1 px-4 rounded hover:bg-[#e0a11b] transition-all"
+                      onClick={() => handleSelectItem('border', item.image_path)}
+                    >
+                      Seleziona
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-white text-center">Nessun bordo disponibile</p>
             )}
-
-            {/* New Email */}
-            <p className="mb-1 text-white font-bold text-sm">Nuova Email</p>
-            <input
-              type="email"
-              placeholder="Nuova Email"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-              className={`rounded-2xl w-full md:w-72 h-8 pl-2 login-input mb-2 ${
-                errors.email ? "border-red-500" : ""
-              }`}
-              style={{ color: "black" }}
-              required
-            />
-            {errors.email && (
-              <span className="text-black text-sm mb-2">{errors.email}</span>
+          </div>
+      
+          {/* Section Titles */}
+          <div className="inventory-section mb-6">
+            <h2 className="text-white font-bold text-2xl text-center mb-4">Titoli</h2>
+            {inventory.title.length > 0 ? (
+              <div className="flex flex-wrap justify-start gap-6">
+                {inventory.title.map((item, index) => (
+                  <div
+                    key={index}
+                    className="inventory-item flex flex-col items-center bg-white border-2 border-[#f7d1cd] rounded-lg p-4 shadow-lg w-48 h-64"
+                  >
+                    <img
+                      src={item.image_path}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-full mb-3"
+                    />
+                    <p className="font-bold text-[#54295c] mb-1">{item.name}</p>
+                    <p className="text-sm mb-2 text-center text-gray-700">{item.description}</p>
+                    <button
+                      className="bg-[#f7d1cd] text-[#54295c] py-1 px-4 rounded hover:bg-[#e0a11b] transition-all"
+                      onClick={() => handleSelectItem('user_title', item.image_path)}
+                    >
+                      Seleziona
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-white text-center">Nessun titolo disponibile</p>
             )}
-
-            {/* New Password */}
-            <p className="mb-1 text-white font-bold text-sm">Nuova Password (opzionale)</p>
-            <input
-              type="password"
-              placeholder="Nuova Password (opzionale)"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={`rounded-2xl w-full md:w-72 h-8 pl-2 login-input mb-2 ${
-                errors.password ? "border-red-500" : ""
-              }`}
-              style={{ color: "black" }}
-            />
-            {errors.password && (
-              <span className="text-black text-sm mb-2">{errors.password}</span>
-            )}
-
-            <button type="submit" className="button-CD py-2 px-8 text-xl">
-              Aggiorna
-            </button>
-          </form>
+          </div>
         </div>
       );
     }
-
-    else if (selectedSection === "Modifica avatar") {
+    {/* Section for adding a prize*/}
+    if (selectedSection === "Gestione Account") {
       return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            {selectedSection}
-          </h1>
-          <form className="flex flex-col items-center" onSubmit={handleAvatarSubmit}>
-            <p className="mb-1 text-white font-bold text-sm">Nome Campo 1</p>
-            <input
-              type="text"
-              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-              placeholder="Palceholder 1"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className="button-CD py-2 px-8 mt-3 ml-3 text-xl"
-            >
-              Aggiorna Avatar
-            </button>
-          </form>
+        <div className="flex flex-col justify-between space-y-8">
+        <div className="card-body py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+          <h2 className="text-[#f7d1cd] font-bold text-xl mb-2">Profilo</h2>
+          <div className="flex items-center space-x-4">
+            <div className="relative w-32 h-32 mb-3 flex flex-col items-center">
+              <div className="relative w-32 h-32">
+                {/* border */}
+                <img
+                  src={userProfile.border}
+                  alt="Bordo"
+                  className="w-40 h-40 object-cover rounded-full absolute top-0 left-0 z-10"
+                />
+                 {/* avatar  */}
+                <img
+                  src={userProfile.avatar}
+                  alt="Avatar"
+                  className="w-32 h-32 object-cover rounded-full absolute top-4 left-0 z-20"
+                />
+              </div>
+              {/* Power up title on the top */}
+              <img
+                src={userProfile.user_title}
+                alt="Titolo"
+                className="w-16 h-16 object-cover rounded-full absolute top-[-1.5rem] left-1/2 transform -translate-x-1/2 z-30"
+              />
+            </div>
+            <div className="flex flex-col space-y-2">
+              <div>
+                <p className="text-white font-bold">Username:</p>
+                <p className="text-white">{newUsername}</p>
+              </div>
+              <div>
+                <p className="text-white font-bold">Email:</p>
+                <p className="text-white">{newEmail}</p>
+              </div>
+              <div>
+                <p className="text-white font-bold">Password:</p>
+                <p className="text-white">••••••••</p>
+              </div>
+            </div>
+          </div>
         </div>
-      );
-    }
-
-    else if (selectedSection === "Gestione Premi") {
-      return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            {selectedSection}
-          </h1>
-          <form className="flex flex-col items-center" onSubmit={handlePremiSubmit}>
-            <p className="mb-1 text-white font-bold text-sm">Nome Campo 1</p>
-            <input
-              type="text"
-              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-              placeholder="Placeholder 1"
-              value={nomePremio}
-              onChange={(e) => setNomePremio(e.target.value)}
-              required
-            />
-            <p className="mb-1 text-white font-bold text-sm">Nome Campo 2 </p>
-            <input
-              type="text"
-              className="rounded-2xl w-full md:w-72 h-8 mb-2 pl-2 login-input"
-              placeholder="Placeholder 2"
-              value={descrizionePremio}
-              onChange={(e) => setDescrizionePremio(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className="button-CD py-2 px-8 mt-3 ml-3 text-xl"
-            >
-              Salva Premio
-            </button>
-          </form>
-        </div>
-      );
-    }
-
-    else if (selectedSection === "Gestione Account") {
-      return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            {selectedSection}
-          </h1>
-          <button
-            type="button"
-            className="button-CD py-2 px-8 mt-3 ml-3 text-xl bg-red-600 hover:bg-red-700"
-          >
-            Elimina Account
-          </button>
-        </div>
-      );
-    }
-
-    else if (selectedSection === "Sezione Premi") {
-      return (
-        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-          <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-            Sezione Premi
-          </h1>
-          {error ? (
-            <p className="text-red-500">{error}</p>
+          {!isPasswordVerified ? (
+            <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+              <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+                Modifica credenziali
+              </h1>
+              <form className="flex flex-col items-center" onSubmit={handleVerifyPassword}>
+                <p className="mb-1 text-white font-bold text-sm">Inserisci la tua password attuale</p>
+                <input
+                  type="password"
+                  placeholder="Password attuale"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                  required
+                />
+                {verificationError && (
+                  <span className="text-black text-sm mb-2">{verificationError}</span>
+                )}
+                <button type="submit" className="button-CD py-2 px-8 text-xl">
+                  Verifica
+                </button>
+              </form>
+            </div>
           ) : (
-            rewards.map((reward) => <RewardItem key={reward._id} reward={reward} />)
+            <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+              <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
+                Modifica Credenziali
+              </h1>
+              <form className="flex flex-col items-center" onSubmit={handleUpdateCredentials}>
+                <input
+                  type="text"
+                  placeholder="Nuovo Username"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Nuova Email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Nuova Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="mb-3 px-4 py-2 rounded"
+                />
+                {Object.values(errors).map((error, index) => (
+                  <p key={index} className="text-red-500 text-sm mb-2">
+                    {error}
+                  </p>
+                ))}
+                <button type="submit" className="button-CD py-2 px-8 text-xl">
+                  Aggiorna Credenziali
+                </button>
+
+                <button
+                  type="button"
+                  className="delete-account-button mt-4 py-2 px-8 text-xl bg-red-600 hover:bg-red-700 rounded"
+                  onClick={handleDeleteAccount}
+                >
+                  Elimina Account
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+      );
+    } else if (selectedSection === "Sezione Premi") {
+      return (
+        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+          <h1 className="text-[#f7d1cd] font-bold text-3xl text-center mb-4">
+            {selectedSection}
+          </h1>
+          {/* Error message */}
+          {error ? (
+            <div className="bg-red-100 text-red-700 px-4 py-3 rounded-lg text-center font-medium shadow-md">
+              {error}
+            </div>
+          ) : rewards.length === 0 ? (
+            <p className="text-center text-white text-lg mt-4">
+              Non hai ancora guadagnato premi.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {/* Prizes with hover effect */}
+              {rewards.map((reward) => (
+                <div
+                  key={reward._id}
+                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 p-6 text-black"
+                >
+                  <RewardItem reward={reward} />
+                </div>
+              ))}
+            </div>
           )}
         </div>
       );
     }
-
-    return (
-      <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
-        <h1 className="text-[#f7d1cd] font-bold text-2xl justify-self-center mb-2">
-          {selectedSection}
-        </h1>
-        <p className="text-white font-bold text-lg">Coming Soon</p>
-      </div>
-    );
+    if (selectedSection === "Corsi seguiti") {
+      return (
+        <div className="card-body mt-6 py-4 px-6 bg-[#e0a11b] rounded-2xl font-Montserrat w-full max-w-2xl">
+          <h1 className="text-[#f7d1cd] font-bold text-3xl text-center mb-4">
+            {selectedSection}
+          </h1>
+          {userCourses.length > 0 ? (
+            <div className="flex flex-col space-y-4">
+              {userCourses.map((course, index) => (
+                <button onClick={() => window.location.href = "/coursePage/?corso=" + course.id }>
+                <div
+                  key={course.id || course._id || `course-${index}`}
+                  className="p-4 bg-white rounded-lg shadow-lg"
+                >
+                  <h2 className="text-[#54295c] font-bold text-xl mb-2">{course.title}</h2>
+                  <p className="text-[#54295c]">Progresso: {course.progress}%</p>
+                </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-white text-center">Non sei iscritto a nessun corso.</p>
+          )}
+        </div>
+      );
+    }
   };
 
+  // Return the JSX for the user page
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <div className="bg-[#54295c] text-white w-full md:w-1/4 md:relative md:mb-0" style={{ marginBottom: "-2.5rem" }}>
@@ -403,11 +568,11 @@ const AreaUtente = () => {
           <li>
             <button
               className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Gestione Premi" ? "bg-[#4b2153] text-[#e0a11b]" : ""
+                selectedSection === "Inventario" ? "bg-[#4b2153] text-[#e0a11b]" : ""
               }`}
-              onClick={() => setSelectedSection("Gestione Premi")}
+              onClick={() => setSelectedSection("Inventario")}
             >
-              Gestione Premi
+              Inventario
             </button>
           </li>
           <li>
@@ -428,36 +593,6 @@ const AreaUtente = () => {
               onClick={() => setSelectedSection("Corsi seguiti")}
             >
               Corsi seguiti
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Modifica credenziali" ? "bg-[#4b2153] text-[#e0a11b]" : ""
-              }`}
-              onClick={() => setSelectedSection("Modifica credenziali")}
-            >
-              Modifica credenziali
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Modifica avatar" ? "bg-[#4b2153] text-[#e0a11b]" : ""
-              }`}
-              onClick={() => setSelectedSection("Modifica avatar")}
-            >
-              Modifica avatar
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left px-4 py-2 rounded ${
-                selectedSection === "Richiedi supporto" ? "bg-[#4b2153] text-[#e0a11b]" : ""
-              }`}
-              onClick={() => setSelectedSection("Richiedi supporto")}
-            >
-              Richiedi supporto
             </button>
           </li>
         </ul>
@@ -497,13 +632,13 @@ const AreaUtente = () => {
               <li>
                 <button
                   className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Gestione Premi"
+                    selectedSection === "Inventario"
                       ? "bg-[#4b2153] text-[#e0a11b]"
                       : ""
                   }`}
-                  onClick={() => setSelectedSection("Gestione Premi")}
+                  onClick={() => setSelectedSection("Inventario")}
                 >
-                  Gestione Premi
+                  Inventario
                 </button>
               </li>
               <li>
@@ -528,42 +663,6 @@ const AreaUtente = () => {
                   onClick={() => setSelectedSection("Corsi seguiti")}
                 >
                   Corsi seguiti
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Modifica credenziali"
-                      ? "bg-[#4b2153] text-[#e0a11b]"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedSection("Modifica credenziali")}
-                >
-                  Modifica credenziali
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Modifica avatar"
-                      ? "bg-[#4b2153] text-[#e0a11b]"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedSection("Modifica avatar")}
-                >
-                  Modifica avatar
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left px-4 py-2 rounded ${
-                    selectedSection === "Richiedi supporto"
-                      ? "bg-[#4b2153] text-[#e0a11b]"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedSection("Richiedi supporto")}
-                >
-                  Richiedi supporto
                 </button>
               </li>
             </ul>

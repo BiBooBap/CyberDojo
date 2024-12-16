@@ -1,0 +1,22 @@
+Server - package.json:
+
+Dipendenze:
+bcrypt: "^5.1.1"
+cors: "^2.8.5"
+express: "^4.21.1"
+jsonwebtoken: "^9.0.2"
+mongodb: "^6.11.0"
+DevDependencies:
+globals: "^15.12.0"
+TestingDependencies:
+jest@29.7.0
+
+Client - package.json:
+
+DevDependencies:
+@testing-library/dom: "^10.4.0"
+@testing-library/react: "^16.0.1"
+cypress: "^13.16.0"
+globals: "^15.12.0"
+react-test-renderer: "^18.3.1"
+tailwindcss: "^3.4.15"

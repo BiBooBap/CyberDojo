@@ -3,6 +3,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { isUserLoggedIn, getUserRole } from "./auth";
 
+// If user is not logged in, redirect to login page
 function NotAdminRoute({ children }) {
   const userRole = getUserRole();
   if (userRole === "admin") {

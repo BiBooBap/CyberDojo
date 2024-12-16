@@ -1,4 +1,4 @@
-export function isUserLoggedIn() {
+export function isUserLoggedIn() { // Function to check if the user is logged in
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -19,6 +19,7 @@ export function isUserLoggedIn() {
   }
 }
 
+// Function to get the user role
 export function getUserRole() {
   const token = localStorage.getItem("token");
   if (!token) return null;
@@ -31,6 +32,7 @@ export function getUserRole() {
   }
 }
 
+// Function to get the user name
 export function getUserName() {
   const token = localStorage.getItem("token");
 
@@ -46,6 +48,7 @@ export function getUserName() {
   }
 }
 
+// Function to get the payload
 export function getPayload() {
   const token = localStorage.getItem("token");
   if (!token) return null;

@@ -1,21 +1,20 @@
 const express = require("express");
 const loginController = require("../Autenticazione/controllers/loginController");
 const credentialsController = require("../Autenticazione/controllers/credentialsController");
-const StreakController = require("../Premi/controllers/streakController");
 const userCourseController = require("../Autenticazione/controllers/userCourseController");
 const delController = require("../Autenticazione/controllers/delController");
 
 const router = express.Router();
-
+// Define the routes for the login
 router.use("/login", loginController);
-router.use("/credentials", credentialsController);
-router.use("/user-courses", userCourseController);
-router.use("/delete-user", delController);
 
-// Update streak on login
-router.post("/login", async (req, res, next) => {
-  await StreakController.updateStreak(req, res);
-  next();
-});
+// Define the routes for the credentials
+router.use("/credentials", credentialsController);
+
+// Define the routes for the user-courses
+router.use("/user-courses", userCourseController);
+
+// Define the routes for the delete user
+router.use("/delete-user", delController);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const registrationService = {
+  // Function to send a POST request to the server with the registration data
     register: async (userData) => {
       try {
         const response = await fetch("http://localhost:3001/registration/register", {
@@ -15,4 +16,5 @@ const registrationService = {
       }
     },
   };
-  export default registrationService;
+
+export default registrationService;
